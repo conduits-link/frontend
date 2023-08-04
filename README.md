@@ -15,3 +15,12 @@ The power of LLMs brought to an interface.
 3. Multimedia
    -  Summarise audio (from links)
    -  Create images/diagrams of content
+
+## Run
+
+To run the dev site:
+
+```bash
+npm install
+npm run dev
+```

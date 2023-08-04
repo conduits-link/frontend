@@ -1,0 +1,21 @@
+:root {
+	--color-accent: #d4af37;
+	--color-dark-100: #2f2c2d;
+	--color-dark-400: #231f20;
+	--color-light-100: #eff1f3;
+	--color-light-400: #eff1f3;
+
+	--color-primary-100: var(--color-dark-100);
+	--color-primary-400: var(--color-dark-400);
+	--color-secondary-100: var(--color-light-100);
+	--color-secondary-400: var(--color-light-400);
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+	min-height: 100vh;
+	color: var(--color-light-400);
+	background-color: var(--color-primary-400);
+}

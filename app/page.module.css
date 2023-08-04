@@ -1,0 +1,13 @@
+.container {
+	min-height: 100vh;
+	display: flex;
+	justify-content: center;
+}
+
+.page {
+	min-width: 65em;
+	min-height: 100%;
+	padding: 1.5em;
+	background-color: var(--color-primary-100);
+	box-sizing: border-box;
+}

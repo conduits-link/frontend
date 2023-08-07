@@ -5,10 +5,10 @@ import sendFetch from "../lib/fetch";
 import styles from "./page.module.css";
 
 export default function Landing() {
-	const handleContext = (e) => {
+	const handleContext = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
 		e.preventDefault();
 
-		const prompt = window.getSelection().toString();
+		let prompt: string | undefined = window.getSelection()?.toString();
 
 		sendFetch("/api", "POST", undefined, { prompt }).then((res) =>
 			console.log(res)

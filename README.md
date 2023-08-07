@@ -26,7 +26,8 @@ The power of LLMs brought to an interface.
   
 ## Architecture
 
-* Run AI on an [AWS EC2 Inf1](https://aws.amazon.com/ec2/instance-types/inf1/) instance. In particular, inf1.6xlarge, since this is the cheapest option that lets us run the largest LLaMA 2 model, with 48GB GPU memory.
+* Host LLaMA2 on an [AWS EC2 Inf1](https://aws.amazon.com/ec2/instance-types/inf1/) instance. Use inf1.6xlarge, since this is the cheapest option that can run LLaMA2 70B, having 48GB GPU memory.
+* Host everything else on Vercel.
 * Prompt formatting on frontend in Next.js.
 * Python and Flask on backend, sending prompts to LLaMA model and transmitting output.
 

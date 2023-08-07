@@ -1,6 +1,6 @@
 "use client";
 
-import sendFetch from "../lib/fetch";
+import sendFetch from "../utils/fetch";
 
 import styles from "./page.module.css";
 
@@ -10,9 +10,7 @@ export default function Landing() {
 
 		let prompt: string | undefined = window.getSelection()?.toString();
 
-		sendFetch("/api", "POST", undefined, { prompt }).then((res) =>
-			console.log(res)
-		);
+		sendFetch("/api", "POST", "", { prompt }).then((res) => console.log(res));
 	};
 
 	return (

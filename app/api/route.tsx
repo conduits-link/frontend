@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
-	const { prompt } = await request.json();
+	const { settings, prompt } = await request.json();
 
-	return NextResponse.json({ prompt });
+	const result = {};
+
+	return NextResponse.json(result);
 }

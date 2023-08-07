@@ -1,12 +1,17 @@
-export default function sendFetch(route, method, cookie, data) {
+export default function sendFetch(
+	route: string,
+	method: string,
+	cookie: string,
+	data: Object
+) {
 	return new Promise((resolve, reject) => {
 		fetch(route, {
 			method: method,
 			headers: {
 				"Content-Type": "application/json",
-				"Access-Control-Allow-Credentials": true,
+				"Access-Control-Allow-Credentials": "true",
 				Accept: "application/json",
-				cookie: cookie,
+				Cookie: cookie,
 			},
 			credentials: "include",
 			body: JSON.stringify(data),

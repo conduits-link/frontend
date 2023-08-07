@@ -27,7 +27,7 @@ The power of LLMs brought to an interface.
 ## Architecture
 
 * Host LLaMA2 on an [AWS EC2 Inf1](https://aws.amazon.com/ec2/instance-types/inf1/) instance.
-  - Use inf1.6xlarge, the cheapest option that can run LLaMA2 70B (48GB GPU memory).
+  - Use c5n.4xlarge, the cheapest option that can run LLaMA2 70B (42GB GPU memory).
 * Storage on AWS S3.
 * Host everything else on Vercel.
 * Prompt formatting on frontend in Next.js.

@@ -1,7 +1,7 @@
 :root {
 	--color-accent: #d4af37;
-	--color-dark-100: #2f2c2d;
-	--color-dark-400: #231f20;
+	--color-dark-100: #181818;
+	--color-dark-400: #131212;
 	--color-light-100: #eff1f3;
 	--color-light-400: #eff1f3;
 
@@ -9,6 +9,8 @@
 	--color-primary-400: var(--color-dark-400);
 	--color-secondary-100: var(--color-light-100);
 	--color-secondary-400: var(--color-light-400);
+
+	--spacing-large: 2.5rem;
 }
 
 html,
@@ -18,4 +20,5 @@ body {
 	min-height: 100vh;
 	color: var(--color-light-400);
 	background-color: var(--color-primary-400);
+	font-family: "Lora", "Serif" !important;
 }

@@ -5,9 +5,23 @@
 }
 
 .page {
-	min-width: 65em;
+	max-width: 65em;
+	width: 100%;
 	min-height: 100%;
-	padding: 1.5em;
-	background-color: var(--color-primary-100);
+	padding: var(--spacing-large);
+	/* background-color: red; */
 	box-sizing: border-box;
+}
+
+.page::placeholder {
+	color: var(--color-light-400);
+}
+
+.page:focus {
+	outline: none;
+}
+
+.page p {
+	font-size: 1.15rem;
+	font-family: "Lora", "Serif";
 }

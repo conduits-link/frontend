@@ -16,6 +16,7 @@ The power of LLMs brought to an interface.
    -  Draw diagram
    -  Generate code
    -  AI-generated custom suggestions, based on context
+   -  Translate
 3. Multimedia
    -  Summarise audio (from links)
    -  Create images/diagrams of content
@@ -23,6 +24,9 @@ The power of LLMs brought to an interface.
 4. UI
    -  Movable, collapsable generated material
    -  Code syntax highlighting
+   -  Search bar
+5. Customisation
+   - Allow people to write their own prompts
 
 ## Architecture
 

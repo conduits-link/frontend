@@ -26,7 +26,7 @@ The power of LLMs brought to an interface.
    -  Code syntax highlighting
    -  Search bar
 5. Customisation
-   - Allow people to write their own prompts
+   - Allow people to write their own prompts (in development, just use CSV/JSON)
 
 ## Architecture
 

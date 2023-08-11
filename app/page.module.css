@@ -21,6 +21,11 @@
 	outline: none;
 }
 
+.page h1 {
+	font-size: 2.85rem;
+	font-family: "Lora", "Serif";
+}
+
 .page p {
 	font-size: 1.15rem;
 	font-family: "Lora", "Serif";

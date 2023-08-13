@@ -3,7 +3,12 @@ import React, { ReactNode } from "react";
 import "./globals.css";
 import { Lora } from "next/font/google";
 
-const font = Lora({ subsets: ["latin"] });
+const font = Lora({
+	weight: ["400", "700"],
+	style: ["normal", "italic"],
+	subsets: ["latin"],
+	display: "swap",
+});
 
 export const metadata = {
 	title: "Noteworthy",

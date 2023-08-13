@@ -11,22 +11,19 @@
 	padding: var(--spacing-large);
 	/* background-color: red; */
 	box-sizing: border-box;
-}
 
-.page::placeholder {
-	color: var(--color-light-400);
-}
-
-.page:focus {
-	outline: none;
+	display: flex;
+	flex-direction: row;
 }
 
 .page h1 {
 	font-size: 2.85rem;
-	font-family: "Lora", "Serif";
+}
+
+.page h2 {
+	font-size: 2rem;
 }
 
 .page p {
 	font-size: 1.15rem;
-	font-family: "Lora", "Serif";
 }

@@ -1,25 +1,26 @@
 import { ReactNode } from "react";
 
 import sendFetch from "../../../utils/fetch";
+import Button from "../Button";
 
 export default function PromptButton({
-	settings,
 	prompt,
 	children,
 }: {
-	settings: string;
 	prompt: string;
 	children: ReactNode;
 }) {
 	function infer() {
-		sendFetch("/api", "POST", "", { settings, prompt }).then((res) =>
+		const input : string = window.getSelection()!.toString();
+
+		sendFetch("/api", "POST", "", { prompt, input }).then((res) =>
 			console.log(res)
 		);
 	}
 
 	return (
-		<div>
-			<button onClick={infer}>{children}</button>
-		</div>
+		<Button classNameRef={""} onClickRef={infer}>
+			{children}
+		</Button>
 	);
 }

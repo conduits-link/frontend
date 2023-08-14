@@ -34,6 +34,8 @@ import ItalicFormatButton from "@/components/buttons/format/ItalicFormatButton";
 import StrikeFormatButton from "@/components/buttons/format/StrikeFormatButton";
 import CodeFormatButton from "@/components/buttons/format/CodeFormatButton";
 
+import SummarisePromptButton from "@/components/buttons/prompt/SummarisePromptButton";
+
 import styles from "./page.module.css";
 
 export default function Editor() {
@@ -79,6 +81,7 @@ export default function Editor() {
 						<ItalicFormatButton editor={editor} />
 						<StrikeFormatButton editor={editor} />
 						<CodeFormatButton editor={editor} />
+						<SummarisePromptButton />
 					</BubbleMenu>
 					<FloatingMenu editor={editor} tippyOptions={{ duration: 100 }}>
 						<Heading1FormatButton editor={editor} />

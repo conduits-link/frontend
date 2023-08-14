@@ -31,9 +31,21 @@ The power of LLMs brought to an interface.
 
 ## Architecture
 
+Model Hosting - Development:
+
+- Hopefully, Hugging Face API [here](https://huggingface.co/spaces/ysharma/Explore_llamav2_with_TGI).
+- If not, AWS Sagemaker serverless inference with Free Tier. Max memory 6GB, which can run the LLaMA 7B model, and hopefully the 13B. Sagemaker offers many different models.
+   - 150,000 seconds per month for the first 2 months.
+
+Model Hosting - Production:
+
 -  Host LLaMA2 on an [AWS EC2 C5](https://aws.amazon.com/ec2/instance-types/c5/) instance.
-   -  Use c5n.4xlarge, the cheapest option that can run LLaMA2 70B (42GB GPU memory). $1.024 per hour.
+   -  Can use c5n.4xlarge, the cheapest option that can run LLaMA2 70B (42GB GPU memory). $1.024 per hour.
+   -  Can use serverless inference, real-time inference, or asynchronous inference depending on budget etc.
 -  Storage on AWS S3.
+
+General:
+
 -  Host everything else on Vercel.
 -  Prompt formatting on frontend in Next.js.
 -  Python and Flask on backend, sending prompts to LLaMA model and transmitting output.

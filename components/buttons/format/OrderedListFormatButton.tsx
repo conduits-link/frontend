@@ -1,4 +1,4 @@
-import StyleButton from "./StyleButton";
+import StyleButton from "./FormatButton";
 
 export default function OrderedListStyleButton({
 	editor,

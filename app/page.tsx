@@ -23,16 +23,16 @@ lowlight.registerLanguage("css", css);
 lowlight.registerLanguage("js", js);
 lowlight.registerLanguage("ts", ts);
 
-import Heading1StyleButton from "@/components/buttons/style/Heading1StyleButton";
-import Heading2StyleButton from "@/components/buttons/style/Heading2StyleButton";
-import Heading3StyleButton from "@/components/buttons/style/Heading3StyleButton";
-import OrderedListStyleButton from "@/components/buttons/style/OrderedListStyleButton";
-import BulletListStyleButton from "@/components/buttons/style/BulletListStyleButton";
-import CodeBlockStyleButton from "@/components/buttons/style/CodeBlockStyleButton";
-import BoldStyleButton from "@/components/buttons/style/BoldStyleButton";
-import ItalicStyleButton from "@/components/buttons/style/ItalicStyleButton";
-import StrikethroughStyleButton from "@/components/buttons/style/StrikethroughStyleButton";
-import CodeStyleButton from "@/components/buttons/style/CodeStyleButton";
+import Heading1FormatButton from "@/components/buttons/format/Heading1FormatButton";
+import Heading2FormatButton from "@/components/buttons/format/Heading2FormatButton";
+import Heading3FormatButton from "@/components/buttons/format/Heading3FormatButton";
+import OrderedListFormatButton from "@/components/buttons/format/OrderedListFormatButton";
+import BulletListFormatButton from "@/components/buttons/format/BulletListFormatButton";
+import CodeBlockFormatButton from "@/components/buttons/format/CodeBlockFormatButton";
+import BoldFormatButton from "@/components/buttons/format/BoldFormatButton";
+import ItalicFormatButton from "@/components/buttons/format/ItalicFormatButton";
+import StrikeFormatButton from "@/components/buttons/format/_StrikeFormatButton";
+import CodeFormatButton from "@/components/buttons/format/CodeFormatButton";
 
 import styles from "./page.module.css";
 
@@ -69,24 +69,24 @@ export default function Editor() {
 			{editor && (
 				<>
 					<BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
-						<Heading1StyleButton editor={editor} />
-						<Heading2StyleButton editor={editor} />
-						<Heading3StyleButton editor={editor} />
-						<BulletListStyleButton editor={editor} />
-						<OrderedListStyleButton editor={editor} />
-						<CodeBlockStyleButton editor={editor} />
-						<BoldStyleButton editor={editor} />
-						<ItalicStyleButton editor={editor} />
-						<StrikethroughStyleButton editor={editor} />
-						<CodeStyleButton editor={editor} />
+						<Heading1FormatButton editor={editor} />
+						<Heading2FormatButton editor={editor} />
+						<Heading3FormatButton editor={editor} />
+						<BulletListFormatButton editor={editor} />
+						<OrderedListFormatButton editor={editor} />
+						<CodeBlockFormatButton editor={editor} />
+						<BoldFormatButton editor={editor} />
+						<ItalicFormatButton editor={editor} />
+						<StrikeFormatButton editor={editor} />
+						<CodeFormatButton editor={editor} />
 					</BubbleMenu>
 					<FloatingMenu editor={editor} tippyOptions={{ duration: 100 }}>
-						<Heading1StyleButton editor={editor} />
-						<Heading2StyleButton editor={editor} />
-						<Heading3StyleButton editor={editor} />
-						<BulletListStyleButton editor={editor} />
-						<OrderedListStyleButton editor={editor} />
-						<CodeBlockStyleButton editor={editor} />
+						<Heading1FormatButton editor={editor} />
+						<Heading2FormatButton editor={editor} />
+						<Heading3FormatButton editor={editor} />
+						<BulletListFormatButton editor={editor} />
+						<OrderedListFormatButton editor={editor} />
+						<CodeBlockFormatButton editor={editor} />
 					</FloatingMenu>
 				</>
 			)}

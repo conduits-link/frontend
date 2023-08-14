@@ -33,8 +33,7 @@ The power of LLMs brought to an interface.
 
 Model Hosting - Development:
 
-- Hopefully, Hugging Face API [here](https://huggingface.co/spaces/ysharma/Explore_llamav2_with_TGI).
-- If not, AWS Sagemaker serverless inference with Free Tier. Max memory 6GB, which can run the LLaMA 7B model, and hopefully the 13B. Sagemaker offers many different models.
+- AWS Sagemaker serverless inference with Free Tier. Max memory 6GB, which can run the LLaMA 7B model, and hopefully the 13B. Sagemaker offers many different models.
    - 150,000 seconds per month for the first 2 months.
 
 Model Hosting - Production:

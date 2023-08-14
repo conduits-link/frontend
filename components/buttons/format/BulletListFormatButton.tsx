@@ -1,4 +1,6 @@
-import StyleButton from "./FormatButton";
+import { BiListUl } from "react-icons/bi";
+
+import StyleButton from "./_FormatButton";
 
 export default function BulletListStyleButton({
 	editor,
@@ -11,7 +13,7 @@ export default function BulletListStyleButton({
 				classNameRef={editor.isActive("bulletList") ? "is-active" : ""}
 				onClickRef={() => editor.chain().focus().toggleBulletList().run()}
 			>
-				bullet list
+				<BiListUl />
 			</StyleButton>
 		</div>
 	);

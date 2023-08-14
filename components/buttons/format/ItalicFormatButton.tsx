@@ -1,4 +1,6 @@
-import StyleButton from "./FormatButton";
+import { BiItalic } from "react-icons/bi";
+
+import StyleButton from "./_FormatButton";
 
 export default function ItalicStyleButton({
 	editor,
@@ -11,7 +13,7 @@ export default function ItalicStyleButton({
 				classNameRef={editor.isActive("italic") ? "is-active" : ""}
 				onClickRef={() => editor.chain().focus().toggleItalic().run()}
 			>
-				italic
+				<BiItalic />
 			</StyleButton>
 		</div>
 	);

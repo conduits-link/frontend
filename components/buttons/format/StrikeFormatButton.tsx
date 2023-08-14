@@ -1,4 +1,6 @@
-import StyleButton from "./FormatButton";
+import { BiStrikethrough } from "react-icons/bi";
+
+import StyleButton from "./_FormatButton";
 
 export default function StrikeStyleButton({
 	editor,
@@ -13,7 +15,7 @@ export default function StrikeStyleButton({
 					editor.chain().focus().toggleStrike().run()
 				}
 			>
-				strike
+				<BiStrikethrough />
 			</StyleButton>
 		</div>
 	);

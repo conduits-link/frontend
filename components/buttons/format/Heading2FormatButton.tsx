@@ -1,4 +1,6 @@
-import StyleButton from "./FormatButton";
+import { BiHeading } from "react-icons/bi";
+
+import StyleButton from "./_FormatButton";
 
 export default function Heading2StyleButton({
 	editor,
@@ -15,7 +17,7 @@ export default function Heading2StyleButton({
 					editor.chain().focus().toggleHeading({ level: 2 }).run()
 				}
 			>
-				h2
+				<BiHeading /><sub>2</sub>
 			</StyleButton>
 		</div>
 	);

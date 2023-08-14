@@ -1,4 +1,6 @@
-import StyleButton from "./FormatButton";
+import { BiBold } from "react-icons/bi";
+
+import StyleButton from "./_FormatButton";
 
 export default function BoldStyleButton({
 	editor,
@@ -11,7 +13,7 @@ export default function BoldStyleButton({
 				classNameRef={editor.isActive("bold") ? "is-active" : ""}
 				onClickRef={() => editor.chain().focus().toggleBold().run()}
 			>
-				bold
+				<BiBold />
 			</StyleButton>
 		</div>
 	);

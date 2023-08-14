@@ -31,7 +31,7 @@ import BulletListFormatButton from "@/components/buttons/format/BulletListFormat
 import CodeBlockFormatButton from "@/components/buttons/format/CodeBlockFormatButton";
 import BoldFormatButton from "@/components/buttons/format/BoldFormatButton";
 import ItalicFormatButton from "@/components/buttons/format/ItalicFormatButton";
-import StrikeFormatButton from "@/components/buttons/format/_StrikeFormatButton";
+import StrikeFormatButton from "@/components/buttons/format/StrikeFormatButton";
 import CodeFormatButton from "@/components/buttons/format/CodeFormatButton";
 
 import styles from "./page.module.css";

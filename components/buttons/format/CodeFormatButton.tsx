@@ -1,4 +1,6 @@
-import StyleButton from "./FormatButton";
+import { BiCodeAlt } from "react-icons/bi";
+
+import StyleButton from "./_FormatButton";
 
 export default function CodeStyleButton({
 	editor,
@@ -11,7 +13,7 @@ export default function CodeStyleButton({
 				classNameRef={editor.isActive("code") ? "is-active" : ""}
 				onClickRef={() => editor.chain().focus().toggleCode().run()}
 			>
-				code
+				<BiCodeAlt />
 			</StyleButton>
 		</div>
 	);

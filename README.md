@@ -42,6 +42,7 @@ Model Hosting - Production:
 -  Host LLaMA2 on an [AWS EC2 C5](https://aws.amazon.com/ec2/instance-types/c5/) instance.
    -  Can use c5n.4xlarge, the cheapest option that can run LLaMA2 70B (42GB GPU memory). $1.024 per hour.
    -  Can use serverless inference, real-time inference, or asynchronous inference depending on budget etc.
+- Give users option to choose their preferred LLM.
 -  Storage on AWS S3.
 
 General:

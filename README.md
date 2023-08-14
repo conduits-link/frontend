@@ -25,6 +25,7 @@ The power of LLMs brought to an interface.
    -  Movable, collapsable generated material
    -  Code syntax highlighting
    -  Search bar
+   -  Drag and drop with option buttons to the side of nodes
 5. Customisation
    - Allow people to write their own prompts (in development, just use CSV/JSON)
 

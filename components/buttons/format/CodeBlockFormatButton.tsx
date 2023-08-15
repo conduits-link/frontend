@@ -1,20 +1,22 @@
 import { BiCodeBlock } from "react-icons/bi";
 
-import StyleButton from "./_FormatButton";
+import FormatButton from "./_FormatButton";
 
-export default function CodeBlockStyleButton({
+export default function CodeBlockFormatButton({
 	editor,
+	className,
 }: {
 	editor: any; // TODO: change this
+	className: string;
 }) {
 	return (
 		<div>
-			<StyleButton
-				classNameRef={editor.isActive("codeBlock") ? "is-active" : ""}
-				onClickRef={() => editor.chain().focus().toggleCodeBlock().run()}
+			<FormatButton
+				className={editor.isActive("codeBlock") ? "is-active" : ""}
+				onClick={() => editor.chain().focus().toggleCodeBlock().run()}
 			>
 				<BiCodeBlock />
-			</StyleButton>
+			</FormatButton>
 		</div>
 	);
 }

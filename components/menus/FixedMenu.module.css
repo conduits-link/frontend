@@ -1,0 +1,15 @@
+.container {
+	--width: 3.5em;
+	width: var(--width);
+	margin-top: var(--spacing-large);
+	display: flex;
+	justify-content: center;
+	background-color: var(--color-primary-100);
+	position: fixed;
+	left: calc((100vw - var(--editor-width)) / 2 - var(--width));
+}
+
+.element {
+	display: flex;
+	flex-direction: column;
+}

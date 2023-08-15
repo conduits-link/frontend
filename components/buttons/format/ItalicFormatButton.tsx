@@ -1,20 +1,22 @@
 import { BiItalic } from "react-icons/bi";
 
-import StyleButton from "./_FormatButton";
+import FormatButton from "./_FormatButton";
 
-export default function ItalicStyleButton({
+export default function ItalicFormatButton({
 	editor,
+	className,
 }: {
 	editor: any; // TODO: change this
+	className: string;
 }) {
 	return (
 		<div>
-			<StyleButton
-				classNameRef={editor.isActive("italic") ? "is-active" : ""}
-				onClickRef={() => editor.chain().focus().toggleItalic().run()}
+			<FormatButton
+				className={editor.isActive("italic") ? "is-active" : ""}
+				onClick={() => editor.chain().focus().toggleItalic().run()}
 			>
 				<BiItalic />
-			</StyleButton>
+			</FormatButton>
 		</div>
 	);
 }

@@ -1,19 +1,24 @@
 .container {
 	min-height: 100vh;
+	height: 100%;
 	display: flex;
-	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+	position: relative;
 }
 
 .page {
-	max-width: 65em;
+	position: relative;
+	min-height: 100vh;
+	height: 100%;
+	max-width: var(--editor-width);
 	width: 100%;
-	min-height: 100%;
 	padding: var(--spacing-large);
-	/* background-color: red; */
 	box-sizing: border-box;
+}
 
-	display: flex;
-	flex-direction: row;
+.page :first-child {
+	margin-top: 0;
 }
 
 .page h1 {
@@ -26,4 +31,9 @@
 
 .page p {
 	font-size: 1.15rem;
+}
+
+.containerFormat {
+	display: flex;
+	background-color: var(--color-primary-100);
 }

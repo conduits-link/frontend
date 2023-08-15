@@ -1,22 +1,22 @@
 import { BiStrikethrough } from "react-icons/bi";
 
-import StyleButton from "./_FormatButton";
+import FormatButton from "./_FormatButton";
 
-export default function StrikeStyleButton({
+export default function StrikeFormatButton({
 	editor,
+	className,
 }: {
 	editor: any; // TODO: change this
+	className: string;
 }) {
 	return (
 		<div>
-			<StyleButton
-				classNameRef={editor.isActive("strike") ? "is-active" : ""}
-				onClickRef={() =>
-					editor.chain().focus().toggleStrike().run()
-				}
+			<FormatButton
+				className={editor.isActive("strike") ? "is-active" : ""}
+				onClick={() => editor.chain().focus().toggleStrike().run()}
 			>
 				<BiStrikethrough />
-			</StyleButton>
+			</FormatButton>
 		</div>
 	);
 }

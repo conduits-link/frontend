@@ -1,20 +1,22 @@
 import { BiBold } from "react-icons/bi";
 
-import StyleButton from "./_FormatButton";
+import FormatButton from "./_FormatButton";
 
-export default function BoldStyleButton({
+export default function BoldFormatButton({
 	editor,
+	className,
 }: {
 	editor: any; // TODO: change this
+	className: string;
 }) {
 	return (
 		<div>
-			<StyleButton
-				classNameRef={editor.isActive("bold") ? "is-active" : ""}
-				onClickRef={() => editor.chain().focus().toggleBold().run()}
+			<FormatButton
+				className={editor.isActive("bold") ? "is-active" : " " + className}
+				onClick={() => editor.chain().focus().toggleBold().run()}
 			>
 				<BiBold />
-			</StyleButton>
+			</FormatButton>
 		</div>
 	);
 }

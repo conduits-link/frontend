@@ -2,17 +2,17 @@ import { ReactNode } from "react";
 
 import Button from "../Button";
 
-export default function StyleButton({
-	classNameRef,
-	onClickRef,
+export default function FormatButton({
+	className,
+	onClick,
 	children,
 }: {
-	classNameRef: string;
-	onClickRef: React.MouseEventHandler;
+	className: string;
+	onClick: React.MouseEventHandler;
 	children: ReactNode;
 }) {
 	return (
-		<Button classNameRef={classNameRef} onClickRef={onClickRef}>
+		<Button className={className} onClick={onClick}>
 			{children}
 		</Button>
 	);

@@ -1,20 +1,22 @@
 import { BiCodeAlt } from "react-icons/bi";
 
-import StyleButton from "./_FormatButton";
+import FormatButton from "./_FormatButton";
 
-export default function CodeStyleButton({
+export default function CodeFormatButton({
 	editor,
+	className,
 }: {
 	editor: any; // TODO: change this
+	className: string;
 }) {
 	return (
 		<div>
-			<StyleButton
-				classNameRef={editor.isActive("code") ? "is-active" : ""}
-				onClickRef={() => editor.chain().focus().toggleCode().run()}
+			<FormatButton
+				className={editor.isActive("code") ? "is-active" : ""}
+				onClick={() => editor.chain().focus().toggleCode().run()}
 			>
 				<BiCodeAlt />
-			</StyleButton>
+			</FormatButton>
 		</div>
 	);
 }

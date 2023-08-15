@@ -1,20 +1,22 @@
 import { BiListOl } from "react-icons/bi";
 
-import StyleButton from "./_FormatButton";
+import FormatButton from "./_FormatButton";
 
-export default function OrderedListStyleButton({
+export default function OrderedListFormatButton({
 	editor,
+	className,
 }: {
 	editor: any; // TODO: change this
+	className: string;
 }) {
 	return (
 		<div>
-			<StyleButton
-				classNameRef={editor.isActive("orderedList") ? "is-active" : ""}
-				onClickRef={() => editor.chain().focus().toggleOrderedList().run()}
+			<FormatButton
+				className={editor.isActive("orderedList") ? "is-active" : ""}
+				onClick={() => editor.chain().focus().toggleOrderedList().run()}
 			>
 				<BiListOl />
-			</StyleButton>
+			</FormatButton>
 		</div>
 	);
 }

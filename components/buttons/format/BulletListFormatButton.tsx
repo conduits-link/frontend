@@ -1,20 +1,22 @@
 import { BiListUl } from "react-icons/bi";
 
-import StyleButton from "./_FormatButton";
+import FormatButton from "./_FormatButton";
 
-export default function BulletListStyleButton({
+export default function BulletListFormatButton({
 	editor,
+	className,
 }: {
 	editor: any; // TODO: change this
+	className: string;
 }) {
 	return (
 		<div>
-			<StyleButton
-				classNameRef={editor.isActive("bulletList") ? "is-active" : ""}
-				onClickRef={() => editor.chain().focus().toggleBulletList().run()}
+			<FormatButton
+				className={editor.isActive("bulletList") ? "is-active" : ""}
+				onClick={() => editor.chain().focus().toggleBulletList().run()}
 			>
 				<BiListUl />
-			</StyleButton>
+			</FormatButton>
 		</div>
 	);
 }

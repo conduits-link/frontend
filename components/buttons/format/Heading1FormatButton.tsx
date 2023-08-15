@@ -1,24 +1,31 @@
 import { BiHeading } from "react-icons/bi";
 
-import StyleButton from "./_FormatButton";
+import FormatButton from "./_FormatButton";
 
-export default function Heading1StyleButton({
+export default function Heading1FormatButton({
 	editor,
+	className,
 }: {
 	editor: any; // TODO: change this
+	className: string;
 }) {
 	return (
 		<div>
-			<StyleButton
-				classNameRef={
-					editor.isActive("heading", { level: 1 }) ? "is-active" : ""
+			<FormatButton
+				className={
+					className + " " + editor.isActive("heading", { level: 1 })
+						? "is-active"
+						: ""
 				}
-				onClickRef={() =>
+				onClick={() =>
+					className +
+					" " +
 					editor.chain().focus().toggleHeading({ level: 1 }).run()
 				}
 			>
-				<BiHeading /><sub>1</sub>
-			</StyleButton>
+				<BiHeading />
+				<sub>1</sub>
+			</FormatButton>
 		</div>
 	);
 }

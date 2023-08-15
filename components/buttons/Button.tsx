@@ -1,17 +1,19 @@
 import { ReactNode } from "react";
 
+import styles from "./Button.module.css";
+
 export default function Button({
-	classNameRef,
-	onClickRef,
+	className,
+	onClick,
 	children,
 }: {
-	classNameRef: string;
-	onClickRef: React.MouseEventHandler;
+	className: string;
+	onClick: React.MouseEventHandler;
 	children: ReactNode;
 }) {
 	return (
-		<div>
-			<button className={classNameRef} onClick={onClickRef}>
+		<div className={styles.container}>
+			<button className={styles.element + " " + className} onClick={onClick}>
 				{children}
 			</button>
 		</div>

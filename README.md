@@ -17,6 +17,7 @@ The power of LLMs brought to an interface.
    -  Generate code
    -  AI-generated custom suggestions, based on context
    -  Translate
+   -  Generate todo list (steps required to complete something)
 3. Multimedia
    -  Summarise audio (from links)
    -  Create images/diagrams of content

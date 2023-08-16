@@ -11,7 +11,7 @@ import ItalicFormatButton from "@/components/buttons/format/ItalicFormatButton";
 import StrikeFormatButton from "@/components/buttons/format/StrikeFormatButton";
 import CodeFormatButton from "@/components/buttons/format/CodeFormatButton";
 
-import styles from "./FixedMenu.module.css";
+import styles from "./FixedFormatMenu.module.css";
 
 export default function FixedMenu({ editor }: { editor: Editor }) {
 	return (

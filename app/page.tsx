@@ -1,13 +1,12 @@
 "use client";
 
-import {} from "@tiptap/react";
+import { useEditor, EditorContent } from "@tiptap/react";
 import Heading from "@tiptap/extension-heading";
 import BulletList from "@tiptap/extension-bullet-list";
 import OrderedList from "@tiptap/extension-ordered-list";
 import CodeBlockLowLight from "@tiptap/extension-code-block-lowlight";
 import Placeholder from "@tiptap/extension-placeholder";
 import StarterKit from "@tiptap/starter-kit";
-
 import css from "highlight.js/lib/languages/css";
 import js from "highlight.js/lib/languages/javascript";
 import ts from "highlight.js/lib/languages/typescript";
@@ -18,25 +17,11 @@ lowlight.registerLanguage("css", css);
 lowlight.registerLanguage("js", js);
 lowlight.registerLanguage("ts", ts);
 
-import FixedMenu from "@/components/menus/FixedMenu";
+import FixedFormatMenu from "@/components/menus/FixedFormatMenu";
+import PromptMenu from "@/components/menus/PromptMenu";
+import FloatingFormatMenu from "@/components/menus/FloatingFormatMenu";
 
 import styles from "./page.module.css";
-
-import {
-	useEditor,
-	EditorContent,
-	BubbleMenu,
-	FloatingMenu,
-} from "@tiptap/react";
-
-import Heading1FormatButton from "@/components/buttons/format/Heading1FormatButton";
-import Heading2FormatButton from "@/components/buttons/format/Heading2FormatButton";
-import Heading3FormatButton from "@/components/buttons/format/Heading3FormatButton";
-import OrderedListFormatButton from "@/components/buttons/format/OrderedListFormatButton";
-import BulletListFormatButton from "@/components/buttons/format/BulletListFormatButton";
-import CodeBlockFormatButton from "@/components/buttons/format/CodeBlockFormatButton";
-
-import SummarisePromptButton from "@/components/buttons/prompt/SummarisePromptButton";
 
 export default function Editor() {
 	const editor = useEditor({
@@ -71,26 +56,9 @@ export default function Editor() {
 			{editor && (
 				<>
 					<div className={styles.container}>
-						<FixedMenu editor={editor} />
-						<BubbleMenu
-							className={styles.containerFormat}
-							editor={editor}
-							tippyOptions={{ duration: 100 }}
-						>
-							<SummarisePromptButton />
-						</BubbleMenu>
-						<FloatingMenu
-							className={styles.containerFormat}
-							editor={editor}
-							tippyOptions={{ duration: 100 }}
-						>
-							<Heading1FormatButton editor={editor} className={""} />
-							<Heading2FormatButton editor={editor} className={""} />
-							<Heading3FormatButton editor={editor} className={""} />
-							<BulletListFormatButton editor={editor} className={""} />
-							<OrderedListFormatButton editor={editor} className={""} />
-							<CodeBlockFormatButton editor={editor} className={""} />
-						</FloatingMenu>
+						<FixedFormatMenu editor={editor} />
+						<PromptMenu editor={editor} />
+						<FloatingFormatMenu editor={editor} />
 						<EditorContent className={styles.page} editor={editor} />
 					</div>
 				</>

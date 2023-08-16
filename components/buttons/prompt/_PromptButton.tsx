@@ -11,7 +11,7 @@ export default function PromptButton({
 	children: ReactNode;
 }) {
 	function infer() {
-		const input : string = window.getSelection()!.toString();
+		const input: string = window.getSelection()!.toString();
 
 		sendFetch("/api", "POST", "", { prompt, input }).then((res) =>
 			console.log(res)
@@ -19,7 +19,7 @@ export default function PromptButton({
 	}
 
 	return (
-		<Button classNameRef={""} onClickRef={infer}>
+		<Button className={""} onClick={infer}>
 			{children}
 		</Button>
 	);

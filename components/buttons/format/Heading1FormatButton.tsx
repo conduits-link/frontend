@@ -1,31 +1,29 @@
+import { Editor } from "@tiptap/react";
+
 import { BiHeading } from "react-icons/bi";
 
-import FormatButton from "./_FormatButton";
+import FormatButton from "../FormatButton";
 
 export default function Heading1FormatButton({
 	editor,
 	className,
 }: {
-	editor: any; // TODO: change this
+	editor: Editor;
 	className: string;
 }) {
 	return (
-		<div>
-			<FormatButton
-				className={
-					className + " " + editor.isActive("heading", { level: 1 })
-						? "is-active"
-						: ""
-				}
-				onClick={() =>
-					className +
-					" " +
-					editor.chain().focus().toggleHeading({ level: 1 }).run()
-				}
-			>
-				<BiHeading />
-				<sub>1</sub>
-			</FormatButton>
-		</div>
+		<FormatButton
+			className={
+				className +
+				" " +
+				(editor.isActive("heading", { level: 1 }) ? "is-active" : "")
+			}
+			onClick={() =>
+				editor.chain().focus().toggleHeading({ level: 1 }).run()
+			}
+		>
+			<BiHeading />
+			<sub>1</sub>
+		</FormatButton>
 	);
 }

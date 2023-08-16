@@ -1,22 +1,24 @@
+import { Editor } from "@tiptap/react";
+
 import { BiItalic } from "react-icons/bi";
 
-import FormatButton from "./_FormatButton";
+import FormatButton from "../FormatButton";
 
 export default function ItalicFormatButton({
 	editor,
 	className,
 }: {
-	editor: any; // TODO: change this
+	editor: Editor;
 	className: string;
 }) {
 	return (
-		<div>
-			<FormatButton
-				className={editor.isActive("italic") ? "is-active" : ""}
-				onClick={() => editor.chain().focus().toggleItalic().run()}
-			>
-				<BiItalic />
-			</FormatButton>
-		</div>
+		<FormatButton
+			className={
+				className + " " + (editor.isActive("italic") ? "is-active" : "")
+			}
+			onClick={() => editor.chain().focus().toggleItalic().run()}
+		>
+			<BiItalic />
+		</FormatButton>
 	);
 }

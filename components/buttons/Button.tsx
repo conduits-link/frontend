@@ -12,8 +12,8 @@ export default function Button({
 	children: ReactNode;
 }) {
 	return (
-		<div className={styles.container}>
-			<button className={styles.element + " " + className} onClick={onClick}>
+		<div className={className + " " + styles.container}>
+			<button className={styles.element} onClick={onClick}>
 				{children}
 			</button>
 		</div>

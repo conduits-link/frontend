@@ -17,40 +17,19 @@ export default function FixedMenu({ editor }: { editor: Editor }) {
 	return (
 		<div className={styles.container}>
 			<div className={styles.element}>
-				<Heading1FormatButton
-					editor={editor}
-					className={styles.formatButton}
-				/>
-				<Heading2FormatButton
-					editor={editor}
-					className={styles.formatButton}
-				/>
-				<Heading3FormatButton
-					editor={editor}
-					className={styles.formatButton}
-				/>
-				<BulletListFormatButton
-					editor={editor}
-					className={styles.formatButton}
-				/>
+				<Heading1FormatButton editor={editor} className={styles.button} />
+				<Heading2FormatButton editor={editor} className={styles.button} />
+				<Heading3FormatButton editor={editor} className={styles.button} />
+				<BulletListFormatButton editor={editor} className={styles.button} />
 				<OrderedListFormatButton
 					editor={editor}
-					className={styles.formatButton}
+					className={styles.button}
 				/>
-				<CodeBlockFormatButton
-					editor={editor}
-					className={styles.formatButton}
-				/>
-				<BoldFormatButton className={styles.formatButton} editor={editor} />
-				<ItalicFormatButton
-					editor={editor}
-					className={styles.formatButton}
-				/>
-				<StrikeFormatButton
-					editor={editor}
-					className={styles.formatButton}
-				/>
-				<CodeFormatButton editor={editor} className={styles.formatButton} />
+				<CodeBlockFormatButton editor={editor} className={styles.button} />
+				<BoldFormatButton className={styles.button} editor={editor} />
+				<ItalicFormatButton editor={editor} className={styles.button} />
+				<StrikeFormatButton editor={editor} className={styles.button} />
+				<CodeFormatButton editor={editor} className={styles.button} />
 			</div>
 		</div>
 	);

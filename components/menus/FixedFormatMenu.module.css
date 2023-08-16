@@ -1,5 +1,5 @@
 .container {
-	--width: 3.5em;
+	--width: 4em;
 	width: var(--width);
 	margin-top: var(--spacing-large);
 	display: flex;
@@ -7,9 +7,14 @@
 	background-color: var(--color-primary-100);
 	position: fixed;
 	left: calc((100vw - var(--editor-width)) / 2 - var(--width));
+	border-radius: var(--border-radius-large);
 }
 
 .element {
 	display: flex;
 	flex-direction: column;
+}
+
+.button {
+	margin: 0.5em 0;
 }

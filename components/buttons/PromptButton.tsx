@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 
-import sendFetch from "../../../utils/fetch";
-import Button from "../Button";
+import sendFetch from "../../utils/fetch";
+import Button from "./Button";
 
 export default function PromptButton({
 	prompt,

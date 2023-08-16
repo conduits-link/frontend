@@ -4,7 +4,7 @@ import { Editor, BubbleMenu } from "@tiptap/react";
 
 import prompts, { Prompt } from "@/utils/prompts";
 
-import PromptButton from "../buttons/prompt/_PromptButton";
+import PromptButton from "../buttons/PromptButton";
 
 import styles from "./PromptMenu.module.css";
 

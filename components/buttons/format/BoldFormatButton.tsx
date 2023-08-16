@@ -1,22 +1,24 @@
+import { Editor } from "@tiptap/react";
+
 import { BiBold } from "react-icons/bi";
 
-import FormatButton from "./_FormatButton";
+import FormatButton from "../FormatButton";
 
 export default function BoldFormatButton({
 	editor,
 	className,
 }: {
-	editor: any; // TODO: change this
+	editor: Editor;
 	className: string;
 }) {
 	return (
-		<div>
-			<FormatButton
-				className={editor.isActive("bold") ? "is-active" : " " + className}
-				onClick={() => editor.chain().focus().toggleBold().run()}
-			>
-				<BiBold />
-			</FormatButton>
-		</div>
+		<FormatButton
+			className={
+				className + " " + (editor.isActive("bold") ? "is-active" : "")
+			}
+			onClick={() => editor.chain().focus().toggleBold().run()}
+		>
+			<BiBold />
+		</FormatButton>
 	);
 }

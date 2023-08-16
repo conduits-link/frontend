@@ -26,6 +26,8 @@ export default function FixedMenu({ editor }: { editor: Editor }) {
 					className={styles.button}
 				/>
 				<CodeBlockFormatButton editor={editor} className={styles.button} />
+			</div>
+			<div className={styles.element}>
 				<BoldFormatButton className={styles.button} editor={editor} />
 				<ItalicFormatButton editor={editor} className={styles.button} />
 				<StrikeFormatButton editor={editor} className={styles.button} />

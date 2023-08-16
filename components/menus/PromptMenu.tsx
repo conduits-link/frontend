@@ -30,7 +30,7 @@ export default function PromptMenu({ editor }: { editor: Editor }) {
 				duration: 100,
 				onMount: () => {
 					promptSearch.current!.value = "";
-					promptSearch.current!.focus();
+					// promptSearch.current!.focus();
 					setActivePrompts(prompts);
 				},
 			}}

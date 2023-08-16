@@ -1,20 +1,35 @@
 .container {
 	--width: 4em;
 	width: var(--width);
-	margin-top: var(--spacing-large);
 	display: flex;
-	justify-content: center;
-	background-color: var(--color-primary-100);
+	flex-direction: column;
 	position: fixed;
 	left: calc((100vw - var(--editor-width)) / 2 - var(--width));
-	border-radius: var(--border-radius-large);
 }
 
 .element {
+	margin-top: var(--spacing-large);
+	padding: 0.35rem;
 	display: flex;
 	flex-direction: column;
+	background-color: var(--color-primary-100);
+	border-radius: var(--border-radius-large);
+	position: relative;
+}
+
+.element::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-radius: var(--border-radius-large);
+	outline: 2px solid var(--color-secondary-400);
+	z-index: -1;
 }
 
 .button {
-	margin: 0.5em 0;
+	height: 3.85em;
+}
+
+.button:not(:last-child) {
+	margin-bottom: 0.35rem;
 }

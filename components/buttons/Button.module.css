@@ -1,21 +1,28 @@
-.container {
-}
-
 .element {
 	border: none;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	position: relative;
 	background-color: transparent;
-	color: var(--color-secondary-400);
+	border-radius: var(--border-radius-large);
+	cursor: pointer;
+}
+
+.element:hover {
+	background-color: var(--color-secondary-400);
+}
+
+.element:active {
+	transform: scale(0.85);
 }
 
 .element svg {
 	font-size: 1.65rem;
-	color: var(--color-secondary-400);
+	color: var(--color-secondary-100);
 }
 
 .element sub {
 	font-size: 1rem;
-	color: var(--color-secondary-400);
+	color: var(--color-secondary-100);
 }

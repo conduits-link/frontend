@@ -1,9 +1,9 @@
 :root {
 	--color-accent: #d4af37;
-	--color-dark-100: #28292b;
+	--color-dark-100: #1b1c1d;
 	--color-dark-400: #0f0f0f;
 	--color-light-100: #eff1f3;
-	--color-light-400: #eff1f3;
+	--color-light-400: #28292b;
 
 	--color-primary-100: var(--color-dark-100);
 	--color-primary-400: var(--color-dark-400);
@@ -13,6 +13,7 @@
 	--spacing-large: 2.5rem;
 
 	--border-radius-large: 0.85em;
+	--border-radius-small: 0.65em;
 
 	--editor-width: 65em;
 }
@@ -22,7 +23,7 @@ body {
 	margin: 0;
 	padding: 0;
 	min-height: 100vh;
-	color: var(--color-light-400);
+	color: var(--color-secondary-100);
 	background-color: var(--color-primary-400);
 	font-family: "Lora", "Serif";
 }
@@ -41,7 +42,7 @@ body {
 .ProseMirror p.is-editor-empty:first-child::before {
 	content: attr(data-placeholder);
 	float: left;
-	color: var(--color-light-400);
+	color: var(--color-secondary-100);
 	pointer-events: none;
 	height: 0;
 }

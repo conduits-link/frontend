@@ -22,13 +22,21 @@
 }
 
 .page h1 {
-	font-size: 2.85rem;
+	margin-bottom: 0;
+	font-size: 3.15rem;
 }
 
 .page h2 {
-	font-size: 2rem;
+	margin-bottom: 0;
+	font-size: 2.15rem;
+}
+
+.page h3 {
+	margin-bottom: 0;
+	font-size: 1.65rem;
 }
 
 .page p {
 	font-size: 1.15rem;
+	line-height: 2rem;
 }

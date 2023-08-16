@@ -4,7 +4,7 @@ import "./globals.css";
 import { Lora } from "next/font/google";
 
 const font = Lora({
-	weight: ["400", "700"],
+	weight: ["500", "700"],
 	style: ["normal", "italic"],
 	subsets: ["latin"],
 	display: "swap",

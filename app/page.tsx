@@ -91,7 +91,7 @@ export default function Editor() {
                   <h2>Introduction</h2>
                   <p>In the 21st century, technology has revolutionized every aspect of our lives, and education is no exception. The integration of technology in modern education has brought about significant changes in the way we learn, teach, and interact with information. This essay explores the profound impact of technology on education and its implications for both students and educators.</p>
 
-                  <h2>Accessibility of Information</h2>
+                  <h3>Accessibility of Information</h3>
                   <p>One of the most noticeable effects of technology on education is the accessibility of information. With the advent of the internet, students now have access to a vast repository of knowledge at their fingertips. Online resources, e-books, and educational websites have made it possible for learners to explore subjects beyond the confines of traditional textbooks. This democratization of information empowers students to delve into areas of interest, fostering a culture of self-directed learning.</p>
 
                   <h2>Transformation of the Classroom</h2>

@@ -14,11 +14,21 @@
 	padding: var(--spacing-small);
 	display: flex;
 	align-items: center;
-	background-color: var(--color-primary-100);
 	border-radius: var(--border-radius-large);
 	border: 2px solid var(--color-secondary-400);
+	backdrop-filter: blur(3px);
 	box-sizing: border-box;
 	position: relative;
+}
+
+.element::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-radius: var(--border-radius-large);
+	background-color: var(--color-primary-100);
+	opacity: 0.6;
+	z-index: -1;
 }
 
 .element:not(:last-child) {

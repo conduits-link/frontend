@@ -18,11 +18,21 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	background-color: var(--color-primary-100);
 	border-radius: var(--border-radius-large);
 	border: 2px solid var(--color-secondary-400);
 	box-sizing: border-box;
+	backdrop-filter: blur(6px);
 	position: relative;
+}
+
+.element::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-radius: var(--border-radius-large);
+	background-color: var(--color-primary-100);
+	opacity: 0.6;
+	z-index: -1;
 }
 
 /* Return button */
@@ -52,14 +62,21 @@
 	font-size: 0.65rem;
 }
 
-/* Export button */
+/* Buttons */
 
-.exportContainer {
+.buttonContainer {
 	height: 100%;
 	display: flex;
 }
 
-.exportButton {
+.button {
 	padding: 0 2.35em;
+}
+
+.button:not(:last-child) {
+	margin-right: var(--spacing-large);
+}
+
+.buttonPrimary {
 	background-color: var(--color-accent);
 }

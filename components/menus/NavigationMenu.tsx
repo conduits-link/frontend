@@ -20,8 +20,14 @@ export default function NavigationMenu() {
 					</div>
 				</div>
 				<div></div>
-				<div className={styles.exportContainer}>
-					<Button className={styles.exportButton} onClick={() => {}}>
+				<div className={styles.buttonContainer}>
+					<Button className={styles.button} onClick={() => {}}>
+						Preview
+					</Button>
+					<Button
+						className={styles.button + " " + styles.buttonPrimary}
+						onClick={() => {}}
+					>
 						Download
 					</Button>
 				</div>

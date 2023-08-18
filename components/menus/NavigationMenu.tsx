@@ -1,0 +1,31 @@
+import { BiChevronLeft } from "react-icons/bi";
+
+import Button from "../buttons/Button";
+
+import styles from "./NavigationMenu.module.css";
+
+export default function NavigationMenu() {
+	return (
+		<div className={styles.container}>
+			<div className={styles.element}>
+				<div className={styles.returnContainer}>
+					<Button className={styles.returnButton} onClick={() => {}}>
+						<BiChevronLeft />
+					</Button>
+					<div className={styles.returnInfo}>
+						<div className={styles.returnInfoTitle}>Example document</div>
+						<small className={styles.returnInfoTime}>
+							Edited just now
+						</small>
+					</div>
+				</div>
+				<div></div>
+				<div className={styles.exportContainer}>
+					<Button className={styles.exportButton} onClick={() => {}}>
+						Download
+					</Button>
+				</div>
+			</div>
+		</div>
+	);
+}

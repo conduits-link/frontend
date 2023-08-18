@@ -17,6 +17,7 @@ lowlight.registerLanguage("css", css);
 lowlight.registerLanguage("js", js);
 lowlight.registerLanguage("ts", ts);
 
+import NavigationMenu from "@/components/menus/NavigationMenu";
 import FixedFormatMenu from "@/components/menus/FixedFormatMenu";
 import PromptMenu from "@/components/menus/PromptMenu";
 import FloatingFormatMenu from "@/components/menus/FloatingFormatMenu";
@@ -115,6 +116,7 @@ export default function Editor() {
 			{editor && (
 				<>
 					<div className={styles.container}>
+						<NavigationMenu />
 						<FixedFormatMenu editor={editor} />
 						<PromptMenu editor={editor} />
 						<FloatingFormatMenu editor={editor} />

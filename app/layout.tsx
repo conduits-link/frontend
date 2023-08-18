@@ -1,10 +1,10 @@
 import React, { ReactNode } from "react";
 
 import "./globals.css";
-import { Lora } from "next/font/google";
+import { Lato } from "next/font/google";
 
-const font = Lora({
-	weight: ["500", "700"],
+const font = Lato({
+	weight: ["400", "700", "900"],
 	style: ["normal", "italic"],
 	subsets: ["latin"],
 	display: "swap",

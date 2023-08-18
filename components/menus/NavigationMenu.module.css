@@ -1,0 +1,65 @@
+.container {
+	width: 100%;
+	height: var(--header-height);
+	padding: var(--spacing-small);
+	box-sizing: border-box;
+	display: flex;
+	justify-content: center;
+	position: fixed;
+	top: 0;
+	background-color: var(--color-primary-400);
+	background: linear-gradient(var(--color-primary-400), #0f0f0f00);
+	z-index: 1;
+}
+
+.element {
+	width: 100%;
+	padding: 0.35rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background-color: var(--color-primary-100);
+	border-radius: var(--border-radius-large);
+	border: 2px solid var(--color-secondary-400);
+	box-sizing: border-box;
+	position: relative;
+}
+
+/* Return button */
+
+.returnContainer {
+	height: 100%;
+	display: flex;
+}
+
+.returnButton svg {
+	margin: 0 0.35em;
+}
+
+.returnInfo {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	margin-left: var(--spacing-small);
+}
+
+.returnInfoTitle {
+	margin-bottom: 0.35em;
+	font-weight: 700;
+}
+
+.returnInfoTime {
+	font-size: 0.65rem;
+}
+
+/* Export button */
+
+.exportContainer {
+	height: 100%;
+	display: flex;
+}
+
+.exportButton {
+	padding: 0 2.35em;
+	background-color: var(--color-accent);
+}

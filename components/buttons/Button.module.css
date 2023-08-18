@@ -1,4 +1,5 @@
 .element {
+	padding: 0;
 	border: none;
 	display: flex;
 	justify-content: center;
@@ -6,6 +7,7 @@
 	position: relative;
 	background-color: transparent;
 	border-radius: var(--border-radius-large);
+	color: var(--color-secondary-100);
 	cursor: pointer;
 }
 

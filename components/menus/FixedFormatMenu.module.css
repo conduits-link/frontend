@@ -1,35 +1,35 @@
 .container {
-	--width: 4em;
-	width: var(--width);
+	width: 100%;
+	padding: var(--spacing-large) 0;
 	display: flex;
-	flex-direction: column;
+	justify-content: center;
 	position: fixed;
-	left: calc((100vw - var(--editor-width)) / 2 - var(--width));
+	bottom: 0;
+	background-color: var(--color-primary-400);
+	background: linear-gradient(#0f0f0f00, var(--color-primary-400) 65%);
+	z-index: 1;
 }
 
 .element {
-	margin-top: var(--spacing-large);
-	padding: 0.35rem;
+	padding: var(--spacing-small);
 	display: flex;
-	flex-direction: column;
+	align-items: center;
 	background-color: var(--color-primary-100);
 	border-radius: var(--border-radius-large);
+	border: 2px solid var(--color-secondary-400);
+	box-sizing: border-box;
 	position: relative;
 }
 
-.element::before {
-	content: "";
-	position: absolute;
-	inset: 0;
-	border-radius: var(--border-radius-large);
-	outline: 2px solid var(--color-secondary-400);
-	z-index: -1;
+.element:not(:last-child) {
+	margin-right: var(--spacing-large);
 }
 
 .button {
-	height: 3.85em;
+	width: 4.15em;
+	height: 3em;
 }
 
 .button:not(:last-child) {
-	margin-bottom: 0.35rem;
+	margin-right: var(--spacing-small);
 }

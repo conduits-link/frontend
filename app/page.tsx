@@ -32,6 +32,7 @@ import { ReactNodeViewRenderer } from "@tiptap/react";
 
 import PromptResponse from "@/components/nodes/PromptResponse";
 import TaskItem from "@tiptap/extension-task-item";
+import { useState } from "react";
 
 const PromptResponseNode = Node.create({
 	name: "promptResponse",
@@ -118,12 +119,14 @@ export default function Editor() {
                `,
 	});
 
+	const [mode, setMode] = useState("edit");
+
 	return (
 		<>
 			{editor && (
 				<>
 					<div className={styles.container}>
-						<NavigationMenu />
+						<NavigationMenu mode={mode} setMode={setMode} />
 						<FixedFormatMenu editor={editor} />
 						<PromptMenu editor={editor} />
 						<FloatingFormatMenu editor={editor} />

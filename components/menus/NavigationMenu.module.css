@@ -43,6 +43,7 @@
 /* Return button */
 
 .returnContainer {
+	width: 100%;
 	height: 100%;
 	display: flex;
 }
@@ -59,7 +60,7 @@
 }
 
 .returnInfoTitle {
-	margin-bottom: 0.35em;
+	margin-bottom: 0.25em;
 	font-weight: 700;
 	font-size: 1.15rem;
 }
@@ -69,11 +70,52 @@
 	opacity: 0.6;
 }
 
+/* Modes */
+
+.modeContainer {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+}
+
+.modeButton {
+	width: 3.5em;
+	color: var(--color-secondary-100);
+	font-size: 1.35rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: transparent;
+	border: none;
+	cursor: pointer;
+}
+
+.modeButton:not(:last-child) {
+	margin-right: var(--spacing-large);
+}
+
+.modeButtonActive {
+	color: var(--color-accent);
+}
+
+.modeButtonActive::before {
+	content: "";
+	position: absolute;
+	width: 1.85em;
+	height: 0.1em;
+	bottom: 0;
+	background-color: var(--color-accent);
+	border-radius: var(--border-radius-small);
+}
+
 /* Buttons */
 
 .buttonContainer {
+	width: 100%;
 	height: 100%;
 	display: flex;
+	justify-content: flex-end;
 }
 
 .button {

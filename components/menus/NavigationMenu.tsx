@@ -1,10 +1,22 @@
-import { GoChevronLeft } from "react-icons/go";
+import {
+	GoChevronLeft,
+	GoCrossReference,
+	GoDownload,
+	GoEye,
+	GoPencil,
+} from "react-icons/go";
 
 import Button from "../buttons/Button";
 
 import styles from "./NavigationMenu.module.css";
 
-export default function NavigationMenu() {
+export default function NavigationMenu({
+	mode,
+	setMode,
+}: {
+	mode: string;
+	setMode: any;
+}) {
 	return (
 		<div className={styles.container}>
 			<div className={styles.element}>
@@ -19,16 +31,41 @@ export default function NavigationMenu() {
 						</small>
 					</div>
 				</div>
-				<div></div>
+				<div className={styles.modeContainer}>
+					<button
+						className={
+							styles.modeButton +
+							(mode === "edit" ? " " + styles.modeButtonActive : "")
+						}
+						onClick={() => setMode("edit")}
+					>
+						<GoPencil />
+					</button>
+					<button
+						className={
+							styles.modeButton +
+							(mode === "review" ? " " + styles.modeButtonActive : "")
+						}
+						onClick={() => setMode("review")}
+					>
+						<GoCrossReference />
+					</button>
+					<button
+						className={
+							styles.modeButton +
+							(mode === "preview" ? " " + styles.modeButtonActive : "")
+						}
+						onClick={() => setMode("preview")}
+					>
+						<GoEye />
+					</button>
+				</div>
 				<div className={styles.buttonContainer}>
-					<Button className={styles.button} onClick={() => {}}>
-						Preview
-					</Button>
 					<Button
 						className={styles.button + " " + styles.buttonPrimary}
 						onClick={() => {}}
 					>
-						Download
+						<GoDownload />
 					</Button>
 				</div>
 			</div>

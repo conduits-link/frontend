@@ -13,6 +13,8 @@ export default function OrderedListFormatButton({
 	onMouseDown,
 	onMouseUp,
 	onMouseLeave,
+	onFocus,
+	onBlur,
 }: {
 	editor: Editor;
 	className: string;
@@ -22,6 +24,8 @@ export default function OrderedListFormatButton({
 	onMouseDown?: React.MouseEventHandler;
 	onMouseUp?: React.MouseEventHandler;
 	onMouseLeave?: React.MouseEventHandler;
+	onFocus?: React.FocusEventHandler;
+	onBlur?: React.FocusEventHandler;
 }) {
 	return (
 		<FormatButton
@@ -39,6 +43,8 @@ export default function OrderedListFormatButton({
 			onMouseDown={onMouseDown}
 			onMouseUp={onMouseUp}
 			onMouseLeave={onMouseLeave}
+			onFocus={onFocus}
+			onBlur={onBlur}
 		>
 			<GoListOrdered />
 		</FormatButton>

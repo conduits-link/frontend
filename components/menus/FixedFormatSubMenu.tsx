@@ -17,19 +17,28 @@ export default function FixedFormatSubMenu({
 			onMouseLeave: () => {
 				setMenuActive(false);
 			},
+			onFocus: () => {
+				setMenuActive(true);
+			},
 		});
 
 	const [activeButton, setActiveButton] = useState(
 		newActiveButton(children[0])
 	);
 
-	const newChildren = children.map((child) => {
+	const newChildren = children.map((child, i) => {
 		if (React.isValidElement(child)) {
 			return React.cloneElement(child as React.ReactElement, {
 				onClick: () => {
 					setActiveButton(newActiveButton(child));
 					setMenuActive(false);
 				},
+				onBlur:
+					i + 1 == children.length
+						? () => {
+								setMenuActive(false);
+						  }
+						: undefined,
 			});
 		}
 		return child;

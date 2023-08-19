@@ -13,6 +13,8 @@ export default function ItalicFormatButton({
 	onMouseDown,
 	onMouseUp,
 	onMouseLeave,
+	onFocus,
+	onBlur,
 }: {
 	editor: Editor;
 	className: string;
@@ -22,6 +24,8 @@ export default function ItalicFormatButton({
 	onMouseDown?: React.MouseEventHandler;
 	onMouseUp?: React.MouseEventHandler;
 	onMouseLeave?: React.MouseEventHandler;
+	onFocus?: React.FocusEventHandler;
+	onBlur?: React.FocusEventHandler;
 }) {
 	return (
 		<FormatButton
@@ -37,6 +41,8 @@ export default function ItalicFormatButton({
 			onMouseDown={onMouseDown}
 			onMouseUp={onMouseUp}
 			onMouseLeave={onMouseLeave}
+			onFocus={onFocus}
+			onBlur={onBlur}
 		>
 			<GoItalic />
 		</FormatButton>

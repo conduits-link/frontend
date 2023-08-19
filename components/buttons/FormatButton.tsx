@@ -10,6 +10,8 @@ export default function FormatButton({
 	onMouseDown,
 	onMouseUp,
 	onMouseLeave,
+	onFocus,
+	onBlur,
 	children,
 }: {
 	className: string;
@@ -19,6 +21,8 @@ export default function FormatButton({
 	onMouseDown?: React.MouseEventHandler;
 	onMouseUp?: React.MouseEventHandler;
 	onMouseLeave?: React.MouseEventHandler;
+	onFocus?: React.FocusEventHandler;
+	onBlur?: React.FocusEventHandler;
 	children: ReactNode;
 }) {
 	return (
@@ -30,6 +34,8 @@ export default function FormatButton({
 			onMouseDown={onMouseDown}
 			onMouseUp={onMouseUp}
 			onMouseLeave={onMouseLeave}
+			onFocus={onFocus}
+			onBlur={onBlur}
 		>
 			{children}
 		</Button>

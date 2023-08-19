@@ -6,7 +6,11 @@
 	position: fixed;
 	bottom: 0;
 	background-color: var(--color-primary-400);
-	background: linear-gradient(#0f0f0f00, var(--color-primary-400) 65%);
+	background: linear-gradient(
+		#0f0f0f00,
+		#0f0f0fa6 35%,
+		var(--color-primary-400)
+	);
 	z-index: 1;
 }
 
@@ -16,7 +20,7 @@
 	align-items: center;
 	border-radius: var(--border-radius-large);
 	border: 2px solid var(--color-secondary-400);
-	backdrop-filter: blur(4px);
+	backdrop-filter: blur(6px);
 	box-sizing: border-box;
 	position: relative;
 }

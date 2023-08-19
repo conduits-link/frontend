@@ -27,23 +27,24 @@ The power of LLMs brought to an interface.
    -  Code syntax highlighting
    -  Search bar
    -  Drag and drop with option buttons to the side of nodes
-5. Customisation
-   - Allow people to write their own prompts (in development, just use CSV/JSON)
+5. Spell/grammar checker
+6. Customisation
+   -  Allow people to write their own prompts (in development, just use CSV/JSON)
 
 ## Architecture
 
 Model Hosting - Development:
 
-- Dan's local LLaMA model.
-- AWS Sagemaker serverless inference with Free Tier. Max memory 6GB, which can run the LLaMA 7B model, and hopefully the 13B. Sagemaker offers many different models.
-   - 150,000 seconds per month for the first 2 months.
+-  Dan's local LLaMA model.
+-  AWS Sagemaker serverless inference with Free Tier. Max memory 6GB, which can run the LLaMA 7B model, and hopefully the 13B. Sagemaker offers many different models.
+   -  150,000 seconds per month for the first 2 months.
 
 Model Hosting - Production:
 
 -  Host LLaMA2 on an [AWS EC2 C5](https://aws.amazon.com/ec2/instance-types/c5/) instance.
    -  Can use c5n.4xlarge, the cheapest option that can run LLaMA2 70B (42GB GPU memory). $1.024 per hour.
    -  Can use serverless inference, real-time inference, or asynchronous inference depending on budget etc.
-- Give users option to choose their preferred LLM.
+-  Give users option to choose their preferred LLM.
 -  Storage on AWS S3.
 
 General:

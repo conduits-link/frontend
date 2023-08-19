@@ -15,20 +15,46 @@ import CodeFormatButton from "@/components/buttons/format/CodeFormatButton";
 import LinkFormatButton from "../buttons/format/LinkFormatButton";
 
 import styles from "./FixedFormatMenu.module.css";
+import FixedFormatSubMenu from "./FixedFormatSubMenu";
 
 export default function FixedMenu({ editor }: { editor: Editor }) {
 	return (
 		<div className={styles.container}>
 			<div className={styles.element}>
-				<Heading1FormatButton editor={editor} className={styles.button} />
-				<Heading2FormatButton editor={editor} className={styles.button} />
-				<Heading3FormatButton editor={editor} className={styles.button} />
-				<BulletListFormatButton editor={editor} className={styles.button} />
-				<OrderedListFormatButton
-					editor={editor}
-					className={styles.button}
-				/>
-				<TaskListFormatButton editor={editor} className={styles.button} />
+				<FixedFormatSubMenu>
+					<Heading1FormatButton
+						editor={editor}
+						className={styles.button}
+						key={0}
+					/>
+					<Heading2FormatButton
+						editor={editor}
+						className={styles.button}
+						key={1}
+					/>
+					<Heading3FormatButton
+						editor={editor}
+						className={styles.button}
+						key={2}
+					/>
+				</FixedFormatSubMenu>
+				<FixedFormatSubMenu>
+					<BulletListFormatButton
+						editor={editor}
+						className={styles.button}
+						key={3}
+					/>
+					<OrderedListFormatButton
+						editor={editor}
+						className={styles.button}
+						key={4}
+					/>
+					<TaskListFormatButton
+						editor={editor}
+						className={styles.button}
+						key={5}
+					/>
+				</FixedFormatSubMenu>
 				<CodeBlockFormatButton editor={editor} className={styles.button} />
 				<LatexFormatButton editor={editor} className={styles.button} />
 			</div>

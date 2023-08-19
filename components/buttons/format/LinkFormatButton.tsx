@@ -7,16 +7,29 @@ import FormatButton from "../FormatButton";
 export default function LinkFormatButton({
 	editor,
 	className,
+	onClick,
+	onMouseEnter,
+	onMouseOver,
+	onMouseDown,
+	onMouseUp,
+	onMouseLeave,
 }: {
 	editor: Editor;
 	className: string;
+	onClick?: React.MouseEventHandler;
+	onMouseEnter?: React.MouseEventHandler;
+	onMouseOver?: React.MouseEventHandler;
+	onMouseDown?: React.MouseEventHandler;
+	onMouseUp?: React.MouseEventHandler;
+	onMouseLeave?: React.MouseEventHandler;
 }) {
 	return (
 		<FormatButton
 			className={
 				className + " " + (editor.isActive("link") ? "is-active" : "")
 			}
-			onClick={() =>
+			onClick={(e) => {
+				if (onClick) onClick(e);
 				editor
 					.chain()
 					.focus()
@@ -24,8 +37,13 @@ export default function LinkFormatButton({
 						href: window.prompt("URL") || "",
 						_blank: true,
 					} as { href: string; _blank: boolean })
-					.run()
-			}
+					.run();
+			}}
+			onMouseEnter={onMouseEnter}
+			onMouseOver={onMouseOver}
+			onMouseDown={onMouseDown}
+			onMouseUp={onMouseUp}
+			onMouseLeave={onMouseLeave}
 		>
 			<GoLink />
 		</FormatButton>

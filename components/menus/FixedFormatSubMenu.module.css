@@ -3,9 +3,6 @@
 	justify-content: center;
 }
 
-.elementFixed {
-}
-
 .elementFloating {
 	padding: var(--spacing-small);
 	display: flex;

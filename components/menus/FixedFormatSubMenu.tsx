@@ -46,7 +46,7 @@ export default function FixedFormatSubMenu({
 
 	return (
 		<div className={styles.container}>
-			<div className={styles.elementFixed}>{activeButton}</div>
+			<div>{activeButton}</div>
 			{menuActive && (
 				<div
 					className={styles.elementFloating}

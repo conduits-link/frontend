@@ -3,8 +3,10 @@ import React, { useState } from "react";
 import styles from "./FixedFormatSubMenu.module.css";
 
 export default function FixedFormatSubMenu({
+	className,
 	children,
 }: {
+	className: string;
 	children: React.ReactElement[];
 }) {
 	const [menuActive, setMenuActive] = useState(false);
@@ -45,7 +47,7 @@ export default function FixedFormatSubMenu({
 	});
 
 	return (
-		<div className={styles.container}>
+		<div className={className + " " + styles.container}>
 			<div>{activeButton}</div>
 			{menuActive && (
 				<div

@@ -6,13 +6,19 @@
 	align-items: center;
 	position: relative;
 	background-color: transparent;
-	border-radius: var(--border-radius-large);
+	border-radius: var(--border-radius-small);
 	color: var(--color-secondary-100);
 	cursor: pointer;
 }
 
-.element:hover {
+.element:hover::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-radius: var(--border-radius-large);
 	background-color: var(--color-secondary-400);
+	opacity: 0.6;
+	z-index: -1;
 }
 
 .element:active {
@@ -20,11 +26,12 @@
 }
 
 .element svg {
-	font-size: 1.65rem;
+	font-size: 1.35rem;
 	color: var(--color-secondary-100);
 }
 
 .element sub {
-	font-size: 1rem;
+	margin-top: 12px;
+	font-size: 0.65rem;
 	color: var(--color-secondary-100);
 }

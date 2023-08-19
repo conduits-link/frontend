@@ -1,6 +1,6 @@
 import { Editor } from "@tiptap/react";
 
-import { BiStrikethrough } from "react-icons/bi";
+import { GoStrikethrough } from "react-icons/go";
 
 import FormatButton from "../FormatButton";
 
@@ -18,7 +18,7 @@ export default function StrikeFormatButton({
 			}
 			onClick={() => editor.chain().focus().toggleStrike().run()}
 		>
-			<BiStrikethrough />
+			<GoStrikethrough />
 		</FormatButton>
 	);
 }

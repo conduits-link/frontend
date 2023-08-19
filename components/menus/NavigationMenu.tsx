@@ -1,4 +1,4 @@
-import { BiChevronLeft } from "react-icons/bi";
+import { GoChevronLeft } from "react-icons/go";
 
 import Button from "../buttons/Button";
 
@@ -10,7 +10,7 @@ export default function NavigationMenu() {
 			<div className={styles.element}>
 				<div className={styles.returnContainer}>
 					<Button className={styles.returnButton} onClick={() => {}}>
-						<BiChevronLeft />
+						<GoChevronLeft />
 					</Button>
 					<div className={styles.returnInfo}>
 						<div className={styles.returnInfoTitle}>Example document</div>

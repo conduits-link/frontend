@@ -1,6 +1,6 @@
 import { Editor } from "@tiptap/react";
 
-import { BiItalic } from "react-icons/bi";
+import { GoItalic } from "react-icons/go";
 
 import FormatButton from "../FormatButton";
 
@@ -18,7 +18,7 @@ export default function ItalicFormatButton({
 			}
 			onClick={() => editor.chain().focus().toggleItalic().run()}
 		>
-			<BiItalic />
+			<GoItalic />
 		</FormatButton>
 	);
 }

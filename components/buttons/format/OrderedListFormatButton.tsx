@@ -1,6 +1,6 @@
 import { Editor } from "@tiptap/react";
 
-import { BiListOl } from "react-icons/bi";
+import { GoListOrdered } from "react-icons/go";
 
 import FormatButton from "../FormatButton";
 
@@ -20,7 +20,7 @@ export default function OrderedListFormatButton({
 			}
 			onClick={() => editor.chain().focus().toggleOrderedList().run()}
 		>
-			<BiListOl />
+			<GoListOrdered />
 		</FormatButton>
 	);
 }

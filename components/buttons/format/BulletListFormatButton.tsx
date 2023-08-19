@@ -1,6 +1,6 @@
 import { Editor } from "@tiptap/react";
 
-import { BiListUl } from "react-icons/bi";
+import { GoListUnordered } from "react-icons/go";
 
 import FormatButton from "../FormatButton";
 
@@ -18,7 +18,7 @@ export default function BulletListFormatButton({
 			}
 			onClick={() => editor.chain().focus().toggleBulletList().run()}
 		>
-			<BiListUl />
+			<GoListUnordered />
 		</FormatButton>
 	);
 }

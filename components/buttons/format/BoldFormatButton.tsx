@@ -1,6 +1,6 @@
 import { Editor } from "@tiptap/react";
 
-import { BiBold } from "react-icons/bi";
+import { GoBold } from "react-icons/go";
 
 import FormatButton from "../FormatButton";
 
@@ -18,7 +18,7 @@ export default function BoldFormatButton({
 			}
 			onClick={() => editor.chain().focus().toggleBold().run()}
 		>
-			<BiBold />
+			<GoBold />
 		</FormatButton>
 	);
 }

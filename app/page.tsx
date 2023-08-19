@@ -4,8 +4,11 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import Heading from "@tiptap/extension-heading";
 import BulletList from "@tiptap/extension-bullet-list";
 import OrderedList from "@tiptap/extension-ordered-list";
+import TaskList from "@tiptap/extension-task-list";
+// import TaskItem from "@tiptap/extension-task-item";
 import CodeBlockLowLight from "@tiptap/extension-code-block-lowlight";
 import Placeholder from "@tiptap/extension-placeholder";
+import Link from "@tiptap/extension-link";
 import StarterKit from "@tiptap/starter-kit";
 import css from "highlight.js/lib/languages/css";
 import js from "highlight.js/lib/languages/javascript";
@@ -28,6 +31,7 @@ import { mergeAttributes, Node } from "@tiptap/core";
 import { ReactNodeViewRenderer } from "@tiptap/react";
 
 import PromptResponse from "@/components/nodes/PromptResponse";
+import TaskItem from "@tiptap/extension-task-item";
 
 const PromptResponseNode = Node.create({
 	name: "promptResponse",
@@ -85,6 +89,9 @@ export default function Editor() {
 				emptyEditorClass: "is-editor-empty",
 				placeholder: "Start typing...",
 			}),
+			Link.configure({}),
+			TaskList.configure({}),
+			TaskItem.configure({}),
 			PromptResponseNode,
 		],
 		content: `  <h1>The Impact of Technology on Modern Education</h1>

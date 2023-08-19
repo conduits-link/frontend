@@ -1,6 +1,6 @@
 import { Editor } from "@tiptap/react";
 
-import { BiHeading } from "react-icons/bi";
+import { GoHeading } from "react-icons/go";
 
 import FormatButton from "../FormatButton";
 
@@ -22,7 +22,7 @@ export default function Heading1FormatButton({
 				editor.chain().focus().toggleHeading({ level: 1 }).run()
 			}
 		>
-			<BiHeading />
+			<GoHeading />
 			<sub>1</sub>
 		</FormatButton>
 	);

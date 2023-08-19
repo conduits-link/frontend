@@ -1,6 +1,6 @@
 import { Editor } from "@tiptap/react";
 
-import { BiCodeBlock } from "react-icons/bi";
+import { GoCodeSquare } from "react-icons/go";
 
 import FormatButton from "../FormatButton";
 
@@ -18,7 +18,7 @@ export default function CodeBlockFormatButton({
 			}
 			onClick={() => editor.chain().focus().toggleCodeBlock().run()}
 		>
-			<BiCodeBlock />
+			<GoCodeSquare />
 		</FormatButton>
 	);
 }

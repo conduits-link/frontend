@@ -1,0 +1,28 @@
+.container {
+	width: fit-content;
+	padding: var(--spacing-small);
+	display: flex;
+	align-items: center;
+	border-radius: var(--border-radius-large);
+	border: 2px solid var(--color-secondary-400);
+	backdrop-filter: blur(6px);
+	box-sizing: border-box;
+}
+
+.container::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-radius: var(--border-radius-large);
+	background-color: var(--color-primary-100);
+	opacity: 0.6;
+	z-index: -1;
+}
+
+.container:not(:last-child) {
+	margin-right: var(--spacing-large);
+}
+
+.element:not(:last-child) {
+	margin-right: var(--spacing-small);
+}

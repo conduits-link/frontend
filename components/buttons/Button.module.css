@@ -1,4 +1,6 @@
 .element {
+	width: 3.85rem;
+	height: 2.65rem;
 	padding: 0;
 	border: none;
 	display: flex;

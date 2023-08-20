@@ -39,11 +39,6 @@
 	margin-right: var(--spacing-large);
 }
 
-.button {
-	width: 4.15em;
-	height: 3em;
-}
-
 .elementSpacer:not(:last-child) {
 	margin-right: var(--spacing-small);
 }

@@ -12,16 +12,16 @@ import styles from "./FloatingFormatMenu.module.css";
 export default function FloatingFormatMenu({ editor }: { editor: Editor }) {
 	return (
 		<FloatingMenu
-			className={styles.containerFormat}
+			className={styles.container}
 			editor={editor}
 			tippyOptions={{ duration: 100 }}
 		>
-			<Heading1FormatButton editor={editor} className={""} />
-			<Heading2FormatButton editor={editor} className={""} />
-			<Heading3FormatButton editor={editor} className={""} />
-			<BulletListFormatButton editor={editor} className={""} />
-			<OrderedListFormatButton editor={editor} className={""} />
-			<CodeBlockFormatButton editor={editor} className={""} />
+			<Heading1FormatButton editor={editor} className={styles.element} />
+			<Heading2FormatButton editor={editor} className={styles.element} />
+			<Heading3FormatButton editor={editor} className={styles.element} />
+			<BulletListFormatButton editor={editor} className={styles.element} />
+			<OrderedListFormatButton editor={editor} className={styles.element} />
+			<CodeBlockFormatButton editor={editor} className={styles.element} />
 		</FloatingMenu>
 	);
 }

@@ -34,6 +34,10 @@ import PromptResponse from "@/components/nodes/PromptResponse";
 import TaskItem from "@tiptap/extension-task-item";
 import { useState } from "react";
 import Image from "@tiptap/extension-image";
+import Table from "@tiptap/extension-table";
+import TableRow from "@tiptap/extension-table-row";
+import TableCell from "@tiptap/extension-table-cell";
+import TableHeader from "@tiptap/extension-table-header";
 
 const PromptResponseNode = Node.create({
 	name: "promptResponse",
@@ -98,6 +102,10 @@ export default function Editor() {
 				TaskList.configure({}),
 				TaskItem.configure({}),
 				Image,
+				Table,
+				TableRow,
+				TableCell,
+				TableHeader,
 				PromptResponseNode,
 			],
 			editable: mode !== "preview",
@@ -105,6 +113,7 @@ export default function Editor() {
             <h1>The Impact of Technology on Modern Education</h1>
             <h2>Introduction</h2>
             <p>In the 21st century, technology has revolutionized every aspect of our lives, and education is no exception. The integration of technology in modern education has brought about significant changes in the way we learn, teach, and interact with information. This essay explores the profound impact of technology on education and its implications for both students and educators.</p>
+            <table><thead><tr><th>Header 1</th><th>Header 2</th><th>Header 3</th></tr></thead><tbody><tr><td>Data 1</td><td>Data 2</td><td>Data 3</td></tr><tr><td>Data 4</td><td>Data 5</td><td>Data 6</td></tr></tbody></table>
             <h3>Accessibility of Information</h3>
             <p>One of the most noticeable effects of technology on education is the accessibility of information. With the advent of the internet, students now have access to a vast repository of knowledge at their fingertips. Online resources, e-books, and educational websites have made it possible for learners to explore subjects beyond the confines of traditional textbooks. This democratization of information empowers students to delve into areas of interest, fostering a culture of self-directed learning.</p>
             <h2>Transformation of the Classroom</h2>
@@ -122,19 +131,15 @@ export default function Editor() {
 		[mode]
 	);
 
+	if (editor == null) return;
+
 	return (
-		<>
-			{editor && (
-				<>
-					<div className={styles.container}>
-						<NavigationMenu mode={mode} setMode={setMode} />
-						{/* <PromptMenu editor={editor} /> */}
-						<FloatingFormatMenu editor={editor} />
-						<EditorContent className={styles.page} editor={editor} />
-						{mode !== "preview" && <FixedFormatMenu editor={editor} />}
-					</div>
-				</>
-			)}
-		</>
+		<div className={styles.container}>
+			<NavigationMenu mode={mode} setMode={setMode} />
+			{/* <PromptMenu editor={editor} /> */}
+			<FloatingFormatMenu editor={editor} />
+			<EditorContent className={styles.page} editor={editor} />
+			{mode !== "preview" && <FixedFormatMenu editor={editor} />}
+		</div>
 	);
 }

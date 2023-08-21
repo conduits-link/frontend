@@ -52,3 +52,11 @@
 .page strong {
 	font-weight: 900;
 }
+
+.page img {
+	max-width: 100%;
+	max-height: 50em;
+	margin: 0 auto;
+	display: block;
+	border-radius: var(--border-radius-large);
+}

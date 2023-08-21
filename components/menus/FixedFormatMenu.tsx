@@ -16,6 +16,7 @@ import LinkFormatButton from "../buttons/format/LinkFormatButton";
 
 import styles from "./FixedFormatMenu.module.css";
 import FixedFormatSubMenu from "./FixedFormatSubMenu";
+import ImageFormatButton from "../buttons/format/ImageFormatButton";
 
 export default function FixedMenu({ editor }: { editor: Editor }) {
 	return (
@@ -55,6 +56,10 @@ export default function FixedMenu({ editor }: { editor: Editor }) {
 						key={5}
 					/>
 				</FixedFormatSubMenu>
+				<ImageFormatButton
+					editor={editor}
+					className={styles.button + " " + styles.elementSpacer}
+				/>
 				<CodeBlockFormatButton
 					editor={editor}
 					className={styles.button + " " + styles.elementSpacer}

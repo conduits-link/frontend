@@ -33,6 +33,7 @@ import { ReactNodeViewRenderer } from "@tiptap/react";
 import PromptResponse from "@/components/nodes/PromptResponse";
 import TaskItem from "@tiptap/extension-task-item";
 import { useState } from "react";
+import Image from "@tiptap/extension-image";
 
 const PromptResponseNode = Node.create({
 	name: "promptResponse",
@@ -96,6 +97,7 @@ export default function Editor() {
 				Link.configure({}),
 				TaskList.configure({}),
 				TaskItem.configure({}),
+				Image,
 				PromptResponseNode,
 			],
 			editable: mode !== "preview",
@@ -109,6 +111,7 @@ export default function Editor() {
             <p>Furthermore, technology has transformed the classroom itself. Interactive smart boards, multimedia presentations, and educational apps have made lessons more engaging and dynamic. Traditional chalk-and-talk methods are being supplemented with visually appealing content that caters to different learning styles. This shift has not only increased student participation but has also allowed educators to personalize their teaching, catering to individual needs and learning paces.</p>
             <h2>Global Collaborative Learning</h2>
             <p>Collaborative learning has also been greatly enhanced by technology. Virtual classrooms and video conferencing tools enable students from different parts of the world to collaborate on projects, share ideas, and engage in discussions. This globalization of education prepares students for an interconnected world and exposes them to diverse perspectives, thereby promoting cultural awareness and empathy.</p>
+            <img src="https://images.unsplash.com/photo-1692316991412-fca633984f97?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80" />
             <h2>Challenges and Concerns</h2>
             <p>However, the integration of technology in education also raises concerns. The digital divide, characterized by unequal access to technology, threatens to exacerbate educational inequalities. Students from underprivileged backgrounds may not have the same access to online resources, potentially deepening existing disparities in academic achievement.</p>
             <p>Moreover, the ease of accessing information online has led to challenges related to misinformation and plagiarism. It is crucial for educators to teach students critical thinking skills and ethical use of technology, ensuring that they can discern reliable sources from unreliable ones and properly attribute their work.</p>
@@ -125,7 +128,7 @@ export default function Editor() {
 				<>
 					<div className={styles.container}>
 						<NavigationMenu mode={mode} setMode={setMode} />
-						<PromptMenu editor={editor} />
+						{/* <PromptMenu editor={editor} /> */}
 						<FloatingFormatMenu editor={editor} />
 						<EditorContent className={styles.page} editor={editor} />
 						{mode !== "preview" && <FixedFormatMenu editor={editor} />}

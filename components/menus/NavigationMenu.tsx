@@ -1,10 +1,9 @@
 import {
-	GoChevronLeft,
-	GoCrossReference,
-	GoDownload,
-	GoEye,
-	GoPencil,
-} from "react-icons/go";
+	FaArrowRightToBracket,
+	FaChevronLeft,
+	FaEye,
+	FaPenFancy,
+} from "react-icons/fa6";
 
 import Button from "../buttons/Button";
 
@@ -22,7 +21,7 @@ export default function NavigationMenu({
 			<div className={styles.element}>
 				<div className={styles.returnContainer}>
 					<Button className={styles.returnButton} onClick={() => {}}>
-						<GoChevronLeft />
+						<FaChevronLeft />
 					</Button>
 					<div className={styles.returnInfo}>
 						<div className={styles.returnInfoTitle}>Example document</div>
@@ -39,17 +38,9 @@ export default function NavigationMenu({
 						}
 						onClick={() => setMode("edit")}
 					>
-						<GoPencil />
+						<FaPenFancy />
 					</button>
-					{/* <button
-						className={
-							styles.modeButton +
-							(mode === "review" ? " " + styles.modeButtonActive : "")
-						}
-						onClick={() => setMode("review")}
-					>
-						<GoCrossReference />
-					</button> */}
+					{/* Add a review mode for spelling, grammar, structure recommendations, comments, etc. */}
 					<button
 						className={
 							styles.modeButton +
@@ -57,16 +48,16 @@ export default function NavigationMenu({
 						}
 						onClick={() => setMode("preview")}
 					>
-						<GoEye />
+						<FaEye />
 					</button>
 				</div>
 				<div className={styles.buttonContainer}>
-					<Button
+					<button
 						className={styles.button + " " + styles.buttonPrimary}
 						onClick={() => {}}
 					>
-						<GoDownload />
-					</Button>
+						<FaArrowRightToBracket />
+					</button>
 				</div>
 			</div>
 		</div>

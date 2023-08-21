@@ -46,10 +46,12 @@
 	width: 100%;
 	height: 100%;
 	display: flex;
+	align-items: center;
 }
 
 .returnButton svg {
 	margin: 0 0.35em;
+	font-size: 1.15rem;
 }
 
 .returnInfo {
@@ -102,7 +104,7 @@
 .modeButtonActive::before {
 	content: "";
 	position: absolute;
-	width: 1.85em;
+	width: 2.35em;
 	height: 0.1em;
 	bottom: 0;
 	background-color: var(--color-accent);
@@ -119,13 +121,33 @@
 }
 
 .button {
-	padding: 0 2.35em;
+	padding: 0 1.85em;
+	background-color: transparent;
+	border: none;
+	font-size: 1.15rem;
+	color: var(--color-accent);
+	border-radius: var(--border-radius-small);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+	cursor: pointer;
+}
+
+.button::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background-color: var(--color-accent);
+	border-radius: var(--border-radius-small);
+	opacity: 0.15;
+	z-index: -1;
 }
 
 .button:not(:last-child) {
 	margin-right: var(--spacing-large);
 }
 
-.buttonPrimary {
-	background-color: var(--color-accent);
+.button:active {
+	transform: scale(0.85);
 }

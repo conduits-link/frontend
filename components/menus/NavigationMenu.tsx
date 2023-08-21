@@ -41,7 +41,7 @@ export default function NavigationMenu({
 					>
 						<GoPencil />
 					</button>
-					<button
+					{/* <button
 						className={
 							styles.modeButton +
 							(mode === "review" ? " " + styles.modeButtonActive : "")
@@ -49,7 +49,7 @@ export default function NavigationMenu({
 						onClick={() => setMode("review")}
 					>
 						<GoCrossReference />
-					</button>
+					</button> */}
 					<button
 						className={
 							styles.modeButton +

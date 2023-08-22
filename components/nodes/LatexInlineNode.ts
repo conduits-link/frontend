@@ -3,7 +3,7 @@ import { ReactNodeViewRenderer } from "@tiptap/react";
 
 import LatexInline from "./LatexInline";
 
-export default Node.create({
+const LatexInlineNode = Node.create({
 	name: "latexInline",
 	inline: true,
 	content: "inline*",
@@ -22,3 +22,5 @@ export default Node.create({
 		return ReactNodeViewRenderer(LatexInline);
 	},
 });
+
+export default LatexInlineNode;

@@ -3,7 +3,7 @@ import { ReactNodeViewRenderer } from "@tiptap/react";
 
 import LatexBlock from "./LatexBlock";
 
-export default Node.create({
+const LatexBlockNode = Node.create({
 	name: "latexBlock",
 	inline: true,
 	content: "inline*",
@@ -22,3 +22,5 @@ export default Node.create({
 		return ReactNodeViewRenderer(LatexBlock);
 	},
 });
+
+export default LatexBlockNode;

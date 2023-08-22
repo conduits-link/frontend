@@ -5,19 +5,9 @@ import PromptResponse from "@/components/nodes/PromptResponse";
 
 const PromptResponseNode = Node.create({
 	name: "promptResponse",
-
-	group: "block",
-
+	inline: false,
 	content: "block*",
-
-	addAttributes() {
-		return {
-			count: {
-				default: 0,
-			},
-		};
-	},
-
+	group: "block",
 	parseHTML() {
 		return [
 			{
@@ -25,11 +15,9 @@ const PromptResponseNode = Node.create({
 			},
 		];
 	},
-
 	renderHTML({ HTMLAttributes }) {
 		return ["prompt-response", mergeAttributes(HTMLAttributes)];
 	},
-
 	addNodeView() {
 		return ReactNodeViewRenderer(PromptResponse);
 	},

@@ -1,43 +1,17 @@
 "use client";
 
-import { useEditor, EditorContent } from "@tiptap/react";
-import Heading from "@tiptap/extension-heading";
-import BulletList from "@tiptap/extension-bullet-list";
-import OrderedList from "@tiptap/extension-ordered-list";
-import TaskList from "@tiptap/extension-task-list";
-import CodeBlockLowLight from "@tiptap/extension-code-block-lowlight";
-import Placeholder from "@tiptap/extension-placeholder";
-import Link from "@tiptap/extension-link";
-import StarterKit from "@tiptap/starter-kit";
-import css from "highlight.js/lib/languages/css";
-import js from "highlight.js/lib/languages/javascript";
-import ts from "highlight.js/lib/languages/typescript";
-import html from "highlight.js/lib/languages/xml";
-import { lowlight } from "lowlight";
-lowlight.registerLanguage("html", html);
-lowlight.registerLanguage("css", css);
-lowlight.registerLanguage("js", js);
-lowlight.registerLanguage("ts", ts);
+import { useState } from "react";
+
+import { EditorContent, useEditor } from "@tiptap/react";
+
+import { parseLatex } from "@/utils/parse";
+import { extensions } from "@/utils/editor";
 
 import NavigationMenu from "@/components/menus/NavigationMenu";
 import FixedFormatMenu from "@/components/menus/FixedFormatMenu";
 import FloatingFormatMenu from "@/components/menus/FloatingFormatMenu";
 
 import styles from "./page.module.css";
-
-import TaskItem from "@tiptap/extension-task-item";
-import { useState } from "react";
-import Image from "@tiptap/extension-image";
-import Table from "@tiptap/extension-table";
-import TableRow from "@tiptap/extension-table-row";
-import TableCell from "@tiptap/extension-table-cell";
-import TableHeader from "@tiptap/extension-table-header";
-
-import PromptResponseNode from "@/components/nodes/PromptResponseNode";
-
-import { parseLatex } from "@/utils/parse";
-import LatexBlockNode from "@/components/nodes/LatexBlockNode";
-import LatexInlineNode from "@/components/nodes/LatexInlineNode";
 
 export default function Editor() {
 	const [mode, setMode] = useState<string>("edit");
@@ -60,68 +34,38 @@ export default function Editor() {
       <h2>Conclusion</h2>
       <p>In conclusion, the impact of technology on modern education is undeniable. It has reshaped learning environments, expanded access to knowledge, and facilitated global collaboration. While technology presents opportunities for enhanced learning experiences, it also requires careful navigation to address potential drawbacks. Educators and policymakers must work together to ensure that technology is harnessed in a way that maximizes its benefits while minimizing its limitations, ultimately paving the way for a more innovative and inclusive educational landscape.</p>
    `);
-	const [editContent, setEditContent] = useState<string>();
+	const [editableContent, setEditableContent] = useState<string>();
 
 	function switchMode(newMode: string) {
-		if (newMode === "preview") {
-			setEditContent(content);
-			setContent(parseLatex(content));
+		switch (newMode) {
+			case "edit":
+				setContent(editableContent!);
+				break;
+			case "preview":
+				setEditableContent(content);
+				setContent(parseLatex(content));
+				break;
+			default:
 		}
-
-		if (newMode === "edit") setContent(editContent!);
 
 		setMode(newMode);
 	}
 
 	const editor = useEditor(
 		{
-			extensions: [
-				StarterKit,
-				Heading.configure({
-					levels: [1, 2, 3],
-				}),
-				CodeBlockLowLight.configure({
-					lowlight,
-					languageClassPrefix: "language-",
-					defaultLanguage: "plaintext",
-				}),
-				BulletList.configure({
-					keepMarks: true,
-					keepAttributes: true,
-				}),
-				OrderedList.configure({
-					keepMarks: true,
-					keepAttributes: true,
-				}),
-				Placeholder.configure({
-					emptyEditorClass: "is-editor-empty",
-					placeholder: "Start typing...",
-				}),
-				Link.configure({}),
-				TaskList.configure({}),
-				TaskItem.configure({}),
-				Image,
-				Table,
-				TableRow,
-				TableCell,
-				TableHeader,
-				PromptResponseNode,
-				LatexInlineNode,
-				LatexBlockNode,
-			],
-			editable: mode !== "preview",
+			extensions,
 			content,
+			editable: mode !== "preview",
 			onUpdate: ({ editor }) => setContent(editor.getHTML()),
 		},
 		[mode]
 	);
 
-	if (editor == null) return;
+	if (editor === null) return;
 
 	return (
 		<div className={styles.container}>
 			<NavigationMenu mode={mode} switchMode={switchMode} />
-			{/* <PromptMenu editor={editor} /> */}
 			<FloatingFormatMenu editor={editor} />
 			<EditorContent
 				className={styles.page}

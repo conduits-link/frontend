@@ -11,10 +11,10 @@ import styles from "./NavigationMenu.module.css";
 
 export default function NavigationMenu({
 	mode,
-	setMode,
+	switchMode,
 }: {
 	mode: string;
-	setMode: any;
+	switchMode: (mode: string) => void;
 }) {
 	return (
 		<div className={styles.container}>
@@ -36,7 +36,7 @@ export default function NavigationMenu({
 							styles.modeButton +
 							(mode === "edit" ? " " + styles.modeButtonActive : "")
 						}
-						onClick={() => setMode("edit")}
+						onClick={() => switchMode("edit")}
 					>
 						<FaPenFancy />
 					</button>
@@ -46,7 +46,7 @@ export default function NavigationMenu({
 							styles.modeButton +
 							(mode === "preview" ? " " + styles.modeButtonActive : "")
 						}
-						onClick={() => setMode("preview")}
+						onClick={() => switchMode("preview")}
 					>
 						<FaEye />
 					</button>

@@ -5,7 +5,6 @@ import Heading from "@tiptap/extension-heading";
 import BulletList from "@tiptap/extension-bullet-list";
 import OrderedList from "@tiptap/extension-ordered-list";
 import TaskList from "@tiptap/extension-task-list";
-// import TaskItem from "@tiptap/extension-task-item";
 import CodeBlockLowLight from "@tiptap/extension-code-block-lowlight";
 import Placeholder from "@tiptap/extension-placeholder";
 import Link from "@tiptap/extension-link";
@@ -22,15 +21,10 @@ lowlight.registerLanguage("ts", ts);
 
 import NavigationMenu from "@/components/menus/NavigationMenu";
 import FixedFormatMenu from "@/components/menus/FixedFormatMenu";
-import PromptMenu from "@/components/menus/PromptMenu";
 import FloatingFormatMenu from "@/components/menus/FloatingFormatMenu";
 
 import styles from "./page.module.css";
 
-import { mergeAttributes, Node } from "@tiptap/core";
-import { ReactNodeViewRenderer } from "@tiptap/react";
-
-import PromptResponse from "@/components/nodes/PromptResponse";
 import TaskItem from "@tiptap/extension-task-item";
 import { useState } from "react";
 import Image from "@tiptap/extension-image";
@@ -39,44 +33,19 @@ import TableRow from "@tiptap/extension-table-row";
 import TableCell from "@tiptap/extension-table-cell";
 import TableHeader from "@tiptap/extension-table-header";
 
-const PromptResponseNode = Node.create({
-	name: "promptResponse",
+import PromptResponseNode from "@/components/nodes/PromptResponseNode";
 
-	group: "block",
-
-	content: "block*",
-
-	addAttributes() {
-		return {
-			count: {
-				default: 0,
-			},
-		};
-	},
-
-	parseHTML() {
-		return [
-			{
-				tag: "prompt-response",
-			},
-		];
-	},
-
-	renderHTML({ HTMLAttributes }) {
-		return ["prompt-response", mergeAttributes(HTMLAttributes)];
-	},
-
-	addNodeView() {
-		return ReactNodeViewRenderer(PromptResponse);
-	},
-});
+import { parseLatex } from "@/utils/parse";
+import LatexBlockNode from "@/components/nodes/LatexBlockNode";
+import LatexInlineNode from "@/components/nodes/LatexInlineNode";
 
 export default function Editor() {
-	const [mode, setMode] = useState("edit");
-	const [content, setContent] = useState(`
+	const [mode, setMode] = useState<string>("edit");
+	const [content, setContent] = useState<string>(`
+      $$2x^2+x-1$$
       <h1>The Impact of Technology on Modern Education</h1>
       <h2>Introduction</h2>
-      <p>In the 21st century, technology has revolutionized every aspect of our lives, and education is no exception. The integration of technology in modern education has brought about significant changes in the way we learn, teach, and interact with information. This essay explores the profound impact of technology on education and its implications for both students and educators.</p>
+      <p>In the 21st century, $2x^2+x-1$, technology has revolutionized every aspect of our lives, and education is no exception. The integration of technology in modern education has brought about significant changes in the way we learn, teach, and interact with information. This essay explores the profound impact of technology on education and its implications for both students and educators.</p>
       <table><thead><tr><th>Header 1</th><th>Header 2</th><th>Header 3</th></tr></thead><tbody><tr><td>Data 1</td><td>Data 2</td><td>Data 3</td></tr><tr><td>Data 4</td><td>Data 5</td><td>Data 6</td></tr></tbody></table>
       <h3>Accessibility of Information</h3>
       <p>One of the most noticeable effects of technology on education is the accessibility of information. With the advent of the internet, students now have access to a vast repository of knowledge at their fingertips. Online resources, e-books, and educational websites have made it possible for learners to explore subjects beyond the confines of traditional textbooks. This democratization of information empowers students to delve into areas of interest, fostering a culture of self-directed learning.</p>
@@ -91,6 +60,18 @@ export default function Editor() {
       <h2>Conclusion</h2>
       <p>In conclusion, the impact of technology on modern education is undeniable. It has reshaped learning environments, expanded access to knowledge, and facilitated global collaboration. While technology presents opportunities for enhanced learning experiences, it also requires careful navigation to address potential drawbacks. Educators and policymakers must work together to ensure that technology is harnessed in a way that maximizes its benefits while minimizing its limitations, ultimately paving the way for a more innovative and inclusive educational landscape.</p>
    `);
+	const [editContent, setEditContent] = useState<string>();
+
+	function switchMode(newMode: string) {
+		if (newMode === "preview") {
+			setEditContent(content);
+			setContent(parseLatex(content));
+		}
+
+		if (newMode === "edit") setContent(editContent!);
+
+		setMode(newMode);
+	}
 
 	const editor = useEditor(
 		{
@@ -125,6 +106,8 @@ export default function Editor() {
 				TableCell,
 				TableHeader,
 				PromptResponseNode,
+				LatexInlineNode,
+				LatexBlockNode,
 			],
 			editable: mode !== "preview",
 			content,
@@ -137,7 +120,7 @@ export default function Editor() {
 
 	return (
 		<div className={styles.container}>
-			<NavigationMenu mode={mode} setMode={setMode} />
+			<NavigationMenu mode={mode} switchMode={switchMode} />
 			{/* <PromptMenu editor={editor} /> */}
 			<FloatingFormatMenu editor={editor} />
 			<EditorContent

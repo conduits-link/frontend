@@ -1,3 +1,5 @@
+import { useRouter } from "next/navigation";
+
 import {
 	FaArrowRightToBracket,
 	FaChevronLeft,
@@ -16,11 +18,18 @@ export default function NavigationMenu({
 	mode: string;
 	switchMode: (mode: string) => void;
 }) {
+	const router = useRouter();
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.element}>
 				<div className={styles.returnContainer}>
-					<Button className={styles.returnButton} onClick={() => {}}>
+					<Button
+						className={styles.returnButton}
+						onClick={() => {
+							router.push("/store");
+						}}
+					>
 						<FaChevronLeft />
 					</Button>
 					<div className={styles.returnInfo}>

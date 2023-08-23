@@ -31,6 +31,9 @@ The power of LLMs brought to an interface.
 5. Spell/grammar checker
 6. Customisation
    -  Allow people to write their own prompts (in development, just use CSV/JSON)
+7. Social media features
+   - Profile pictures, friends, etc.
+   - Sharable, user-created prompt libraries.
 
 ## Architecture
 

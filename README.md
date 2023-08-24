@@ -28,6 +28,7 @@ The power of LLMs brought to an interface.
    -  Code syntax highlighting
    -  Search bar
    -  Drag and drop with option buttons to the side of nodes
+   -  Add page columns to support different page layouts
 5. Spell/grammar checker
 6. Customisation
    -  Allow people to write their own prompts (in development, just use CSV/JSON)

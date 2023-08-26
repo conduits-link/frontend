@@ -63,6 +63,6 @@ General:
 To run the dev site:
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```

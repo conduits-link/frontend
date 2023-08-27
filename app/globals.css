@@ -25,7 +25,7 @@ html,
 body {
 	margin: 0;
 	padding: 0;
-	height: 100%;
+	min-height: 100%;
 	color: var(--color-secondary-100);
 	background-color: var(--color-primary-400);
 	font-family: "Lora", "Serif";
@@ -34,7 +34,7 @@ body {
 /* Tiptap */
 
 .ProseMirror {
-	min-height: 100vh;
+	min-height: calc(100vh - 2 * 8.5rem);
 	box-sizing: border-box;
 }
 

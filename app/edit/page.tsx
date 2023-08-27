@@ -65,7 +65,10 @@ export default function Editor() {
 
 	return (
 		<div className={styles.container}>
-			<NavigationMenu mode={mode} switchMode={switchMode} />
+			<NavigationMenu
+				mode={mode}
+				switchMode={switchMode}
+			/>
 			<FloatingFormatMenu editor={editor} />
 			<EditorContent
 				className={styles.page}

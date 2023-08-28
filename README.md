@@ -33,36 +33,30 @@ The power of LLMs brought to an interface.
 6. Customisation
    -  Allow people to write their own prompts (in development, just use CSV/JSON)
 7. Social media features
-   - Profile pictures, friends, etc.
-   - Sharable, user-created prompt libraries.
+   -  Profile pictures, friends, etc.
+   -  Sharable, user-created prompt libraries.
 
-## Architecture
+## Documentation
 
-Model Hosting - Development:
-
--  Dan's local LLaMA model.
--  AWS Sagemaker serverless inference with Free Tier. Max memory 6GB, which can run the LLaMA 7B model, and hopefully the 13B. Sagemaker offers many different models.
-   -  150,000 seconds per month for the first 2 months.
-
-Model Hosting - Production:
-
--  Host LLaMA2 on an [AWS EC2 C5](https://aws.amazon.com/ec2/instance-types/c5/) instance.
-   -  Can use c5n.4xlarge, the cheapest option that can run LLaMA2 70B (42GB GPU memory). $1.024 per hour.
-   -  Can use serverless inference, real-time inference, or asynchronous inference depending on budget etc.
--  Give users option to choose their preferred LLM.
--  Storage on AWS S3.
-
-General:
-
--  Host everything else on Vercel.
--  Prompt formatting on frontend in Next.js.
--  Python and Flask on backend, sending prompts to LLaMA model and transmitting output.
+-  [API reference](/docs/api.md)
 
 ## Run
 
-To run the dev site:
+After pulling from this repo, install all dependencies.
 
 ```bash
 npm ci
+```
+
+Run in developer mode (no pre-rendering)...
+
+```bash
 npm run dev
+```
+
+... or build and run in production mode.
+
+```bash
+npm run build
+npm run start
 ```

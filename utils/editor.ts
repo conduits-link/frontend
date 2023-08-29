@@ -2,8 +2,8 @@ import { Extension, Mark, Node } from "@tiptap/react";
 import Document from "@tiptap/extension-document";
 import Placeholder from "@tiptap/extension-placeholder";
 import Text from "@tiptap/extension-text";
-import Paragraph from "@tiptap/extension-paragraph";
-import Heading from "@tiptap/extension-heading";
+import ParagraphOverrideNode from "@/components/nodes/overrides/ParagraphOverride";
+import HeadingOverride from "@/components/nodes/overrides/HeadingOverride";
 import ListItem from "@tiptap/extension-list-item";
 import BulletList from "@tiptap/extension-bullet-list";
 import OrderedList from "@tiptap/extension-ordered-list";
@@ -42,8 +42,9 @@ const extensions: (Node | Mark | Extension)[] = [
 		placeholder: "Start typing...",
 	}),
 	Text,
-	Paragraph,
-	Heading.configure({
+	// Paragraph,
+	ParagraphOverrideNode,
+	HeadingOverride.configure({
 		levels: [1, 2, 3],
 	}),
 	ListItem,

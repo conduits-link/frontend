@@ -19,6 +19,7 @@ The power of LLMs brought to an interface.
    -  Translate
    -  Generate todo list (steps required to complete something)
    -  Implement feedback (paste in the written feedback someone has given you)
+   -  Apply data (implement content based on data/information you have been given)
 3. Multimedia
    -  Summarise audio (from links)
    -  Create images/diagrams of content

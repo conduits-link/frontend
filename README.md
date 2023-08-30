@@ -1,8 +1,35 @@
 # Noteworthy
 
-The power of LLMs brought to an interface.
+Noteworthy is an LLM-based text editor, with an intuitive and powerful graphical user interface. Employ an AI assistant to help you write without typing any prompts!
 
-## Features
+Demo screenshots and video coming soon.
+
+## Documentation
+
+-  [API reference](/docs/api.md)
+
+## Run
+
+After pulling from this repo, install all dependencies.
+
+```bash
+npm ci
+```
+
+Run in developer mode (no pre-rendering)...
+
+```bash
+npm run dev
+```
+
+... or build and run in production mode.
+
+```bash
+npm run build
+npm run start
+```
+
+## Incoming Features
 
 1. File upload
    -  Copy file content
@@ -36,28 +63,3 @@ The power of LLMs brought to an interface.
 7. Social media features
    -  Profile pictures, friends, etc.
    -  Sharable, user-created prompt libraries.
-
-## Documentation
-
--  [API reference](/docs/api.md)
-
-## Run
-
-After pulling from this repo, install all dependencies.
-
-```bash
-npm ci
-```
-
-Run in developer mode (no pre-rendering)...
-
-```bash
-npm run dev
-```
-
-... or build and run in production mode.
-
-```bash
-npm run build
-npm run start
-```

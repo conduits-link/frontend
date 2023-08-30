@@ -6,15 +6,25 @@
 	max-width: var(--editor-width);
 	margin: 0 auto;
 	position: relative;
+	border: 1px solid red;
 }
 
 .containerToolbarLeft {
+	padding: var(--spacing-small);
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	position: absolute;
 	inset: 0 calc(100% + var(--spacing-small)) 0 auto;
+	font-size: 1.65rem;
+	z-index: 1;
 }
 
-.buttonPrompt {
+.promptButtonContainer {
+	width: 100px;
+	display: flex;
+	flex-direction: column;
+	position: absolute;
+	top: 0;
+	left: 100%;
 }

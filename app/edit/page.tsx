@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import { EditorContent, useEditor } from "@tiptap/react";
 
+import { EditorContextProvider } from "@/components/Context";
 import { parseLatex } from "@/utils/parse";
 import { extensions } from "@/utils/editor";
 
@@ -50,18 +51,22 @@ export default function Editor() {
 	if (editor === null) return;
 
 	return (
-		<div className={styles.container}>
-			<NavigationMenu
-				mode={mode}
-				switchMode={switchMode}
-			/>
-			<FloatingFormatMenu editor={editor} />
-			<EditorContent
-				className={styles.page}
-				editor={editor}
-				onChange={(e) => console.log(e)}
-			/>
-			{mode !== "preview" && <FixedFormatMenu editor={editor} />}
-		</div>
+		<EditorContextProvider
+			content={content}
+			setContent={setContent}
+		>
+			<div className={styles.container}>
+				<NavigationMenu
+					mode={mode}
+					switchMode={switchMode}
+				/>
+				<FloatingFormatMenu editor={editor} />
+				<EditorContent
+					className={styles.page}
+					editor={editor}
+				/>
+				{mode !== "preview" && <FixedFormatMenu editor={editor} />}
+			</div>
+		</EditorContextProvider>
 	);
 }

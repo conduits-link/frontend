@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import { TbAtom } from "react-icons/tb";
 
+import { useEditorContext } from "../Context";
 import prompts, { Prompt } from "@/utils/prompts";
 
 import PromptButton from "../buttons/PromptButton";
@@ -13,6 +14,8 @@ export default function DocumentBlock({
 }: {
 	children: React.ReactNode;
 }) {
+	const { content, setContent } = useEditorContext();
+
 	const [showLeftToolbar, setShowLeftToolbar] = useState(false);
 	const [showPromptMenu, setShowPromptMenu] = useState(false);
 	const [activePrompts, setActivePrompts] = useState<Prompt[]>(prompts);

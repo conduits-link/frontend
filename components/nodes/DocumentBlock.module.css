@@ -6,29 +6,85 @@
 	max-width: var(--editor-width);
 	margin: 0 auto;
 	position: relative;
-	border: 1px solid red;
+}
+
+/* Document node */
+
+.containerNode {
+	position: relative;
 }
 
 .containerToolbarLeft {
-	padding: var(--spacing-small);
+	padding: 0 var(--spacing-small);
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
 	position: absolute;
 	inset: 0 calc(100% + var(--spacing-small)) 0 auto;
-	font-size: 1.65rem;
 	z-index: 1;
 }
 
+.containerToolbarLeft::before {
+	content: "";
+	position: absolute;
+	inset: 0 0 0 auto;
+	width: 2px;
+	background-color: var(--color-secondary-400);
+	border-radius: var(--border-radius-small);
+}
+
+.promptMenuButton {
+	padding: 0.35em;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.15rem;
+	color: var(--color-secondary-100);
+	background-color: transparent;
+	border-radius: var(--border-radius-small);
+	border: 2px solid var(--color-secondary-400);
+	overflow: hidden;
+	backdrop-filter: blur(6px);
+	cursor: pointer;
+}
+
+.promptMenuButton::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background-color: var(--color-primary-100);
+	opacity: 0.6;
+	z-index: -1;
+}
+
 .promptButtonContainer {
-	width: 100px;
+	width: 15em;
+	padding: var(--spacing-small);
+	gap: var(--spacing-small);
 	display: flex;
 	flex-direction: column;
 	position: absolute;
 	top: 0;
-	left: 100%;
+	left: calc(100% - 2px);
+	background-color: transparent;
+	border-radius: 0 var(--border-radius-small) var(--border-radius-small) 0;
+	border: 2px solid var(--color-secondary-400);
+	overflow: hidden;
+	backdrop-filter: blur(6px);
 }
 
-.promptResponseContainer{
-		
+.promptButtonContainer::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background-color: var(--color-primary-100);
+	opacity: 0.8;
+	z-index: -1;
+}
+
+.node {
+}
+
+/* Prompt responses */
+
+.promptResponseContainer {
 }

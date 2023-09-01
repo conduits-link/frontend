@@ -3,6 +3,8 @@ import { ReactNode } from "react";
 import sendFetch from "../../utils/fetch";
 import Button from "./Button";
 
+import styles from "./PromptButton.module.css";
+
 interface ApiResponse {
 	answer: string;
 }
@@ -24,5 +26,12 @@ export default function PromptButton({
 		);
 	}
 
-	return <button onClick={infer}>{children}</button>;
+	return (
+		<Button
+			className={styles.element}
+			onClick={infer}
+		>
+			{children}
+		</Button>
+	);
 }

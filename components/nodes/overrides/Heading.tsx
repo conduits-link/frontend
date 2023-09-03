@@ -6,7 +6,7 @@ import DocumentBlock from "../DocumentBlock";
 export default function Heading({ node }: { node: Node }) {
 	return (
 		<NodeViewWrapper>
-			<DocumentBlock>
+			<DocumentBlock node={node}>
 				{(() => {
 					switch (node.attrs.level) {
 						case 1:

@@ -11,14 +11,18 @@ interface ApiResponse {
 
 export default function PromptButton({
 	prompt,
+	onClick,
 	handleResponse,
 	children,
 }: {
 	prompt: string;
+	onClick?: React.MouseEventHandler;
 	handleResponse: (response: string) => void;
 	children: ReactNode;
 }) {
-	function infer() {
+	function infer(e: React.MouseEvent) {
+		if (onClick) onClick(e);
+
 		const input: string = window.getSelection()!.toString();
 
 		sendFetch("/api", "POST", "", { prompt, input }).then((res) =>

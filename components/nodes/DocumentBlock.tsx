@@ -13,9 +13,11 @@ import styles from "./DocumentBlock.module.css";
 
 export default function DocumentBlock({
 	node,
+	updateAttributes,
 	children,
 }: {
 	node: Node;
+	updateAttributes: any; // TODO: type
 	children: React.ReactNode;
 }) {
 	// const { content, setContent } = useEditorContext();
@@ -24,7 +26,15 @@ export default function DocumentBlock({
 	const [showPromptMenu, setShowPromptMenu] = useState(false);
 	const [activePrompts, setActivePrompts] = useState<Prompt[]>(prompts);
 
-	if (node.attrs.answers) console.log(node.attrs.answers.length);
+	if (node.attrs.answers) console.log(node.attrs.answers);
+
+	function sendPrompt(e: React.MouseEvent) {
+		setShowPromptMenu(false);
+
+		updateAttributes({
+			promptResponses: node.attrs.answers.push("waiting for response"),
+		});
+	}
 
 	return (
 		<div
@@ -52,8 +62,9 @@ export default function DocumentBlock({
 										activePrompts.map((prompt: Prompt, i: number) => {
 											return (
 												<PromptButton
-													handleResponse={() => {}}
 													prompt={prompt.prompt}
+													onClick={sendPrompt}
+													handleResponse={() => {}}
 													key={prompt.name}
 												>
 													{prompt.name}

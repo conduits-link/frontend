@@ -11,22 +11,13 @@ export default function Paragraph({
 	node: Node;
 	updateAttributes: any; // TODO: type
 }) {
-	const updatePromptResponses = () => {
-		updateAttributes({
-			promptResponses: node.attrs.answers.push("test"),
-		});
-	};
-
-	useEffect(() => {
-		// node.attrs.answers = Array.isArray(node.attrs.answers)
-		// 	? node.attrs.answers
-		// 	: node.attrs.answers.split(",");
-	}, []);
-
 	return (
 		<NodeViewWrapper>
-			<DocumentBlock node={node}>
-				<p onClick={updatePromptResponses}>
+			<DocumentBlock
+				node={node}
+				updateAttributes={updateAttributes}
+			>
+				<p>
 					<NodeViewContent />
 				</p>
 			</DocumentBlock>

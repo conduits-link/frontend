@@ -86,5 +86,20 @@
 
 /* Prompt responses */
 
-.promptResponseContainer {
+.promptResponse {
+	margin: 0;
+	padding: var(--spacing-large);
+	border-radius: var(--border-radius-small);
+	border: 2px solid var(--color-secondary-400);
+	overflow: hidden;
+	backdrop-filter: blur(6px);
+}
+
+.promptResponse::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background-color: var(--color-primary-100);
+	opacity: 0.8;
+	z-index: -1;
 }

@@ -80,7 +80,14 @@ export default function DocumentBlock({
 				<div className={styles.promptResponseContainer}>
 					{node.attrs.answers &&
 						node.attrs.answers.map((answer: string) => {
-							return <p contentEditable={true}>{answer}</p>;
+							return (
+								<p
+									className={styles.promptResponse}
+									contentEditable={true}
+								>
+									{answer}
+								</p>
+							);
 						})}
 				</div>
 			</div>

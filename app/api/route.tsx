@@ -1,12 +1,29 @@
 import { NextRequest, NextResponse } from "next/server";
 
+const { Configuration, OpenAIApi } = require("openai");
+
+const configuration = new Configuration({
+	apiKey: "YOUR_API_KEY",
+});
+
+async function getAiResponse(topic: string) {
+	const openai = new OpenAIApi(configuration);
+	const completion = await openai.createCompletion({
+		model: "text-davinci-003",
+		prompt: topic,
+		max_tokens: 1024,
+		n: 1,
+		stop: null,
+		temperature: 0.7,
+	});
+	console.log(completion.data.choices[0].text);
+}
+
 export async function POST(request: NextRequest) {
 	const { prompt, input } = await request.json();
+	const toSend = prompt + "\n'" + input + "'";
 
-	const result = {
-		answer:
-			"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac elit vel odio sollicitudin tristique. Vivamus varius quam vel urna sagittis varius. Fusce eget ante eget metus tempor accumsan. Proin quis lorem auctor, vulputate ex non, aliquam orci. Integer ut neque nec purus cursus fermentum in eget urna. Praesent quis aliquam justo. Nullam vel nunc vel nulla bibendum tristique. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean posuere, felis in fringilla tempus, odio justo cursus risus, nec scelerisque neque velit ut justo. Suspendisse potenti. Sed varius tortor ut tristique dignissim. Cras interdum enim in erat volutpat, eget fringilla mauris luctus.",
-	};
-
-	return NextResponse.json(result);
+	return NextResponse.json({
+		answer: getAiResponse(toSend),
+	});
 }

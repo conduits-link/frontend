@@ -11,6 +11,7 @@ export default function Paragraph({ node }: { node: Node }) {
 		<NodeViewWrapper>
 			<DocumentBlock
 				node={node}
+				c={c}
 				setC={setC}
 			>
 				<p>{c}</p>

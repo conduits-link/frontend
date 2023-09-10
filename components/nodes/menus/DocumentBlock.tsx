@@ -16,9 +16,11 @@ import { get } from "http";
 export default function DocumentBlock({
 	node,
 	setC,
+	c,
 	children,
 }: {
 	node: Node;
+	c: string;
 	setC: React.Dispatch<React.SetStateAction<string>>;
 	children: React.ReactNode;
 }) {
@@ -104,6 +106,7 @@ export default function DocumentBlock({
 											return (
 												<PromptButton
 													prompt={prompt.prompt}
+													input={c}
 													onClick={handlePromptRequest}
 													handleResponse={handlePromptResponse}
 													key={prompt.name}

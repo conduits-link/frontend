@@ -2,6 +2,13 @@
 	position: relative;
 }
 
+.editing .element {
+	margin-top: var(--spacing-large);
+	padding: var(--spacing-small);
+	border: 2px solid var(--color-secondary-400);
+	border-radius: var(--border-radius-small);
+}
+
 .element {
 	max-width: var(--editor-width);
 	margin: 0 auto;
@@ -84,22 +91,6 @@
 .node {
 }
 
-/* Prompt responses */
-
-.promptResponse {
-	margin: 0;
-	padding: var(--spacing-large);
-	border-radius: var(--border-radius-small);
-	border: 2px solid var(--color-secondary-400);
-	overflow: hidden;
-	backdrop-filter: blur(6px);
-}
-
-.promptResponse::before {
-	content: "";
-	position: absolute;
-	inset: 0;
-	background-color: var(--color-primary-100);
-	opacity: 0.8;
-	z-index: -1;
+.editing .promptResponseContainer {
+	border-top: 2px solid var(--color-secondary-400);
 }

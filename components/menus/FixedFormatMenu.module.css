@@ -2,7 +2,7 @@
 	width: 100%;
 	padding: var(--spacing-large) 0;
 	display: flex;
-	gap: var(--spacing-small);
+	gap: var(--spacing-large);
 	justify-content: center;
 	position: fixed;
 	bottom: 0;

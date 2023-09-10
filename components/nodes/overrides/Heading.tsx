@@ -1,7 +1,7 @@
 import { NodeViewContent, NodeViewWrapper } from "@tiptap/react";
 import { Node } from "@tiptap/pm/model";
 
-import DocumentBlock from "../DocumentBlock";
+import DocumentBlock from "../menus/DocumentBlock";
 
 export default function Heading({ node }: { node: Node }) {
 	return (

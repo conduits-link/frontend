@@ -1,0 +1,96 @@
+.container {
+	position: relative;
+}
+
+.editing .element {
+	margin-top: var(--spacing-large);
+	padding: var(--spacing-small);
+	border: 2px solid var(--color-secondary-400);
+	border-radius: var(--border-radius-small);
+}
+
+.element {
+	max-width: var(--editor-width);
+	margin: 0 auto;
+	position: relative;
+}
+
+/* Document node */
+
+.containerNode {
+	position: relative;
+}
+
+.containerToolbarLeft {
+	padding: 0 var(--spacing-small);
+	display: flex;
+	flex-direction: column;
+	position: absolute;
+	inset: 0 calc(100% + var(--spacing-small)) 0 auto;
+	z-index: 1;
+}
+
+.containerToolbarLeft::before {
+	content: "";
+	position: absolute;
+	inset: 0 0 0 auto;
+	width: 2px;
+	background-color: var(--color-secondary-400);
+	border-radius: var(--border-radius-small);
+}
+
+.promptMenuButton {
+	padding: 0.35em;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.15rem;
+	color: var(--color-secondary-100);
+	background-color: transparent;
+	border-radius: var(--border-radius-small);
+	border: 2px solid var(--color-secondary-400);
+	overflow: hidden;
+	backdrop-filter: blur(6px);
+	cursor: pointer;
+}
+
+.promptMenuButton::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background-color: var(--color-primary-100);
+	opacity: 0.6;
+	z-index: -1;
+}
+
+.promptButtonContainer {
+	width: 15em;
+	padding: var(--spacing-small);
+	gap: var(--spacing-small);
+	display: flex;
+	flex-direction: column;
+	position: absolute;
+	top: 0;
+	left: calc(100% - 2px);
+	background-color: transparent;
+	border-radius: 0 var(--border-radius-small) var(--border-radius-small) 0;
+	border: 2px solid var(--color-secondary-400);
+	overflow: hidden;
+	backdrop-filter: blur(6px);
+}
+
+.promptButtonContainer::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background-color: var(--color-primary-100);
+	opacity: 0.8;
+	z-index: -1;
+}
+
+.node {
+}
+
+.editing .promptResponseContainer {
+	border-top: 2px solid var(--color-secondary-400);
+}

@@ -8,4 +8,3 @@ export default Paragraph.extend({
 		return ReactNodeViewRenderer(ParagraphOverride);
 	},
 });
-

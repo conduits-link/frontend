@@ -33,7 +33,6 @@ lowlight.registerLanguage("ts", ts);
 
 import LatexBlockNode from "@/components/nodes/LatexBlockNode";
 import LatexInlineNode from "@/components/nodes/LatexInlineNode";
-import PromptResponseNode from "@/components/nodes/PromptResponseNode";
 
 const extensions: (Node | Mark | Extension)[] = [
 	Document,
@@ -75,7 +74,6 @@ const extensions: (Node | Mark | Extension)[] = [
 	Code,
 	LatexInlineNode,
 	LatexBlockNode,
-	PromptResponseNode,
 ];
 
 export { extensions };

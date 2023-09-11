@@ -21,10 +21,24 @@ declare module "slate" {
 // Import the `Editor` and `Transforms` helpers from Slate.
 import { Editor, Transforms, Element } from "slate";
 
+import CodeElement from "@/components/Tmp";
+
 const initialValue = [
 	{
-		type: "paragraph",
-		children: [{ text: "A line of text in a paragraph." }],
+		type: "code",
+		children: [
+			// Container 1
+			{
+				type: "container",
+				children: [{ text: "Editable text in container 1" }],
+			},
+			// Container 2
+			{
+				type: "container",
+				children: [{ text: "Editable text in container 2" }],
+			},
+			// Add more containers as needed
+		],
 	},
 ];
 
@@ -59,6 +73,11 @@ const CustomEditor = {
 	},
 };
 
+const insertContent = (editor: Editor, text: any, index: any) => {
+	const path = [0, "children", index]; // Assuming code block is the first child of the editor
+	Transforms.insertText(editor, text, { at: path });
+};
+
 const Edit = () => {
 	const [editor] = useState(() => withReact(createEditor()));
 
@@ -82,6 +101,16 @@ const Edit = () => {
 			initialValue={initialValue}
 		>
 			<div>
+				<button
+					onClick={() => {
+						const newText = "New content";
+						const insertionIndex = 1; // Index where you want to insert the new content
+						insertContent(editor, newText, insertionIndex);
+					}}
+				>
+					Insert New Content
+				</button>
+
 				<button
 					onMouseDown={(event) => {
 						event.preventDefault();
@@ -124,14 +153,6 @@ const Edit = () => {
 				}}
 			/>
 		</Slate>
-	);
-};
-
-const CodeElement = (props: any) => {
-	return (
-		<pre {...props.attributes}>
-			<code>{props.children}</code>
-		</pre>
 	);
 };
 

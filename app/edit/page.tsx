@@ -1,72 +1,154 @@
 "use client";
 
-import { useState } from "react";
+import React, { useCallback, useState } from "react";
+import { createEditor } from "slate";
+import { Slate, Editable, withReact } from "slate-react";
 
-import { EditorContent, useEditor } from "@tiptap/react";
+// TypeScript users only add this code
+import { BaseEditor, Descendant } from "slate";
+import { ReactEditor } from "slate-react";
 
-import { EditorContextProvider } from "@/components/Context";
-import { parseLatex } from "@/utils/parse";
-import { extensions } from "@/utils/editor";
-
-import NavigationMenu from "@/components/menus/NavigationMenu";
-import FixedFormatMenu from "@/components/menus/FixedFormatMenu";
-import FloatingFormatMenu from "@/components/menus/FloatingFormatMenu";
-
-import styles from "./page.module.css";
-
-export default function Editor() {
-	const [mode, setMode] = useState<string>("edit");
-	const [content, setContent] = useState<string>(`
-      <h1>The Impact of Technology on Modern Education</h1>
-      <h2>Introduction</h2>
-      <p>In the 21st century, technology has revolutionized every aspect of our lives, and education is no exception. The integration of technology in modern education has brought about significant changes in the way we learn, teach, and interact with information. This essay explores the profound impact of technology on education and its implications for both students and educators.</p>
-   `);
-	const [editableContent, setEditableContent] = useState<string>();
-
-	function switchMode(newMode: string) {
-		switch (newMode) {
-			case "edit":
-				setContent(editableContent!);
-				break;
-			case "preview":
-				setEditableContent(content);
-				setContent(parseLatex(content));
-				break;
-			default:
-		}
-
-		setMode(newMode);
+// Slate.js types
+type CustomElement = { type: "paragraph"; children: CustomText[] };
+type CustomText = { text: string };
+declare module "slate" {
+	interface CustomTypes {
+		Editor: BaseEditor & ReactEditor;
+		Element: CustomElement;
+		Text: CustomText;
 	}
+}
+// Import the `Editor` and `Transforms` helpers from Slate.
+import { Editor, Transforms, Element } from "slate";
 
-	const editor = useEditor(
-		{
-			extensions,
-			content,
-			editable: mode !== "preview",
-			onUpdate: ({ editor }) => setContent(editor.getHTML()),
-		},
-		[mode]
-	);
+const initialValue = [
+	{
+		type: "paragraph",
+		children: [{ text: "A line of text in a paragraph." }],
+	},
+];
 
-	if (editor === null) return;
+// Define our own custom set of helpers.
+const CustomEditor = {
+	isBoldMarkActive(editor: Editor) {
+		const marks = Editor.marks(editor);
+		return marks ? marks.bold === true : false;
+	},
+	isCodeBlockActive(editor: Editor) {
+		const [match] = Editor.nodes(editor, {
+			match: (n) => n.type === "code",
+		});
+
+		return !!match;
+	},
+	toggleBoldMark(editor: Editor) {
+		const isActive = CustomEditor.isBoldMarkActive(editor);
+		if (isActive) {
+			Editor.removeMark(editor, "bold");
+		} else {
+			Editor.addMark(editor, "bold", true);
+		}
+	},
+	toggleCodeBlock(editor: Editor) {
+		const isActive = CustomEditor.isCodeBlockActive(editor);
+		const newProperties: Partial<CustomElement> = {
+			type: isActive ? "paragraph" : "code",
+		};
+
+		Transforms.setNodes(editor, newProperties);
+	},
+};
+
+const Edit = () => {
+	const [editor] = useState(() => withReact(createEditor()));
+
+	const renderElement = useCallback((props: any) => {
+		switch (props.element.type) {
+			case "code":
+				return <CodeElement {...props} />;
+			default:
+				return <DefaultElement {...props} />;
+		}
+	}, []);
+
+	const renderLeaf = useCallback((props: any) => {
+		return <Leaf {...props} />;
+	}, []);
 
 	return (
-		<EditorContextProvider
-			content={content}
-			setContent={setContent}
+		// Add a toolbar with buttons that call the same methods.
+		<Slate
+			editor={editor}
+			initialValue={initialValue}
 		>
-			<div className={styles.container}>
-				<NavigationMenu
-					mode={mode}
-					switchMode={switchMode}
-				/>
-				<FloatingFormatMenu editor={editor} />
-				<EditorContent
-					className={styles.page}
-					editor={editor}
-				/>
-				{mode !== "preview" && <FixedFormatMenu editor={editor} />}
+			<div>
+				<button
+					onMouseDown={(event) => {
+						event.preventDefault();
+						CustomEditor.toggleBoldMark(editor);
+					}}
+				>
+					Bold
+				</button>
+				<button
+					onMouseDown={(event) => {
+						event.preventDefault();
+						CustomEditor.toggleCodeBlock(editor);
+					}}
+				>
+					Code Block
+				</button>
 			</div>
-		</EditorContextProvider>
+			<Editable
+				editor={editor}
+				renderElement={renderElement}
+				renderLeaf={renderLeaf}
+				onKeyDown={(event) => {
+					if (!event.ctrlKey) {
+						return;
+					}
+
+					switch (event.key) {
+						case "`": {
+							event.preventDefault();
+							CustomEditor.toggleCodeBlock(editor);
+							break;
+						}
+
+						case "b": {
+							event.preventDefault();
+							CustomEditor.toggleBoldMark(editor);
+							break;
+						}
+					}
+				}}
+			/>
+		</Slate>
 	);
-}
+};
+
+const CodeElement = (props: any) => {
+	return (
+		<pre {...props.attributes}>
+			<code>{props.children}</code>
+		</pre>
+	);
+};
+
+const DefaultElement = (props: any) => {
+	return <p {...props.attributes}>{props.children}</p>;
+};
+
+// Define a React component to render leaves with bold text.
+const Leaf = (props: any) => {
+	return (
+		<span
+			{...props.attributes}
+			style={{ fontWeight: props.leaf.bold ? "bold" : "normal" }}
+		>
+			{props.children}
+		</span>
+	);
+};
+
+export default Edit;

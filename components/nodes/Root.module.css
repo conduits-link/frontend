@@ -1,0 +1,8 @@
+.container {
+}
+
+.element {
+	width: var(--editor-width);
+	margin: 0 auto;
+	background-color: green;
+}

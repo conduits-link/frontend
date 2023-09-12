@@ -2,15 +2,10 @@ import React from "react";
 
 import RootNode from "./Root";
 
-const Paragraph = ({
-	children,
-	...attributes
-}: {
-	children: React.ReactNode;
-}) => {
+const Paragraph = (props: any) => {
 	return (
 		<RootNode>
-			<p {...attributes}>{children}</p>
+			<p {...props.attributes}>{props.children}</p>
 		</RootNode>
 	);
 };

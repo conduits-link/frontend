@@ -1,36 +1,11 @@
-import { Editor } from "@tiptap/react";
-
-import FixedFormatSubMenu from "./FixedFormatSubMenu";
-import Heading1FormatButton from "@/components/buttons/format/Heading1FormatButton";
-import Heading2FormatButton from "@/components/buttons/format/Heading2FormatButton";
-import Heading3FormatButton from "@/components/buttons/format/Heading3FormatButton";
-import BulletListFormatButton from "@/components/buttons/format/BulletListFormatButton";
-import OrderedListFormatButton from "@/components/buttons/format/OrderedListFormatButton";
-import TaskListFormatButton from "@/components/buttons/format/TaskListFormatButton";
-import ImageFormatButton from "@/components/buttons/format/ImageFormatButton";
-import CodeBlockFormatButton from "@/components/buttons/format/CodeBlockFormatButton";
-import InsertTableFormatButton from "@/components/buttons/format/table/InsertTableFormatButton";
-import AddColumnBeforeFormatButton from "@/components/buttons/format/table/AddColumnBeforeFormatButton";
-import AddColumnAfterFormatButton from "@/components/buttons/format/table/AddColumnAfterFormatButton";
-import DeleteColumnFormatButton from "@/components/buttons/format/table/DeleteColumnFormatButton";
-import AddRowBeforeFormatButton from "@/components/buttons/format/table/AddRowBeforeFormatButton";
-import AddRowAfterFormatButton from "@/components/buttons/format/table/AddRowAfterFormatButton";
-import DeleteRowFormatButton from "@/components/buttons/format/table/DeleteRowFormatButton";
-import MergeCellsFormatButton from "@/components/buttons/format/table/MergeCellsFormatButton";
-import SplitCellFormatButton from "@/components/buttons/format/table/SplitCellFormatButton";
-import BoldFormatButton from "@/components/buttons/format/BoldFormatButton";
-import ItalicFormatButton from "@/components/buttons/format/ItalicFormatButton";
-import StrikeFormatButton from "@/components/buttons/format/StrikeFormatButton";
-import LinkFormatButton from "@/components/buttons/format/LinkFormatButton";
-import CodeFormatButton from "@/components/buttons/format/CodeFormatButton";
-
 import styles from "./FixedFormatMenu.module.css";
 
-export default function FixedMenu({ editor }: { editor: Editor }) {
+export default function FixedMenu() {
 	return (
 		<div className={styles.container}>
 			<div className={styles.element}>
-				<BoldFormatButton
+				edit menu 1
+				{/*	<BoldFormatButton
 					className={styles.button + " " + styles.elementSpacer}
 					editor={editor}
 				/>
@@ -49,10 +24,11 @@ export default function FixedMenu({ editor }: { editor: Editor }) {
 				<CodeFormatButton
 					editor={editor}
 					className={styles.button + " " + styles.elementSpacer}
-				/>
+				/>*/}
 			</div>
 			<div className={styles.element}>
-				<FixedFormatSubMenu className={styles.elementSpacer}>
+				edit menu 2
+				{/*<FixedFormatSubMenu className={styles.elementSpacer}>
 					<Heading1FormatButton
 						editor={editor}
 						className={styles.button + " " + styles.elementSpacer}
@@ -142,7 +118,7 @@ export default function FixedMenu({ editor }: { editor: Editor }) {
 						className={styles.button + " " + styles.elementSpacer}
 						key={16}
 					/>
-				</FixedFormatSubMenu>
+				</FixedFormatSubMenu> */}
 			</div>
 		</div>
 	);

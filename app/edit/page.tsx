@@ -1,12 +1,16 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 
-import SlateEditor from "@/components/nodes/SlateEditor";
+import NavigationMenu from "@/components/menus/NavigationMenu";
+import FixedFormatMenu from "@/components/menus/FixedFormatMenu";
+import SlateEditor from "@/components/wrappers/SlateEditor";
+
+import styles from "./page.module.css";
 
 const initialValue = [
 	{
-		type: "item",
+		type: "paragraph",
 		children: [
 			{
 				type: "text",
@@ -28,7 +32,7 @@ const initialValue = [
 		],
 	},
 	{
-		type: "item",
+		type: "paragraph",
 		children: [
 			{
 				type: "text",
@@ -48,7 +52,26 @@ const initialValue = [
 ];
 
 const Edit = () => {
-	return <SlateEditor initialValue={initialValue} />;
+	const [mode, setMode] = useState<string>("edit");
+
+	function switchMode(newMode: string) {
+		setMode(newMode);
+	}
+
+	return (
+		<div className={styles.container}>
+			<NavigationMenu
+				mode={mode}
+				switchMode={switchMode}
+			/>
+			<SlateEditor
+				className={styles.page}
+				initialValue={initialValue}
+				readOnly={mode !== "edit"}
+			/>
+			{mode !== "preview" && <FixedFormatMenu />}
+		</div>
+	);
 };
 
 export default Edit;

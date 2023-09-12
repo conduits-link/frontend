@@ -5,7 +5,8 @@ import { Slate, Editable, withReact } from "slate-react";
 // TypeScript users only add this code
 import { BaseEditor } from "slate";
 import { ReactEditor } from "slate-react";
-import NoSSR from "../NoSSR";
+import NoSSR from "./NoSSR";
+import Paragraph from "@/components/nodes/Paragraph";
 
 // Slate.js types
 type CustomElement = {
@@ -21,14 +22,20 @@ declare module "slate" {
 	}
 }
 
-const renderNode = (props: any) => {
-	const { attributes, children, element } = props; // Changed 'node' to 'element'
-
+const renderNode = ({
+	attributes,
+	children,
+	element,
+}: {
+	attributes: any;
+	children: any;
+	element: any;
+}) => {
 	switch (
 		element.type // Changed 'node.type' to 'element.type'
 	) {
-		case "item":
-			return <p {...attributes}>{children}</p>;
+		case "paragraph":
+			return <Paragraph {...attributes}>{children}</Paragraph>;
 		case "text":
 			return <span {...attributes}>{children}</span>;
 		case "container":
@@ -40,7 +47,15 @@ const renderNode = (props: any) => {
 	}
 };
 
-const SlateEditor = ({ initialValue }: { initialValue: any }) => {
+const SlateEditor = ({
+	className,
+	initialValue,
+	readOnly,
+}: {
+	className?: string;
+	initialValue: any;
+	readOnly: boolean;
+}) => {
 	const editor = withReact(createEditor());
 
 	let i = 0;
@@ -48,7 +63,7 @@ const SlateEditor = ({ initialValue }: { initialValue: any }) => {
 	const addSubItem = (nodeIndex: number) => {
 		const newSubItem = {
 			type: "sub-item",
-			children: [{ text: "New Sub-Item " + i++ }],
+			children: [{ text: "Sub item " + i++ }],
 		};
 
 		const path = [nodeIndex, 1];
@@ -60,6 +75,38 @@ const SlateEditor = ({ initialValue }: { initialValue: any }) => {
 		});
 	};
 
+	const newline = (e: KeyboardEvent) => {
+		if (e.key === "Enter") {
+			e.preventDefault();
+
+			const selection = editor.selection;
+			if (selection) {
+				const topLevelNode = selection.anchor.path[0];
+
+				const newItem = {
+					type: "paragraph",
+					children: [
+						{
+							type: "text",
+							children: [{ text: "" }],
+						},
+						{
+							type: "container",
+							children: [],
+						},
+					],
+				};
+
+				// Insert the new sub-item node at the end of the container's children
+				Transforms.insertNodes(editor, newItem, {
+					at: [topLevelNode + 1],
+				});
+
+				Transforms.select(editor, [topLevelNode + 1]);
+			}
+		}
+	};
+
 	return (
 		<NoSSR>
 			<Slate
@@ -67,34 +114,10 @@ const SlateEditor = ({ initialValue }: { initialValue: any }) => {
 				initialValue={initialValue}
 			>
 				<Editable
+					className={className}
 					renderElement={renderNode}
-					onKeyDown={(e) => {
-						if (e.key === "Enter") {
-							e.preventDefault();
-
-							const selection = editor.selection;
-							if (selection) {
-								const topLevelNode = selection.anchor.path[0];
-
-								const newItem = {
-									type: "item",
-									children: [
-										{
-											type: "text",
-											children: [{ text: "" }],
-										},
-									],
-								};
-
-								// Insert the new sub-item node at the end of the container's children
-								Transforms.insertNodes(editor, newItem, {
-									at: [topLevelNode + 1],
-								});
-
-								Transforms.select(editor, [topLevelNode + 1]);
-							}
-						}
-					}}
+					onKeyDown={newline}
+					readOnly={readOnly}
 				/>
 				<button
 					onClick={() => {

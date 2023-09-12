@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Node, createEditor, Transforms } from "slate";
+import { Node, createEditor, Transforms, select } from "slate";
 import { Slate, Editable, withReact } from "slate-react";
 
 // TypeScript users only add this code
@@ -43,7 +43,7 @@ const renderNode = (props: any) => {
 const SlateEditor = ({ initialValue }: { initialValue: any }) => {
 	const editor = withReact(createEditor());
 
-	var i = 0;
+	let i = 0;
 
 	const addSubItem = (nodeIndex: number) => {
 		const newSubItem = {
@@ -66,10 +66,39 @@ const SlateEditor = ({ initialValue }: { initialValue: any }) => {
 				editor={editor}
 				initialValue={initialValue}
 			>
-				<Editable renderElement={renderNode} />
+				<Editable
+					renderElement={renderNode}
+					onKeyDown={(e) => {
+						if (e.key === "Enter") {
+							e.preventDefault();
+
+							const selection = editor.selection;
+							if (selection) {
+								const topLevelNode = selection.anchor.path[0];
+
+								const newItem = {
+									type: "item",
+									children: [
+										{
+											type: "text",
+											children: [{ text: "" }],
+										},
+									],
+								};
+
+								// Insert the new sub-item node at the end of the container's children
+								Transforms.insertNodes(editor, newItem, {
+									at: [topLevelNode + 1],
+								});
+
+								Transforms.select(editor, [topLevelNode + 1]);
+							}
+						}
+					}}
+				/>
 				<button
 					onClick={() => {
-						addSubItem(0);
+						addSubItem(1);
 					}}
 				>
 					Add Sub-Item

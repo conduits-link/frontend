@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Node, createEditor, Transforms, select } from "slate";
+import { Node, createEditor, Transforms, select, Editor } from "slate";
 import { Slate, Editable, withReact } from "slate-react";
 
 // TypeScript users only add this code
@@ -22,20 +22,31 @@ declare module "slate" {
 	}
 }
 
-const renderNode = ({
-	attributes,
-	children,
-	element,
-}: {
-	attributes: any;
-	children: any;
-	element: any;
-}) => {
+const renderNode = (
+	{
+		attributes,
+		children,
+		element,
+	}: {
+		attributes: any;
+		children: any;
+		element: any;
+	},
+	editor: Editor
+) => {
 	switch (
 		element.type // Changed 'node.type' to 'element.type'
 	) {
 		case "paragraph":
-			return <Paragraph {...attributes}>{children}</Paragraph>;
+			return (
+				<Paragraph
+					{...attributes}
+					editor={editor}
+					node={element}
+				>
+					{children}
+				</Paragraph>
+			);
 		case "text":
 			return <span {...attributes}>{children}</span>;
 		case "container":
@@ -57,23 +68,6 @@ const SlateEditor = ({
 	readOnly: boolean;
 }) => {
 	const editor = withReact(createEditor());
-
-	let i = 0;
-
-	const addSubItem = (nodeIndex: number) => {
-		const newSubItem = {
-			type: "sub-item",
-			children: [{ text: "Sub item " + i++ }],
-		};
-
-		const path = [nodeIndex, 1];
-		const items = editor.children[path[0]].children[path[1]].children;
-
-		// Insert the new sub-item node at the end of the container's children
-		Transforms.insertNodes(editor, newSubItem, {
-			at: path.concat([items.length]),
-		});
-	};
 
 	const newline = (e: KeyboardEvent) => {
 		if (e.key === "Enter") {
@@ -115,17 +109,10 @@ const SlateEditor = ({
 			>
 				<Editable
 					className={className}
-					renderElement={renderNode}
+					renderElement={(props) => renderNode({ ...props }, editor)}
 					onKeyDown={newline}
 					readOnly={readOnly}
 				/>
-				<button
-					onClick={() => {
-						addSubItem(1);
-					}}
-				>
-					Add Sub-Item
-				</button>
 			</Slate>
 		</NoSSR>
 	);

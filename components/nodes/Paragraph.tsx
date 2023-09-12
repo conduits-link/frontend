@@ -4,7 +4,10 @@ import RootNode from "./Root";
 
 const Paragraph = (props: any) => {
 	return (
-		<RootNode>
+		<RootNode
+			editor={props.editor}
+			node={props.node}
+		>
 			<p {...props.attributes}>{props.children}</p>
 		</RootNode>
 	);

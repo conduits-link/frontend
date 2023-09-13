@@ -102,6 +102,7 @@ const SlateEditor = ({
 			<Slate
 				editor={editor}
 				initialValue={initialValue}
+				onChange={(document) => {}}
 			>
 				<Editable
 					className={className}

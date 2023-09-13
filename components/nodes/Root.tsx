@@ -25,28 +25,30 @@ const RootNode = ({
 	const getPath = () => ReactEditor.findPath(editor, node)[0];
 
 	const addIdea = (newIdea: string) => {
-		const newSubItem = {
+		const idea = {
 			type: "sub-item",
-			children: [{ text: "Sub item " }],
+			children: [{ text: newIdea }],
 		};
 
-		if (Node.children(node, [getPath()]).length > 1) {
-			console.log("more than one child");
+		const container = {
+			type: "container",
+			children: [idea],
+		};
+
+		if (Node.has(node, [1])) {
+			// If there are already ideas, add the new idea to the end of the list
+			Transforms.insertNodes(editor, idea, {
+				at: [getPath(), 1, [...Node.children(node, [1])].length],
+			});
 		} else {
-			console.log("only one child");
+			// If there are no ideas, create the container and add the idea
+			Transforms.insertNodes(editor, container, { at: [getPath(), 1] });
 		}
-
-		// const nestPath: number[] = [getPath(), 1];
-		// const items = editor.children[nestPath[0]].children[nestPath[1]].children;
-
-		// Transforms.insertNodes(editor, newSubItem, {
-		// 	at: nestPath.concat([items.length]),
-		// });
 	};
 
 	const handleRequest = () => {
 		setShowPromptMenu(false);
-		return Node.get(node, [getPath(), 0]).text;
+		return Node.get(node, [0]).text;
 	};
 
 	const handleResponse = (answer: string) => {

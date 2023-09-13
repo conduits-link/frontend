@@ -1,6 +1,6 @@
 .container {
 	width: 100%;
-	height: var(--header-height);
+	height: 6.5em;
 	padding: var(--spacing-large);
 	box-sizing: border-box;
 	display: flex;

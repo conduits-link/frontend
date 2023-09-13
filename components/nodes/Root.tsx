@@ -7,10 +7,12 @@ import styles from "./Root.module.css";
 
 const RootNode = ({
 	children,
+	promptResponses,
 	editor,
 	node,
 }: {
 	children: React.ReactNode;
+	promptResponses?: any;
 	editor: Editor;
 	node: Node;
 }) => {
@@ -34,11 +36,9 @@ const RootNode = ({
 	return (
 		<div className={styles.container}>
 			<div className={styles.element}>
-				<div contentEditable={false}>
-					<button>hello there</button>
-				</div>
 				<div>{children}</div>
-				<button onClick={addSubItem}>Add Sub-Item</button>
+				<div>prompt responses... {promptResponses}</div>
+				{/* <button onClick={addSubItem}>Add Sub-Item</button> */}
 			</div>
 		</div>
 	);

@@ -14,7 +14,7 @@ export default function Button({
 	onBlur,
 	children,
 }: {
-	className: string;
+	className?: string;
 	onClick?: React.MouseEventHandler;
 	onMouseEnter?: React.MouseEventHandler;
 	onMouseOver?: React.MouseEventHandler;

@@ -84,10 +84,6 @@ const SlateEditor = ({
 							type: "text",
 							children: [{ text: "" }],
 						},
-						{
-							type: "container",
-							children: [],
-						},
 					],
 				};
 

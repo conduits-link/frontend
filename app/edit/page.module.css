@@ -17,10 +17,10 @@
 	outline: none;
 }
 
-.page h1:first-child,
-.page h2:first-child,
-.page h3:first-child,
-.page p:first-child {
+.page h1:first-of-type,
+.page h2:first-of-type,
+.page h3:first-of-type,
+.page p:first-of-type {
 	margin-top: 0;
 }
 

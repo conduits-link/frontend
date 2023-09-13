@@ -1,5 +1,23 @@
 .container {
+	width: 12em;
+	padding: var(--spacing-small);
+	gap: var(--spacing-small);
 	display: flex;
 	flex-direction: column;
+	border-radius: 0 var(--border-radius-large) var(--border-radius-large) 0;
+	border: 2px solid var(--color-secondary-400);
+	background-color: transparent;
+	backdrop-filter: blur(6px);
+	overflow: hidden;
+	box-sizing: border-box;
+	cursor: pointer;
+}
+
+.container::before {
+	content: "";
+	position: absolute;
+	inset: 0;
 	background-color: var(--color-primary-100);
+	opacity: 0.85;
+	z-index: -1;
 }

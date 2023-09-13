@@ -7,7 +7,7 @@ const Paragraph = (props: any) => {
 
 	return (
 		<RootNode
-			promptResponses={childrenArray[1]}
+			ideas={childrenArray[1]}
 			editor={props.editor}
 			node={props.node}
 		>

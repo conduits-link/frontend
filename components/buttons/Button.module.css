@@ -1,7 +1,7 @@
 .element {
-	width: 3.85rem;
-	height: 2.65rem;
-	padding: 0;
+	/* width: 3.85rem;
+	height: 2.65rem; */
+	padding: var(--spacing-small);
 	border: none;
 	display: flex;
 	justify-content: center;

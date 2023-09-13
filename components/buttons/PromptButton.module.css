@@ -1,8 +1,5 @@
 .element {
-	width: fit-content;
-	min-width: 100%;
-	height: fit-content;
-	padding: var(--spacing-small);
-	display: block;
+	width: 100%;
+	justify-content: flex-start;
 	text-align: left;
 }

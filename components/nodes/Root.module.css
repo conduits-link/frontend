@@ -4,5 +4,58 @@
 .element {
 	width: var(--editor-width);
 	margin: 0 auto;
-	background-color: green;
+}
+
+.content {
+	position: relative;
+}
+
+.contentToolbarLeft {
+	--width: 2em;
+	width: var(--width);
+	padding-right: var(--spacing-small);
+	position: absolute;
+	inset: 0 auto 0 calc((var(--width) + 2 * var(--spacing-small)
+	+ 2px) * -1);
+	border-right: 2px solid var(--color-secondary-400);
+}
+
+.button {
+	width: 100%;
+	padding: 0;
+	aspect-ratio: 1/1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: var(--border-radius-large);
+	border: 2px solid var(--color-secondary-400);
+	background-color: transparent;
+	backdrop-filter: blur(6px);
+	overflow: hidden;
+	box-sizing: border-box;
+	cursor: pointer;
+}
+
+.button::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background-color: var(--color-primary-100);
+	opacity: 0.6;
+	z-index: -1;
+}
+
+.button:active {
+	transform: scale(0.95);
+}
+
+.button svg {
+	font-size: 0.95rem;
+	color: var(--color-secondary-100);
+}
+
+.menuPrompt {
+	position: absolute;
+	top: 0;
+	left: 100%;
 }

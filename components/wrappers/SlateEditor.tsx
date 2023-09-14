@@ -7,6 +7,8 @@ import { BaseEditor } from "slate";
 import { ReactEditor } from "slate-react";
 import NoSSR from "./NoSSR";
 import Paragraph from "@/components/nodes/Paragraph";
+import IdeaContainer from "../nodes/IdeaContainer";
+import Idea from "../nodes/Idea";
 
 // Slate.js types
 type CustomElement = {
@@ -37,6 +39,28 @@ const renderNode = (
 	switch (
 		element.type // Changed 'node.type' to 'element.type'
 	) {
+		case "text":
+			return <span {...attributes}>{children}</span>;
+		case "idea-container":
+			return (
+				<IdeaContainer
+					{...attributes}
+					editor={editor}
+					node={element}
+				>
+					{children}
+				</IdeaContainer>
+			);
+		case "idea":
+			return (
+				<Idea
+					{...attributes}
+					editor={editor}
+					node={element}
+				>
+					{children}
+				</Idea>
+			);
 		case "paragraph":
 			return (
 				<Paragraph
@@ -47,12 +71,6 @@ const renderNode = (
 					{children}
 				</Paragraph>
 			);
-		case "text":
-			return <span {...attributes}>{children}</span>;
-		case "container":
-			return <div {...attributes}>{children}</div>;
-		case "sub-item":
-			return <div {...attributes}>{children}</div>;
 		default:
 			return null;
 	}

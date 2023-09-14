@@ -1,4 +1,4 @@
-import React, { EventHandler, MouseEventHandler } from "react";
+import React from "react";
 
 import { Editor, Node, Path, Range, Transforms } from "slate";
 import { ReactEditor } from "slate-react";
@@ -26,12 +26,12 @@ const RootNode = ({
 
 	const addIdea = (newIdea: string) => {
 		const idea = {
-			type: "sub-item",
+			type: "idea",
 			children: [{ text: newIdea }],
 		};
 
 		const container = {
-			type: "container",
+			type: "idea-container",
 			children: [idea],
 		};
 

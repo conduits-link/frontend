@@ -1,0 +1,18 @@
+.element {
+   padding: var(--spacing-large);
+   line-height: 1.85rem;
+   border-radius: var(--border-radius-large);
+	/* border: 2px solid var(--color-secondary-400); */
+	backdrop-filter: blur(6px);
+	overflow: hidden;
+	box-sizing: border-box;
+}
+
+.element::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background-color: var(--color-primary-100);
+	opacity: 0.6;
+	z-index: -1;
+}

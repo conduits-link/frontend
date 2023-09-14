@@ -1,13 +1,16 @@
-import React, { EventHandler, MouseEventHandler } from "react";
+import React from "react";
 
-const Idea = ({
-	children,
-	key,
-}: {
-	children: React.ReactNode;
-	key: number;
-}) => {
-	return <div key={key}>{children}</div>;
+import styles from "./Idea.module.css";
+
+const Idea = (props: any) => {
+	return (
+		<div
+			className={styles.element}
+			key={props.key}
+		>
+			{props.children}
+		</div>
+	);
 };
 
 export default Idea;

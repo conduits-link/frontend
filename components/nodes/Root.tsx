@@ -55,9 +55,14 @@ const RootNode = ({
 		addIdea(answer);
 	};
 
+	const getContainerStyles = () => {
+		if (ideas) return styles.container + " " + styles.containerIdeas;
+		return styles.container;
+	};
+
 	return (
 		<div
-			className={styles.container}
+			className={getContainerStyles()}
 			onMouseEnter={() => setShowLeftToolbar(true)}
 			onMouseLeave={() => {
 				if (!showPromptMenu) setShowLeftToolbar(false);

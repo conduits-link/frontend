@@ -17,13 +17,6 @@
 	outline: none;
 }
 
-.page h1:first-of-type,
-.page h2:first-of-type,
-.page h3:first-of-type,
-.page p:first-of-type {
-	margin-top: 0;
-}
-
 .page h1 {
 	margin-bottom: 0;
 	font-weight: 900;
@@ -43,7 +36,7 @@
 }
 
 .page p {
-	margin-top: 0.65rem;
+	margin: 0;
 	font-size: 1.15rem;
 	line-height: 2.15rem;
 }

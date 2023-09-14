@@ -29,6 +29,8 @@ The power of LLMs brought to an interface.
    -  Search bar
    -  Drag and drop with option buttons to the side of nodes
    -  Add page columns to support different page layouts
+   -  `/create` page where template document prompts can be selected, or multiple files uploaded to be summarised/based-from/etc
+   -  Side panel for "Research this content"
 5. Spell/grammar checker
 6. Customisation
    -  Allow people to write their own prompts (in development, just use CSV/JSON)

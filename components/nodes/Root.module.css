@@ -1,4 +1,5 @@
-.container {
+.container:not(:first-child) {
+	margin-top: 1.85rem;
 }
 
 .containerIdeas .element {

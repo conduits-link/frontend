@@ -5,6 +5,8 @@ import DocumentBlock from "../menus/DocumentBlock";
 import { useEffect } from "react";
 
 export default function Paragraph({ node }: { node: Node }) {
+	const [c, setC] = useState(node.textContent);
+
 	return (
 		<NodeViewWrapper>
 			<DocumentBlock node={node}>

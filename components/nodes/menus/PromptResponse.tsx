@@ -14,7 +14,7 @@ export default function PromptResponse({
 			<button disabled={true}>Retry</button>
 			<button disabled={true}>Retry (with edits)</button>
 			<button disabled={true}>Prepend</button>
-			<button onClick={() => replace(children!.toString())}>Replace</button>
+			<button onClick={() => replace("this is a test")}>Replace</button>
 			<button disabled={true}>Insert</button>
 			<button disabled={true}>Append</button>
 			<button disabled={true}>Remove</button>

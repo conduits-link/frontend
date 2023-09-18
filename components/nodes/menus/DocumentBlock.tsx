@@ -15,13 +15,9 @@ import { get } from "http";
 
 export default function DocumentBlock({
 	node,
-	setC,
-	c,
 	children,
 }: {
 	node: Node;
-	c: string;
-	setC: React.Dispatch<React.SetStateAction<string>>;
 	children: React.ReactNode;
 }) {
 	const { content, setContent } = useEditorContext();
@@ -55,27 +51,37 @@ export default function DocumentBlock({
 		return childrenArray.indexOf(nodeParent!);
 	}
 
-	function splitHtmlElements(htmlString: string): string[] {
-		const regex = /(<[^>]+>[^<]*<\/[^>]+>|<[^>]+>)/g;
-		const elements = htmlString.match(regex) || [];
+	function replaceNthNode(
+		htmlString: string,
+		n: number,
+		newNodeString: string
+	): string {
+		const parser = new DOMParser();
+		const doc = parser.parseFromString(htmlString, "text/html");
 
-		return elements;
-	}
+		const nodes = Array.from(doc.body.childNodes);
+		if (n >= 0 && n < nodes.length) {
+			const targetNode = nodes[n];
 
-	function replaceHtml(html: string, newNode: string, index: number) {
-		const elements = splitHtmlElements(html);
-		elements[index] = newNode;
-		return elements.join("");
+			const newNodeDoc = parser.parseFromString(newNodeString, "text/html");
+			const newNode = newNodeDoc.body.firstChild;
+
+			if (newNode) {
+				targetNode.parentNode?.replaceChild(newNode, targetNode);
+
+				const updatedHtmlString = new XMLSerializer().serializeToString(
+					doc
+				);
+				return updatedHtmlString;
+			}
+		}
+
+		return htmlString;
 	}
 
 	function replace(newContent: string) {
-		// var index = getChildIndex(containerRef.current!);
-		// setContent(replaceHtml(content, newContent, index));
-
-		setC(newContent);
-		setPromptResponses(
-			promptResponses.filter((response) => response !== newContent)
-		);
+		var index = getChildIndex(containerRef.current!);
+		console.log(replaceNthNode(content, index, newContent));
 	}
 
 	return (
@@ -106,7 +112,6 @@ export default function DocumentBlock({
 											return (
 												<PromptButton
 													prompt={prompt.prompt}
-													input={c}
 													onClick={handlePromptRequest}
 													handleResponse={handlePromptResponse}
 													key={prompt.name}

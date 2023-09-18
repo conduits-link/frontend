@@ -1,6 +1,7 @@
 import React from "react";
 
-import { Editor, Node, Path, Transforms } from "slate";
+import { Editor, Node, Transforms } from "slate";
+import { ReactEditor } from "slate-react";
 
 import {
 	TbColumnInsertLeft,
@@ -14,7 +15,7 @@ import {
 } from "react-icons/tb";
 
 import styles from "./Idea.module.css";
-import { ReactEditor } from "slate-react";
+import sendFetch, { ApiResponse } from "@/utils/fetch";
 
 const Idea = (props: any) => {
 	const { editor, node } = props;
@@ -32,6 +33,36 @@ const Idea = (props: any) => {
 				},
 			],
 		};
+	};
+
+	const retryWithNodeContent = () => {
+		const path = getPath();
+		path.push(0);
+
+		Transforms.delete(editor, { at: path });
+
+		const input = Node.string(Editor.node(editor, [getParentIndex(), 0])[0]);
+
+		sendFetch("/api", "POST", "", { prompt, input }).then((res) => {
+			const content = (res as ApiResponse).answer;
+
+			Transforms.insertText(editor, content, { at: path });
+		});
+	};
+
+	const retryWithIdeaContent = () => {
+		const path = getPath();
+		path.push(0);
+
+		Transforms.delete(editor, { at: path });
+
+		const input = Node.string(Editor.node(editor, getPath())[0]);
+
+		sendFetch("/api", "POST", "", { prompt, input }).then((res) => {
+			const content = (res as ApiResponse).answer;
+
+			Transforms.insertText(editor, content, { at: path });
+		});
 	};
 
 	const prependNode = () => {
@@ -93,16 +124,19 @@ const Idea = (props: any) => {
 
 	return (
 		<div className={styles.container}>
-			<div className={styles.containerButtons}>
+			<div
+				className={styles.containerButtons}
+				contentEditable={false}
+			>
 				<button
 					className={styles.buttonAction}
-					disabled={true}
+					onClick={retryWithNodeContent}
 				>
 					<TbReload />
 				</button>
 				<button
 					className={styles.buttonAction}
-					disabled={true}
+					onClick={retryWithIdeaContent}
 				>
 					<TbRotateClockwise2 />
 				</button>

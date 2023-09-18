@@ -24,3 +24,9 @@ export default function sendFetch(
 			});
 	});
 }
+
+interface ApiResponse {
+	answer: string;
+}
+
+export type { ApiResponse };

@@ -1,13 +1,9 @@
 import { ReactNode } from "react";
 
-import sendFetch from "../../utils/fetch";
+import sendFetch, { ApiResponse } from "../../utils/fetch";
 import Button from "./Button";
 
 import styles from "./PromptButton.module.css";
-
-interface ApiResponse {
-	answer: string;
-}
 
 export default function PromptButton({
 	prompt,

@@ -2,6 +2,17 @@ import React from "react";
 
 import { Editor, Node, Path, Transforms } from "slate";
 
+import {
+	TbColumnInsertLeft,
+	TbColumnInsertRight,
+	TbReload,
+	TbReplace,
+	TbRotateClockwise,
+	TbRowInsertBottom,
+	TbRowInsertTop,
+	TbTrashX,
+} from "react-icons/tb";
+
 import styles from "./Idea.module.css";
 import { ReactEditor } from "slate-react";
 
@@ -23,13 +34,13 @@ const Idea = (props: any) => {
 		};
 	};
 
-	const prepend = () => {
+	const prependNode = () => {
 		remove();
 
 		Transforms.insertNodes(editor, getNewNode(), { at: [getParentIndex()] });
 	};
 
-	const append = () => {
+	const appendNode = () => {
 		remove();
 
 		Transforms.insertNodes(editor, getNewNode(), {
@@ -47,7 +58,20 @@ const Idea = (props: any) => {
 		Transforms.insertText(editor, content, { at: path });
 	};
 
-	const insert = () => {
+	const prependText = () => {
+		remove();
+
+		const content = Node.string(node).concat(
+			" ",
+			Node.string(Editor.node(editor, [getParentIndex(), 0])[0])
+		);
+		const path = [getParentIndex(), 0, 0];
+
+		Transforms.delete(editor, { at: path });
+		Transforms.insertText(editor, content, { at: path });
+	};
+
+	const appendText = () => {
 		remove();
 
 		const content = Node.string(
@@ -70,13 +94,30 @@ const Idea = (props: any) => {
 	return (
 		<div className={styles.container}>
 			<div className={styles.containerButtons}>
-				<button>Retry</button>
-				<button>Retry with edits</button>
-				<button onClick={prepend}>Prepend</button>
-				<button onClick={replace}>Replace</button>
-				<button onClick={insert}>Insert</button>
-				<button onClick={append}>Append</button>
-				<button onClick={remove}>Remove</button>
+				<button disabled={true}>
+					<TbReload />
+				</button>
+				<button disabled={true}>
+					<TbRotateClockwise />
+				</button>
+				<button onClick={replace}>
+					<TbReplace />
+				</button>
+				<button onClick={prependNode}>
+					<TbRowInsertTop />
+				</button>
+				<button onClick={prependText}>
+					<TbColumnInsertLeft />
+				</button>
+				<button onClick={appendText}>
+					<TbColumnInsertRight />
+				</button>
+				<button onClick={appendNode}>
+					<TbRowInsertBottom />
+				</button>
+				<button onClick={remove}>
+					<TbTrashX />
+				</button>
 			</div>
 			<div
 				className={styles.element}

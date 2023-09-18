@@ -7,7 +7,7 @@ import {
 	TbColumnInsertRight,
 	TbReload,
 	TbReplace,
-	TbRotateClockwise,
+	TbRotateClockwise2,
 	TbRowInsertBottom,
 	TbRowInsertTop,
 	TbTrashX,
@@ -94,28 +94,52 @@ const Idea = (props: any) => {
 	return (
 		<div className={styles.container}>
 			<div className={styles.containerButtons}>
-				<button disabled={true}>
+				<button
+					className={styles.buttonAction}
+					disabled={true}
+				>
 					<TbReload />
 				</button>
-				<button disabled={true}>
-					<TbRotateClockwise />
+				<button
+					className={styles.buttonAction}
+					disabled={true}
+				>
+					<TbRotateClockwise2 />
 				</button>
-				<button onClick={replace}>
+				<button
+					className={styles.buttonAction}
+					onClick={replace}
+				>
 					<TbReplace />
 				</button>
-				<button onClick={prependNode}>
+				<button
+					className={styles.buttonAction}
+					onClick={prependNode}
+				>
 					<TbRowInsertTop />
 				</button>
-				<button onClick={prependText}>
+				<button
+					className={styles.buttonAction}
+					onClick={prependText}
+				>
 					<TbColumnInsertLeft />
 				</button>
-				<button onClick={appendText}>
+				<button
+					className={styles.buttonAction}
+					onClick={appendText}
+				>
 					<TbColumnInsertRight />
 				</button>
-				<button onClick={appendNode}>
+				<button
+					className={styles.buttonAction}
+					onClick={appendNode}
+				>
 					<TbRowInsertBottom />
 				</button>
-				<button onClick={remove}>
+				<button
+					className={styles.buttonAction}
+					onClick={remove}
+				>
 					<TbTrashX />
 				</button>
 			</div>

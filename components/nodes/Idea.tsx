@@ -23,23 +23,13 @@ const Idea = (props: any) => {
 	const getParentIndex = () => ReactEditor.findPath(editor, node)[0];
 	const getPath = () => ReactEditor.findPath(editor, node);
 
-	const getNewNode = () => {
-		return {
-			type: "paragraph",
-			children: [
-				{
-					type: "text",
-					children: [{ text: Node.string(node) }],
-				},
-			],
-		};
-	};
-
-	const replaceTextWithApiResponse = (prompt: string, input: string) => {
+	const replaceParentNodeTextWithApiResponse = (input: string) => {
 		const path = getPath();
 		path.push(0);
 
 		Transforms.delete(editor, { at: path });
+
+		const prompt = Editor.node(editor, getPath())[0].prompt;
 
 		sendFetch("/api", "POST", "", { prompt, input }).then((res) => {
 			const content = (res as ApiResponse).answer;
@@ -48,73 +38,74 @@ const Idea = (props: any) => {
 		});
 	};
 
-	const retryWithNodeContent = () => {
-		const prompt = Editor.node(editor, getPath())[0].prompt;
-		const input = Node.string(Editor.node(editor, [getParentIndex(), 0])[0]);
-		replaceTextWithApiResponse(prompt, input);
-	};
+	const setParentNodeText = (content: string) => {
+		removeThisNode();
 
-	const retryWithIdeaContent = () => {
-		const prompt = Editor.node(editor, getPath())[0].prompt;
-		const input = Node.string(Editor.node(editor, getPath())[0]);
-		replaceTextWithApiResponse(prompt, input);
-	};
-
-	const prependNode = () => {
-		remove();
-
-		Transforms.insertNodes(editor, getNewNode(), { at: [getParentIndex()] });
-	};
-
-	const appendNode = () => {
-		remove();
-
-		Transforms.insertNodes(editor, getNewNode(), {
-			at: [getParentIndex() + 1],
-		});
-	};
-
-	const replace = () => {
-		remove();
-
-		const content = Node.string(node);
 		const path = [getParentIndex(), 0, 0];
 
-		Transforms.delete(editor, { at: path });
 		Transforms.insertText(editor, content, { at: path });
 	};
 
-	const prependText = () => {
-		remove();
+	const insertNode = (path: number[]) => {
+		removeThisNode();
 
-		const content = Node.string(node).concat(
-			" ",
-			Node.string(Editor.node(editor, [getParentIndex(), 0])[0])
-		);
-		const path = [getParentIndex(), 0, 0];
+		const newNode = {
+			type: "paragraph",
+			children: [
+				{
+					type: "text",
+					children: [{ text: Node.string(node) }],
+				},
+			],
+		};
 
-		Transforms.delete(editor, { at: path });
-		Transforms.insertText(editor, content, { at: path });
+		Transforms.insertNodes(editor, newNode, { at: path });
 	};
 
-	const appendText = () => {
-		remove();
-
-		const content = Node.string(
-			Editor.node(editor, [getParentIndex(), 0])[0]
-		).concat(" ", Node.string(node));
-		const path = [getParentIndex(), 0, 0];
-
-		Transforms.delete(editor, { at: path });
-		Transforms.insertText(editor, content, { at: path });
-	};
-
-	const remove = () => {
+	const removeThisNode = () => {
 		const ideaContainer = Editor.node(editor, [getParentIndex(), 1])[0];
 		const empty = ideaContainer.children.length == 1;
 
 		if (empty) Transforms.delete(editor, { at: [getParentIndex(), 1] });
 		else Transforms.delete(editor, { at: getPath() });
+	};
+
+	const retryWithNodeContent = () => {
+		const input = Node.string(Editor.node(editor, [getParentIndex(), 0])[0]);
+		replaceParentNodeTextWithApiResponse(input);
+	};
+
+	const retryWithIdeaContent = () => {
+		const input = Node.string(Editor.node(editor, getPath())[0]);
+		replaceParentNodeTextWithApiResponse(input);
+	};
+
+	const prependNode = () => {
+		insertNode([getParentIndex()]);
+	};
+
+	const appendNode = () => {
+		insertNode([getParentIndex() + 1]);
+	};
+
+	const replace = () => {
+		setParentNodeText(Node.string(node));
+	};
+
+	const prependText = () => {
+		const parentNodeContent = Node.string(
+			Editor.node(editor, [getParentIndex(), 0])[0]
+		);
+		const content = Node.string(node).concat(" ", parentNodeContent);
+		setParentNodeText(content);
+	};
+
+	const appendText = () => {
+		const parentNodeContent = Node.string(
+			Editor.node(editor, [getParentIndex(), 0])[0]
+		);
+		const content = parentNodeContent.concat(" ", Node.string(node));
+		setParentNodeText(content);
 	};
 
 	return (
@@ -167,7 +158,7 @@ const Idea = (props: any) => {
 				</button>
 				<button
 					className={styles.buttonAction}
-					onClick={remove}
+					onClick={removeThisNode}
 				>
 					<TbTrashX />
 				</button>

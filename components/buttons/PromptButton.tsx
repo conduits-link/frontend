@@ -13,14 +13,14 @@ export default function PromptButton({
 }: {
 	prompt: string;
 	handleRequest: () => string;
-	handleResponse: (response: string) => void;
+	handleResponse: (response: ApiResponse) => void;
 	children: ReactNode;
 }) {
 	function infer(e: React.MouseEvent) {
 		const input: string = handleRequest();
 
 		sendFetch("/api", "POST", "", { prompt, input }).then((res) =>
-			handleResponse((res as ApiResponse).answer)
+			handleResponse(res as ApiResponse)
 		);
 	}
 

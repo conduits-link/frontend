@@ -24,6 +24,8 @@ export async function POST(request: NextRequest) {
 	const toSend = prompt + "\n'" + input + "'";
 
 	return NextResponse.json({
+		prompt,
+		input,
 		answer:
 			"Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer congue condimentum augue, ut laoreet nunc vulputate eu. Aenean scelerisque tortor nec ligula tincidunt auctor. Donec in mi sed tellus fringilla ultrices at in elit. Suspendisse potenti. Vivamus accumsan venenatis orci, id venenatis ante suscipit a. Suspendisse at metus non arcu sagittis facilisis. Quisque hendrerit ac libero non bibendum.",
 	});

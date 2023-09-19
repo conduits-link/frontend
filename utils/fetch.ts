@@ -26,6 +26,8 @@ export default function sendFetch(
 }
 
 interface ApiResponse {
+	prompt: string;
+	input: string;
 	answer: string;
 }
 

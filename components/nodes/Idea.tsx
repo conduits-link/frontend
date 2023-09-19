@@ -35,13 +35,11 @@ const Idea = (props: any) => {
 		};
 	};
 
-	const retryWithNodeContent = () => {
+	const replaceTextWithApiResponse = (prompt: string, input: string) => {
 		const path = getPath();
 		path.push(0);
 
 		Transforms.delete(editor, { at: path });
-
-		const input = Node.string(Editor.node(editor, [getParentIndex(), 0])[0]);
 
 		sendFetch("/api", "POST", "", { prompt, input }).then((res) => {
 			const content = (res as ApiResponse).answer;
@@ -50,19 +48,16 @@ const Idea = (props: any) => {
 		});
 	};
 
+	const retryWithNodeContent = () => {
+		const prompt = Editor.node(editor, getPath())[0].prompt;
+		const input = Node.string(Editor.node(editor, [getParentIndex(), 0])[0]);
+		replaceTextWithApiResponse(prompt, input);
+	};
+
 	const retryWithIdeaContent = () => {
-		const path = getPath();
-		path.push(0);
-
-		Transforms.delete(editor, { at: path });
-
+		const prompt = Editor.node(editor, getPath())[0].prompt;
 		const input = Node.string(Editor.node(editor, getPath())[0]);
-
-		sendFetch("/api", "POST", "", { prompt, input }).then((res) => {
-			const content = (res as ApiResponse).answer;
-
-			Transforms.insertText(editor, content, { at: path });
-		});
+		replaceTextWithApiResponse(prompt, input);
 	};
 
 	const prependNode = () => {

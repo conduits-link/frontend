@@ -7,6 +7,8 @@ import FixedFormatMenu from "@/components/menus/FixedFormatMenu";
 import SlateEditor from "@/components/wrappers/SlateEditor";
 
 import styles from "./page.module.css";
+import { withReact } from "slate-react";
+import { createEditor } from "slate";
 
 const initialValue = [
 	{
@@ -44,6 +46,8 @@ const Edit = () => {
 		setMode(newMode);
 	}
 
+	const editor = withReact(createEditor());
+
 	return (
 		<div className={styles.container}>
 			<NavigationMenu
@@ -51,11 +55,12 @@ const Edit = () => {
 				switchMode={switchMode}
 			/>
 			<SlateEditor
+				editor={editor}
 				className={styles.page}
 				initialValue={initialValue}
 				readOnly={mode !== "edit"}
 			/>
-			{mode !== "preview" && <FixedFormatMenu />}
+			{mode !== "preview" && <FixedFormatMenu editor={editor} />}
 		</div>
 	);
 };

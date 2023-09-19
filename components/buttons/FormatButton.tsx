@@ -1,8 +1,14 @@
-import { ReactNode } from "react";
+import { EventHandler, ReactNode } from "react";
+
+import { Editor, Node, Transforms } from "slate";
+
+import { CustomEditor } from "@/utils/editor";
 
 import Button from "./Button";
 
 export default function FormatButton({
+	editor,
+	nodeType,
 	className,
 	onClick,
 	onMouseEnter,
@@ -14,6 +20,8 @@ export default function FormatButton({
 	onBlur,
 	children,
 }: {
+	editor: Editor;
+	nodeType: string;
 	className: string;
 	onClick?: React.MouseEventHandler;
 	onMouseEnter?: React.MouseEventHandler;
@@ -28,7 +36,10 @@ export default function FormatButton({
 	return (
 		<Button
 			className={className}
-			onClick={onClick}
+			onClick={(e) => {
+				e.preventDefault();
+				CustomEditor.toggleHeading(editor);
+			}}
 			onMouseEnter={onMouseEnter}
 			onMouseOver={onMouseOver}
 			onMouseDown={onMouseDown}

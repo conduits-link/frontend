@@ -9,8 +9,9 @@ import NoSSR from "./NoSSR";
 import Paragraph from "@/components/nodes/Paragraph";
 import IdeaContainer from "../nodes/IdeaContainer";
 import Idea from "../nodes/Idea";
+import { CustomEditor, renderElement } from "@/utils/editor";
 
-// Slate.js types
+// Slate.js types - I THINK THESE SHOULD BE USED TO REDUCE ERRORS
 type CustomElement = {
 	type: "paragraph" | "container" | "sub-item";
 	children: CustomText[];
@@ -24,93 +25,58 @@ declare module "slate" {
 	}
 }
 
-const renderNode = (
-	{
-		attributes,
-		children,
-		element,
-	}: {
-		attributes: any;
-		children: any;
-		element: any;
-	},
-	editor: Editor
-) => {
-	switch (
-		element.type // Changed 'node.type' to 'element.type'
-	) {
-		case "text":
-			return <span {...attributes}>{children}</span>;
-		case "idea-container":
-			return (
-				<IdeaContainer
-					{...attributes}
-					editor={editor}
-					node={element}
-				>
-					{children}
-				</IdeaContainer>
-			);
-		case "idea":
-			return (
-				<Idea
-					{...attributes}
-					editor={editor}
-					node={element}
-				>
-					{children}
-				</Idea>
-			);
-		case "paragraph":
-			return (
-				<Paragraph
-					{...attributes}
-					editor={editor}
-					node={element}
-				>
-					{children}
-				</Paragraph>
-			);
-		default:
-			return null;
-	}
-};
-
 const SlateEditor = ({
+	editor,
 	className,
 	initialValue,
 	readOnly,
 }: {
+	editor: Editor;
 	className?: string;
 	initialValue: any;
 	readOnly: boolean;
 }) => {
-	const editor = withReact(createEditor());
+	const keypress = (e: KeyboardEvent) => {
+		e.preventDefault();
 
-	const newline = (e: KeyboardEvent) => {
-		if (e.key === "Enter") {
-			e.preventDefault();
+		switch (e.key) {
+			case "Enter": {
+				e.preventDefault();
 
-			const selection = editor.selection;
-			if (selection) {
-				const topLevelNode = selection.anchor.path[0];
+				const selection = editor.selection;
+				if (selection) {
+					const topLevelNode = selection.anchor.path[0];
 
-				const newItem = {
-					type: "paragraph",
-					children: [
-						{
-							type: "text",
-							children: [{ text: "" }],
-						},
-					],
-				};
+					const newItem = {
+						type: "paragraph",
+						children: [
+							{
+								type: "text",
+								children: [{ text: "" }],
+							},
+						],
+					};
 
-				// Insert the new sub-item node at the end of the container's children
-				Transforms.insertNodes(editor, newItem, {
-					at: [topLevelNode + 1],
-				});
+					// Insert the new sub-item node at the end of the container's children
+					Transforms.insertNodes(editor, newItem, {
+						at: [topLevelNode + 1],
+					});
 
-				Transforms.select(editor, [topLevelNode + 1]);
+					Transforms.select(editor, [topLevelNode + 1]);
+				}
+
+				break;
+			}
+		}
+
+		if (!e.ctrlKey) {
+			return;
+		}
+
+		switch (e.key) {
+			case "h": {
+				CustomEditor.toggleHeading(editor);
+				break;
 			}
 		}
 	};
@@ -124,8 +90,8 @@ const SlateEditor = ({
 			>
 				<Editable
 					className={className}
-					renderElement={(props) => renderNode({ ...props }, editor)}
-					onKeyDown={newline}
+					renderElement={(props) => renderElement({ ...props }, editor)}
+					onKeyDown={keypress}
 					readOnly={readOnly}
 				/>
 			</Slate>

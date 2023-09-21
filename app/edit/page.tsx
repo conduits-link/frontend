@@ -12,6 +12,10 @@ import { createEditor } from "slate";
 
 const initialValue = [
 	{
+		type: "heading",
+		children: [{ text: "The Village" }],
+	},
+	{
 		type: "paragraph",
 		children: [
 			{

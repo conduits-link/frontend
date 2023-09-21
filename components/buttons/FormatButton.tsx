@@ -38,7 +38,7 @@ export default function FormatButton({
 			className={className}
 			onClick={(e) => {
 				e.preventDefault();
-				CustomEditor.toggleHeading(editor);
+				CustomEditor.toggleNodeType(nodeType, editor);
 			}}
 			onMouseEnter={onMouseEnter}
 			onMouseOver={onMouseOver}

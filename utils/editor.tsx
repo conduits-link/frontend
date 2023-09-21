@@ -1,7 +1,7 @@
 import Idea from "@/components/nodes/Idea";
 import IdeaContainer from "@/components/nodes/IdeaContainer";
 import Paragraph from "@/components/nodes/Paragraph";
-import { Editor, Node, Transforms } from "slate";
+import { Editor, Node, Range, Transforms } from "slate";
 
 const renderElement = (
 	{
@@ -58,21 +58,27 @@ const renderElement = (
 };
 
 const CustomEditor = {
-	isHeading(editor: Editor) {
-		const [match] = Editor.nodes(editor, {
-			match: (n) => n.type === "heading",
-		});
+	toggleNodeType(nodeType: string, editor: Editor, path?: number[]) {
+		var actualPath: number[] = [];
+		if (typeof path !== "undefined") actualPath = path;
+		else {
+			const currentSelection = editor.selection;
+			if (currentSelection) {
+				const [start] = Range.edges(currentSelection);
+				actualPath = [start.path[0]];
+			}
+		}
 
-		return !!match;
-	},
-	toggleHeading(editor: Editor) {
-		const isActive = CustomEditor.isHeading(editor);
-		Transforms.setNodes(
-			editor,
-			{ type: isActive ? "paragraph" : "heading" },
-			{ match: (n) => Editor.isBlock(editor, n) }
-		);
-		console.log(editor.children);
+		if (actualPath) {
+			const node = Editor.node(editor, actualPath)[0];
+			const isActive = node.type == nodeType;
+
+			Transforms.setNodes(
+				editor,
+				{ type: isActive ? "paragraph" : nodeType },
+				{ at: actualPath }
+			);
+		}
 	},
 };
 

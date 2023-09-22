@@ -1,12 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { Configuration, OpenAIApi } from "openai";
-
-const configuration = new Configuration({
-	apiKey: process.env.OPENAI_API_KEY,
-});
-const openai = new OpenAIApi(configuration);
-
 async function getAiResponse(prompt: string) {
 	const response = await fetch("https://api.openai.com/v1/chat/completions", {
 		method: "POST",
@@ -22,7 +15,7 @@ async function getAiResponse(prompt: string) {
 			frequency_penalty: 0,
 			presence_penalty: 0,
 			max_tokens: 200,
-			stream: false,
+			stream: false, // use instead of loading icon
 			n: 1,
 		}),
 	});

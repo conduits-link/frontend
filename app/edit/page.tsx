@@ -14,7 +14,7 @@ const initialValue = [
 	{
 		type: "heading",
 		level: 1,
-		children: [{ text: "The Village" }],
+		children: [{ text: "Quantum Entanglement" }],
 	},
 	{
 		type: "paragraph",
@@ -23,7 +23,7 @@ const initialValue = [
 				type: "text",
 				children: [
 					{
-						text: "In the heart of a charming village nestled between rolling hills, life unfolded at a leisurely pace. The cobblestone streets wound their way through rows of quaint cottages, each adorned with vibrant flower gardens that spilled color onto the sidewalks. The town square buzzed with activity as vendors set up their stalls, showcasing an array of artisanal crafts and locally grown produce. Children's laughter echoed from the nearby park, where a graceful willow tree provided shade for families enjoying a leisurely afternoon. The scent of freshly baked bread wafted from the bakery, enticing passersby with promises of warmth and comfort.",
+						text: "Quantum entanglement, a perplexing phenomenon within the domain of quantum physics, transpires when two or more particles intricately intertwine to such an extent that the individual state of any given particle cannot be autonomously delineated in isolation from the state of its entangled counterparts, regardless of the formidable spatial expanse segregating them. This enigmatic occurrence, often elucidated by the renowned Albert Einstein as an eerie manifestation of action transpiring at a remote distance, begets the extraordinary consequence that upon the measurement of one entangled particle, its innate properties, including spin and polarization, instantaneously manifest a state of correlation with their corresponding attributes in the remote particle, even in circumstances where the measure of separation is on the order of light-years.",
 					},
 				],
 			},
@@ -36,7 +36,33 @@ const initialValue = [
 				type: "text",
 				children: [
 					{
-						text: "Underneath the canvas of a star-studded night sky, a different kind of magic emerged. A bonfire crackled and danced on the beach, casting a warm glow that drew people closer. Friends gathered in a circle, their faces illuminated by the flickering flames, sharing stories and marshmallows. The rhythmic sound of waves crashing against the shore provided a soothing backdrop to the symphony of laughter and conversation. Above, constellations painted intricate patterns across the heavens, igniting a sense of wonder and curiosity. As the night grew deeper, the sky transformed into a tapestry of inky blackness, allowing the brilliance of distant galaxies to capture the imagination of all who gazed upward.",
+						text: "Quantum entanglement has engendered an environment rife with intense scholarly scrutiny and spirited discourse within the annals of quantum physics. Its pragmatic pertinence extends into the realm of quantum computing and cryptology, wherein these entangled particles offer the tantalizing prospect of establishing secure channels of communication. Furthermore, it unflinchingly interrogates the foundations of our classical physics-based comprehension, proffering an incisive critique of our conventional intuitions about the ontological character of reality and the astonishing interwoven relationships between particles inhabiting the bewildering terrain of the quantum realm.",
+					},
+				],
+			},
+		],
+	},
+	{
+		type: "paragraph",
+		children: [
+			{
+				type: "text",
+				children: [
+					{
+						text: "Quantum entanglement has been a subject of intense study and debate among physicists. It has practical implications for quantum computing and cryptography, where entangled particles can be used to create secure communication channels. Additionally, it challenges our classical understanding of physics, raising questions about the nature of reality and the interconnectedness of particles in the quantum world.",
+					},
+				],
+			},
+		],
+	},
+	{
+		type: "paragraph",
+		children: [
+			{
+				type: "text",
+				children: [
+					{
+						text: "In summary, quantum entanglement is a mysterious and fundamental concept in quantum physics, where particles become interconnected in ways that defy classical intuition, with profound implications for technology and our understanding of the universe.",
 					},
 				],
 			},

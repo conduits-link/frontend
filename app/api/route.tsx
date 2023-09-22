@@ -36,8 +36,6 @@ export async function POST(request: NextRequest) {
 	const toSend = prompt + "\n'" + input + "'";
 	const answer = await getAiResponse(toSend);
 
-	// console.log(answer);
-
 	return NextResponse.json({
 		prompt,
 		input,

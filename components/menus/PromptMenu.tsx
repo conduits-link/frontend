@@ -2,6 +2,8 @@ import prompts from "@/utils/prompts";
 
 import PromptButton from "../buttons/PromptButton";
 
+import { ApiResponse } from "@/utils/fetch";
+
 import styles from "./PromptMenu.module.css";
 
 const PromptMenu = ({
@@ -11,7 +13,7 @@ const PromptMenu = ({
 }: {
 	className?: string;
 	handleRequest: () => string;
-	handleResponse: (response: string) => void;
+	handleResponse: (response: ApiResponse) => void;
 }) => {
 	return (
 		<div className={className + " " + styles.container}>

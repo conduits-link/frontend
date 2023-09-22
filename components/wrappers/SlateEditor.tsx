@@ -37,8 +37,6 @@ const SlateEditor = ({
 	readOnly: boolean;
 }) => {
 	const keypress = (e: KeyboardEvent) => {
-		e.preventDefault();
-
 		switch (e.key) {
 			case "Enter": {
 				e.preventDefault();
@@ -69,14 +67,14 @@ const SlateEditor = ({
 			}
 		}
 
-		if (!e.ctrlKey) {
-			return;
-		}
+		if (e.ctrlKey) {
+			e.preventDefault();
 
-		switch (e.key) {
-			case "h": {
-				CustomEditor.toggleHeading(editor);
-				break;
+			switch (e.key) {
+				case "b": {
+					console.log("bold");
+					break;
+				}
 			}
 		}
 	};

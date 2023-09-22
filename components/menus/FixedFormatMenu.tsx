@@ -3,6 +3,7 @@ import { Editor, Node } from "slate";
 import FormatButton from "../buttons/FormatButton";
 
 import styles from "./FixedFormatMenu.module.css";
+import { LuHeading1, LuHeading2, LuHeading3 } from "react-icons/lu";
 
 export default function FixedMenu({ editor }: { editor: Editor }) {
 	return (
@@ -14,7 +15,7 @@ export default function FixedMenu({ editor }: { editor: Editor }) {
 					options={{ level: 1 }}
 					className={""}
 				>
-					H1
+					<LuHeading1 />
 				</FormatButton>
 				<FormatButton
 					editor={editor}
@@ -22,7 +23,7 @@ export default function FixedMenu({ editor }: { editor: Editor }) {
 					options={{ level: 2 }}
 					className={""}
 				>
-					H2
+					<LuHeading2 />
 				</FormatButton>
 				<FormatButton
 					editor={editor}
@@ -30,7 +31,7 @@ export default function FixedMenu({ editor }: { editor: Editor }) {
 					options={{ level: 3 }}
 					className={""}
 				>
-					H3
+					<LuHeading3 />
 				</FormatButton>
 			</div>
 		</div>

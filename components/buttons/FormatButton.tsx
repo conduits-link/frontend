@@ -9,6 +9,7 @@ import Button from "./Button";
 export default function FormatButton({
 	editor,
 	nodeType,
+	options,
 	className,
 	onClick,
 	onMouseEnter,
@@ -22,6 +23,7 @@ export default function FormatButton({
 }: {
 	editor: Editor;
 	nodeType: string;
+	options?: any;
 	className: string;
 	onClick?: React.MouseEventHandler;
 	onMouseEnter?: React.MouseEventHandler;
@@ -38,7 +40,7 @@ export default function FormatButton({
 			className={className}
 			onClick={(e) => {
 				e.preventDefault();
-				CustomEditor.toggleNodeType(nodeType, editor);
+				CustomEditor.toggleNodeType(nodeType, editor, undefined, options);
 			}}
 			onMouseEnter={onMouseEnter}
 			onMouseOver={onMouseOver}

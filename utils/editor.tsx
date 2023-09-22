@@ -1,7 +1,9 @@
+import Heading from "@/components/nodes/Heading";
 import Idea from "@/components/nodes/Idea";
 import IdeaContainer from "@/components/nodes/IdeaContainer";
 import Paragraph from "@/components/nodes/Paragraph";
 import { Editor, Node, Range, Transforms } from "slate";
+import { areEquivalent } from "./helpers";
 
 const renderElement = (
 	{
@@ -51,14 +53,27 @@ const renderElement = (
 				</Paragraph>
 			);
 		case "heading":
-			return <h1 {...attributes}>{children}</h1>;
+			return (
+				<Heading
+					{...attributes}
+					editor={editor}
+					node={element}
+				>
+					{children}
+				</Heading>
+			);
 		default:
 			return null;
 	}
 };
 
 const CustomEditor = {
-	toggleNodeType(nodeType: string, editor: Editor, path?: number[]) {
+	toggleNodeType(
+		nodeType: string,
+		editor: Editor,
+		path?: number[],
+		options?: any
+	) {
 		var actualPath: number[] = [];
 		if (typeof path !== "undefined") actualPath = path;
 		else {
@@ -71,13 +86,25 @@ const CustomEditor = {
 
 		if (actualPath) {
 			const node = Editor.node(editor, actualPath)[0];
-			const isActive = node.type == nodeType;
-
-			Transforms.setNodes(
-				editor,
-				{ type: isActive ? "paragraph" : nodeType },
-				{ at: actualPath }
+			const currNodeOptions: any = { ...node };
+			delete currNodeOptions["children"];
+			const nodeToCompare = Object.assign(options, { type: nodeType });
+			const isActive: boolean = areEquivalent(
+				currNodeOptions,
+				nodeToCompare
 			);
+
+			if (isActive) {
+				Transforms.setNodes(editor, Object.assign({ type: "paragraph" }), {
+					at: actualPath,
+				});
+			} else {
+				Transforms.setNodes(
+					editor,
+					Object.assign({ type: nodeType }, options),
+					{ at: actualPath }
+				);
+			}
 		}
 	},
 };

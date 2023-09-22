@@ -11,9 +11,26 @@ export default function FixedMenu({ editor }: { editor: Editor }) {
 				<FormatButton
 					editor={editor}
 					nodeType={"heading"}
+					options={{ level: 1 }}
 					className={""}
 				>
-					H
+					H1
+				</FormatButton>
+				<FormatButton
+					editor={editor}
+					nodeType={"heading"}
+					options={{ level: 2 }}
+					className={""}
+				>
+					H2
+				</FormatButton>
+				<FormatButton
+					editor={editor}
+					nodeType={"heading"}
+					options={{ level: 3 }}
+					className={""}
+				>
+					H3
 				</FormatButton>
 			</div>
 		</div>

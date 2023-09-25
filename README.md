@@ -38,6 +38,34 @@ The power of LLMs brought to an interface.
    -  Profile pictures, friends, etc.
    -  Sharable, user-created prompt libraries.
 
+## Demo
+
+### Edit mode
+
+Edit mode allows users to edit the document node and text content.
+
+![Edit mode screenshot]("/public/demos/screenshot-mode-edit.png")
+
+### View mode
+
+View mode allows users to view their document without any obstructions or accidental edits.
+
+![View mode screenshot]("/public/demos/screenshot-mode-view.png")
+
+### Prompt menu
+
+There is a prompt menu associated with each node, that allows users to interact with an LLM via preset prompts.
+
+![Prompt menu screenshot]("/public/demos/screenshot-prompt-menu.png")
+
+### Prompt responses
+
+Responses to prompts for are collected underneath the node they were applied to.
+
+![Single prompt response screenshot]("/public/demos/screenshot-prompt-response-single.png")
+
+![Multiple prompt responses screenshot]("/public/demos/screenshot-prompt-response-multiple.png")
+
 ## Documentation
 
 -  [API reference](/docs/api.md)

@@ -1,6 +1,16 @@
 # Noteworthy
 
-The power of LLMs brought to an interface.
+Noteworthy is an LLM-based text editor, with an intuitive and powerful graphical user interface. Employ an AI assistant to help you write without typing any prompts!
+
+## Contents
+
+- [Demo](#demo)
+- [Documentation](#documentation)
+- [Run](#run)
+- [Planned features](#planned-features)
+
+_See [noteworthy-frontend](https://github.com/jhels/noteworthy-frontend/) and [noteworthy-backend](https://github.com/jhels/noteworthy-backend) for deployment of this technology._
+
 
 ## Demo
 

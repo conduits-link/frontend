@@ -44,27 +44,27 @@ The power of LLMs brought to an interface.
 
 Edit mode allows users to edit the document node and text content.
 
-![Edit mode screenshot]("/public/demos/screenshot-mode-edit.png")
+![Edit mode screenshot](/public/demos/screenshot-mode-edit.png "Edit mode")
 
 ### View mode
 
 View mode allows users to view their document without any obstructions or accidental edits.
 
-![View mode screenshot]("/public/demos/screenshot-mode-view.png")
+![View mode screenshot](/public/demos/screenshot-mode-view.png "View mode")
 
 ### Prompt menu
 
 There is a prompt menu associated with each node, that allows users to interact with an LLM via preset prompts.
 
-![Prompt menu screenshot]("/public/demos/screenshot-prompt-menu.png")
+![Prompt menu screenshot](/public/demos/screenshot-prompt-menu.png "Prompt menu")
 
 ### Prompt responses
 
 Responses to prompts for are collected underneath the node they were applied to.
 
-![Single prompt response screenshot]("/public/demos/screenshot-prompt-response-single.png")
+![Single prompt response screenshot](/public/demos/screenshot-prompt-response-single.png "Single prompt response")
 
-![Multiple prompt responses screenshot]("/public/demos/screenshot-prompt-response-multiple.png")
+![Multiple prompt responses screenshot](/public/demos/screenshot-prompt-response-multiple.png "Multiple prompt responses")
 
 ## Documentation
 

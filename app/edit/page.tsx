@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 
 import NavigationMenu from "@/components/menus/NavigationMenu";
 import FixedFormatMenu from "@/components/menus/FixedFormatMenu";
@@ -77,7 +77,8 @@ const Edit = () => {
 		setMode(newMode);
 	}
 
-	const editor = withReact(createEditor());
+	// Stop remounting from breaking Slate children prop
+	const editor = useMemo(() => withReact(createEditor()), []);
 
 	return (
 		<div className={styles.container}>
@@ -90,6 +91,7 @@ const Edit = () => {
 				className={styles.page}
 				initialValue={initialValue}
 				readOnly={mode !== "edit"}
+				mode={mode}
 			/>
 			{mode !== "preview" && <FixedFormatMenu editor={editor} />}
 		</div>

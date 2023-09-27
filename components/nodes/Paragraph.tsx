@@ -10,6 +10,7 @@ const Paragraph = (props: any) => {
 			ideas={childrenArray[1]}
 			editor={props.editor}
 			node={props.node}
+			mode={props.mode}
 		>
 			<p {...props.attributes}>{childrenArray[0]}</p>
 		</RootNode>

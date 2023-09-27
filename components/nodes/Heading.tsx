@@ -23,6 +23,7 @@ const Heading = (props: any) => {
 			ideas={childrenArray[1]}
 			editor={props.editor}
 			node={props.node}
+			mode={props.mode}
 		>
 			{getLevel()}
 		</RootNode>

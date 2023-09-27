@@ -30,11 +30,13 @@ const SlateEditor = ({
 	className,
 	initialValue,
 	readOnly,
+	mode,
 }: {
 	editor: Editor;
 	className?: string;
 	initialValue: any;
 	readOnly: boolean;
+	mode: string;
 }) => {
 	const keypress = (e: KeyboardEvent) => {
 		switch (e.key) {
@@ -88,7 +90,9 @@ const SlateEditor = ({
 			>
 				<Editable
 					className={className}
-					renderElement={(props) => renderElement({ ...props }, editor)}
+					renderElement={(props) =>
+						renderElement({ ...props }, editor, mode)
+					}
 					onKeyDown={keypress}
 					readOnly={readOnly}
 				/>

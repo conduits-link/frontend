@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Editor, Node, Path, Range, Transforms } from "slate";
 import { ReactEditor } from "slate-react";
@@ -14,14 +14,24 @@ const RootNode = ({
 	ideas,
 	editor,
 	node,
+	mode,
 }: {
 	children: React.ReactNode;
 	ideas?: any;
 	editor: Editor;
 	node: Node;
+	mode: string;
 }) => {
 	const [showLeftToolbar, setShowLeftToolbar] = React.useState<boolean>(false);
 	const [showPromptMenu, setShowPromptMenu] = React.useState<boolean>(false);
+
+	const mouseEnter = () => {
+		if (mode == "edit") setShowLeftToolbar(true);
+	};
+
+	const mouseLeave = () => {
+		if (mode == "edit" && !showPromptMenu) setShowLeftToolbar(false);
+	};
 
 	const getPath = () => ReactEditor.findPath(editor, node)[0];
 
@@ -58,17 +68,21 @@ const RootNode = ({
 	};
 
 	const getContainerStyles = () => {
-		if (ideas) return styles.container + " " + styles.containerIdeas;
+		if (mode == "edit" && ideas)
+			return styles.container + " " + styles.containerIdeas;
 		return styles.container;
 	};
+
+	useEffect(() => {
+		setShowLeftToolbar(false);
+		setShowPromptMenu(false);
+	}, [mode]);
 
 	return (
 		<div
 			className={getContainerStyles()}
-			onMouseEnter={() => setShowLeftToolbar(true)}
-			onMouseLeave={() => {
-				if (!showPromptMenu) setShowLeftToolbar(false);
-			}}
+			onMouseEnter={mouseEnter}
+			onMouseLeave={mouseLeave}
 		>
 			<div className={styles.element}>
 				<div className={styles.content}>
@@ -94,7 +108,7 @@ const RootNode = ({
 					)}
 					{children}
 				</div>
-				{ideas}
+				{mode == "edit" && ideas}
 			</div>
 		</div>
 	);

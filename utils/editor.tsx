@@ -15,7 +15,8 @@ const renderElement = (
 		children: any;
 		element: any;
 	},
-	editor: Editor
+	editor: Editor,
+	mode: string
 ) => {
 	switch (
 		element.type // Changed 'node.type' to 'element.type'
@@ -28,6 +29,7 @@ const renderElement = (
 					{...attributes}
 					editor={editor}
 					node={element}
+					mode={mode}
 				>
 					{children}
 				</IdeaContainer>
@@ -38,6 +40,7 @@ const renderElement = (
 					{...attributes}
 					editor={editor}
 					node={element}
+					mode={mode}
 				>
 					{children}
 				</Idea>
@@ -48,6 +51,7 @@ const renderElement = (
 					{...attributes}
 					editor={editor}
 					node={element}
+					mode={mode}
 				>
 					{children}
 				</Paragraph>
@@ -58,6 +62,7 @@ const renderElement = (
 					{...attributes}
 					editor={editor}
 					node={element}
+					mode={mode}
 				>
 					{children}
 				</Heading>

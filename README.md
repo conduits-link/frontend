@@ -2,13 +2,43 @@
 
 Noteworthy is an LLM-based text editor, with an intuitive and powerful graphical user interface. Employ an AI assistant to help you write without typing any prompts!
 
-Demo screenshots and video coming soon.
+## Contents
 
-* See [noteworthy-frontend](https://github.com/jhels/noteworthy-frontend/) and [noteworthy-backend](https://github.com/jhels/noteworthy-backend) for a deployment of this technology.
+- [Demo](#demo)
+- [Documentation](#documentation)
+- [Run](#run)
+- [Planned features](#planned-features)
+
+_See [noteworthy-frontend](https://github.com/jhels/noteworthy-frontend/) and [noteworthy-backend](https://github.com/jhels/noteworthy-backend) for deployment of this technology._
+
 
 ## Demo
 
+### Edit mode
 
+Edit mode allows users to edit the document node and text content.
+
+![Edit mode screenshot](/public/demos/screenshot-mode-edit.png "Edit mode")
+
+### View mode
+
+View mode allows users to view their document without any obstructions or accidental edits.
+
+![View mode screenshot](/public/demos/screenshot-mode-view.png "View mode")
+
+### Prompt menu
+
+There is a prompt menu associated with each node, that allows users to interact with an LLM via preset prompts.
+
+![Prompt menu screenshot](/public/demos/screenshot-prompt-menu.png "Prompt menu")
+
+### Prompt responses
+
+Responses to prompts for are collected underneath the node they were applied to.
+
+![Single prompt response screenshot](/public/demos/screenshot-prompt-response-single.png "Single prompt response")
+
+![Multiple prompt responses screenshot](/public/demos/screenshot-prompt-response-multiple.png "Multiple prompt responses")
 
 ## Documentation
 
@@ -35,7 +65,7 @@ npm run build
 npm run start
 ```
 
-## Incoming Features
+## Planned Features
 
 1. File upload
    -  Copy file content
@@ -52,7 +82,6 @@ npm run start
    -  Translate
    -  Generate todo list (steps required to complete something)
    -  Implement feedback (paste in the written feedback someone has given you)
-   -  Apply data (implement content based on data/information you have been given)
 3. Multimedia
    -  Summarise audio (from links)
    -  Create images/diagrams of content
@@ -63,6 +92,8 @@ npm run start
    -  Search bar
    -  Drag and drop with option buttons to the side of nodes
    -  Add page columns to support different page layouts
+   -  `/create` page where template document prompts can be selected, or multiple files uploaded to be summarised/based-from/etc
+   -  Side panel for "Research this content"
 5. Spell/grammar checker
 6. Customisation
    -  Allow people to write their own prompts (in development, just use CSV/JSON)

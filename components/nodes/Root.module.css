@@ -4,7 +4,7 @@
 
 .containerIdeas .element {
 	padding: var(--spacing-large);
-	border: 2px solid var(--color-secondary-400);
+	border: var(--border-container);
 	border-radius: var(--border-radius-large);
 }
 
@@ -38,21 +38,13 @@
 	align-items: center;
 	justify-content: center;
 	border-radius: var(--border-radius-large);
-	border: 2px solid var(--color-secondary-400);
+	border: var(--border-container);
+	background-color: var(--color-primary-100);
 	background-color: transparent;
 	backdrop-filter: blur(6px);
 	overflow: hidden;
 	box-sizing: border-box;
 	cursor: pointer;
-}
-
-.button::before {
-	content: "";
-	position: absolute;
-	inset: 0;
-	background-color: var(--color-primary-100);
-	opacity: 0.6;
-	z-index: -1;
 }
 
 .button:active {

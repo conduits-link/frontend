@@ -9,7 +9,7 @@ import NoSSR from "./NoSSR";
 import Paragraph from "@/components/nodes/Paragraph";
 import IdeaContainer from "../nodes/IdeaContainer";
 import Idea from "../nodes/Idea";
-import { CustomEditor, renderElement } from "@/utils/editor";
+import { CustomEditor, onType, renderElement } from "@/utils/editor";
 
 // Slate.js types - I THINK THESE SHOULD BE USED TO REDUCE ERRORS
 type CustomElement = {
@@ -38,49 +38,6 @@ const SlateEditor = ({
 	readOnly: boolean;
 	mode: string;
 }) => {
-	const keypress = (e: KeyboardEvent) => {
-		switch (e.key) {
-			case "Enter": {
-				e.preventDefault();
-
-				const selection = editor.selection;
-				if (selection) {
-					const topLevelNode = selection.anchor.path[0];
-
-					const newItem = {
-						type: "paragraph",
-						children: [
-							{
-								type: "text",
-								children: [{ text: "" }],
-							},
-						],
-					};
-
-					// Insert the new sub-item node at the end of the container's children
-					Transforms.insertNodes(editor, newItem, {
-						at: [topLevelNode + 1],
-					});
-
-					Transforms.select(editor, [topLevelNode + 1]);
-				}
-
-				break;
-			}
-		}
-
-		if (e.ctrlKey) {
-			e.preventDefault();
-
-			switch (e.key) {
-				case "b": {
-					console.log("bold");
-					break;
-				}
-			}
-		}
-	};
-
 	return (
 		<NoSSR>
 			<Slate
@@ -93,7 +50,7 @@ const SlateEditor = ({
 					renderElement={(props) =>
 						renderElement({ ...props }, editor, mode)
 					}
-					onKeyDown={keypress}
+					onKeyDown={(e: KeyboardEvent) => onType(e, editor)}
 					readOnly={readOnly}
 				/>
 			</Slate>

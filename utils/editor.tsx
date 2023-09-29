@@ -72,6 +72,47 @@ const renderElement = (
 	}
 };
 
+const onType = (e: KeyboardEvent, editor: Editor) => {
+	switch (e.key) {
+		case "Enter": {
+			e.preventDefault();
+
+			const selection = editor.selection;
+			if (selection) {
+				const topLevelNode = selection.anchor.path[0];
+
+				const newItem = {
+					type: "paragraph",
+					children: [
+						{
+							type: "text",
+							children: [{ text: "" }],
+						},
+					],
+				};
+
+				// Insert the new sub-item node at the end of the container's children
+				Transforms.insertNodes(editor, newItem, {
+					at: [topLevelNode + 1],
+				});
+
+				Transforms.select(editor, [topLevelNode + 1]);
+			}
+
+			break;
+		}
+	}
+
+	if (e.ctrlKey) {
+		switch (e.key) {
+			case "b": {
+				e.preventDefault();
+				break;
+			}
+		}
+	}
+};
+
 const CustomEditor = {
 	toggleNodeType(
 		nodeType: string,
@@ -114,4 +155,4 @@ const CustomEditor = {
 	},
 };
 
-export { renderElement, CustomEditor };
+export { renderElement, onType, CustomEditor };

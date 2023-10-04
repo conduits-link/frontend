@@ -1,5 +1,45 @@
 .container {
+	padding: var(--spacing-large);
 }
 
 .page {
+}
+
+.heading {
+	display: flex;
+	justify-content: space-between;
+}
+
+.containerFiles {
+	margin-top: var(--spacing-large);
+}
+
+.containerTypeSelect {
+}
+
+.typeSelect {
+	margin: 0;
+	padding: 0;
+	background-color: transparent;
+	border: none;
+	color: var(--color-secondary-100);
+	font-size: 1.65rem;
+	/* font-weight: ; */
+	cursor: pointer;
+}
+
+.typeSelectActive {
+	color: var(--color-accent);
+}
+
+.files {
+}
+
+.file {
+}
+
+.fileInfo {
+}
+
+.fileButtons {
 }

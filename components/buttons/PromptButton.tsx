@@ -23,7 +23,7 @@ export default function PromptButton({
 	function infer(e: React.MouseEvent) {
 		if (onClick) onClick(e);
 
-		sendFetch("/api", "POST", "", { prompt, input }).then((res) =>
+		sendFetch("/api", "POST", "", { prompt }).then((res) =>
 			handleResponse((res as ApiResponse).answer)
 		);
 	}

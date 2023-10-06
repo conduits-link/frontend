@@ -72,8 +72,8 @@ export default function Landing() {
 					layout="responsive"
 				/>
 				<p className={styles.info}>
-					...and that's just the beginning! Check out everything that's to
-					come...
+					...and that&apos;s just the beginning! Check out everything
+					that&apos;s to come...
 				</p>
 				<ol>
 					<li>
@@ -128,7 +128,7 @@ export default function Landing() {
 								selected, or multiple files uploaded to be
 								summarised/based-from/etc
 							</li>
-							<li>Side panel for "Research this content"</li>
+							<li>Side panel for &quot;Research this content&quot;</li>
 						</ul>
 					</li>
 					<li>

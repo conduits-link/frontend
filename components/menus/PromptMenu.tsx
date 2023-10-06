@@ -35,11 +35,19 @@ export default function PromptMenu({ editor }: { editor: Editor }) {
 				},
 			}}
 		>
-			<input type="text" ref={promptSearch} onInput={onSearch}></input>
+			<input
+				type="text"
+				ref={promptSearch}
+				onInput={onSearch}
+			></input>
 			{activePrompts &&
 				activePrompts.map((prompt: Prompt, i: number) => {
 					return (
-						<PromptButton prompt={prompt.prompt} key={prompt.name}>
+						<PromptButton
+							handleResponse={() => {}}
+							prompt={prompt.prompt}
+							key={prompt.name}
+						>
 							{prompt.name}
 						</PromptButton>
 					);

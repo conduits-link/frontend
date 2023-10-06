@@ -128,9 +128,12 @@ export default function DocumentBlock({
 				</div>
 				<div className={styles.promptResponseContainer}>
 					{promptResponses &&
-						promptResponses.map((answer: string) => {
+						promptResponses.map((answer: string, i: number) => {
 							return (
-								<PromptResponse replace={replace}>
+								<PromptResponse
+									replace={replace}
+									key={i}
+								>
 									{answer}
 								</PromptResponse>
 							);

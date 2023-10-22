@@ -28,17 +28,29 @@ export default function Store() {
 		setFilteredFiles(files.filter((file) => file.type === type));
 	};
 
+	function searchFiles(search: string) {
+		setFilteredFiles(
+			files.filter((file) => file.title.toLowerCase().includes(search))
+		);
+	}
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.page}>
 				<div className={styles.heading}>
 					<h1>Files</h1>
-					<button>
+					<input
+						type="text"
+						placeholder="Search"
+						className={styles.search}
+						onChange={(e) => searchFiles(e.target.value)}
+					/>
+					<button className={styles.buttonPrimary}>
 						<FaPlus />
 					</button>
 				</div>
 				<div className={styles.containerFiles}>
-					<div className={styles.containerTypeSelect}>
+					{/* <div className={styles.containerTypeSelect}>
 						<button
 							className={
 								styles.typeSelect +
@@ -61,14 +73,20 @@ export default function Store() {
 						>
 							<FaClipboardList />
 						</button>
-					</div>
+					</div> */}
 					<div className={styles.files}>
 						{filteredFiles.map((file) => (
 							<div className={styles.file}>
 								<div className={styles.fileInfo}>
 									<h3>{file.title}</h3>
 									<p>
-										{file.type} | {file.words}
+										<span className={styles.fileInfoType}>
+											{file.type === "doc" && <>Document</>}
+										</span>{" "}
+										•{" "}
+										<span className={styles.fileInfoWords}>
+											{file.words} words
+										</span>
 									</p>
 								</div>
 								<div className={styles.fileButtons}>

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import NavigationMenu from "@/components/menus/NavigationMenu";
 import FixedFormatMenu from "@/components/menus/FixedFormatMenu";
@@ -9,6 +9,7 @@ import SlateEditor from "@/components/wrappers/SlateEditor";
 import styles from "./page.module.css";
 import { withReact } from "slate-react";
 import { createEditor } from "slate";
+import { getStoreLocation } from "@/utils/storage";
 
 const initialValue = [
 	{
@@ -70,7 +71,7 @@ const initialValue = [
 	},
 ];
 
-const Edit = () => {
+const Edit = ({ params }: { params: any }) => {
 	const [mode, setMode] = useState<string>("edit");
 
 	function switchMode(newMode: string) {
@@ -79,6 +80,26 @@ const Edit = () => {
 
 	// Stop remounting from breaking Slate children prop
 	const editor = useMemo(() => withReact(createEditor()), []);
+
+	const [fileContent, setFileContent] = useState("");
+	const [isLoading, setLoading] = useState(true);
+
+	useEffect(() => {
+		fetch("/api/store/doc", {
+			method: "POST",
+			body: JSON.stringify({
+				storeLocation: getStoreLocation(),
+				fileName: params.uid,
+			}),
+		})
+			.then((res) => res.json())
+			.then((data) => {
+				setFileContent(data.doc.content);
+				setLoading(false);
+			});
+	}, []);
+
+	if (isLoading) return <p>Loading...</p>;
 
 	return (
 		<div className={styles.container}>

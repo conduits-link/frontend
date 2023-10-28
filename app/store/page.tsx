@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
 import {
@@ -13,13 +13,11 @@ import {
 } from "react-icons/fa6";
 
 import styles from "./page.module.css";
+import { get } from "http";
+import { getStoreLocation } from "@/utils/storage";
 
 export default function Store() {
-	const [files, setFiles] = useState([
-		{ title: "test document 1", link: "1", type: "doc", words: 10 },
-		{ title: "test document 2", link: "2", type: "doc", words: 100 },
-		{ title: "test document 3", link: "3", type: "doc", words: 1000 },
-	]);
+	const [files, setFiles] = useState([]);
 	const [selectedType, setSelectedType] = useState("doc");
 	const [filteredFiles, setFilteredFiles] = useState(files);
 
@@ -33,6 +31,23 @@ export default function Store() {
 			files.filter((file) => file.title.toLowerCase().includes(search))
 		);
 	}
+
+	const [isLoading, setLoading] = useState(true);
+
+	useEffect(() => {
+		fetch("/api/store/docs", {
+			method: "POST",
+			body: JSON.stringify({ storeLocation: getStoreLocation() }),
+		})
+			.then((res) => res.json())
+			.then((data) => {
+				setFiles(data.docs);
+				setFilteredFiles(data.docs);
+				setLoading(false);
+			});
+	}, []);
+
+	if (isLoading) return <p>Loading...</p>;
 
 	return (
 		<div className={styles.container}>
@@ -79,7 +94,7 @@ export default function Store() {
 							<div className={styles.file}>
 								<div className={styles.fileInfo}>
 									<h3>{file.title}</h3>
-									<p>
+									{/* <p>
 										<span className={styles.fileInfoType}>
 											{file.type === "doc" && <>Document</>}
 										</span>{" "}
@@ -87,7 +102,7 @@ export default function Store() {
 										<span className={styles.fileInfoWords}>
 											{file.words} words
 										</span>
-									</p>
+									</p> */}
 								</div>
 								<div className={styles.fileButtons}>
 									<Link href={`/edit/${file.link}`}>

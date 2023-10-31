@@ -3,11 +3,6 @@ import type { NextRequest } from "next/server";
 import fs from "fs";
 import path from "path";
 
-interface doc {
-	title: string;
-	content: string;
-}
-
 export async function POST(request: NextRequest) {
 	const { storeLocation, fileName } = await request.json();
 
@@ -16,11 +11,37 @@ export async function POST(request: NextRequest) {
 		"utf8"
 	);
 
-	console.log(fileContent);
+	const lines = fileContent.split(/\r?\n/).filter((line) => line !== "");
+	var docStructure: any[] = [];
+
+	lines.forEach((line, index) => {
+		if (line.startsWith("#")) {
+			let level: number = line.match(/^#+/)?.[0].length || 0;
+
+			docStructure.push({
+				type: "heading",
+				level,
+				children: [
+					{
+						text: line.replace("#".repeat(level), "").trim(),
+					},
+				],
+			});
+		} else {
+			docStructure.push({
+				type: "paragraph",
+				children: [
+					{
+						text: line.trim(),
+					},
+				],
+			});
+		}
+	});
 
 	const doc = {
 		title: fileName.replace(/\.[^/.]+$/, ""),
-		content: fileContent,
+		docStructure,
 	};
 
 	return new Response(JSON.stringify({ doc }));

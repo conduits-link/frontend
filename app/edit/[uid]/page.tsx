@@ -8,8 +8,9 @@ import SlateEditor from "@/components/wrappers/SlateEditor";
 
 import styles from "./page.module.css";
 import { withReact } from "slate-react";
-import { createEditor } from "slate";
+import { Editor, createEditor } from "slate";
 import { getStoreLocation } from "@/utils/storage";
+import { convertNestedDocToMarkdown } from "@/utils/parse";
 
 // const initialValue = [
 // 	{
@@ -93,11 +94,23 @@ const Edit = ({ params }: { params: any }) => {
 
 	if (isLoading) return <p>Loading...</p>;
 
+	function save() {
+		fetch("/api/store/doc", {
+			method: "PUT",
+			body: JSON.stringify({
+				storeLocation: getStoreLocation(),
+				fileName: params.uid,
+				docStructure: editor.children,
+			}),
+		});
+	}
+
 	return (
 		<div className={styles.container}>
 			<NavigationMenu
 				mode={mode}
 				switchMode={switchMode}
+				save={save}
 			/>
 			<SlateEditor
 				editor={editor}

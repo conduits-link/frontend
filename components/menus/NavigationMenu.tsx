@@ -14,9 +14,11 @@ import styles from "./NavigationMenu.module.css";
 export default function NavigationMenu({
 	mode,
 	switchMode,
+	save,
 }: {
 	mode: string;
 	switchMode: (mode: string) => void;
+	save: () => void;
 }) {
 	const router = useRouter();
 
@@ -63,7 +65,7 @@ export default function NavigationMenu({
 				<div className={styles.buttonContainer}>
 					<button
 						className={styles.button + " " + styles.buttonPrimary}
-						onClick={() => {}}
+						onClick={save}
 					>
 						<FaArrowRightToBracket />
 					</button>

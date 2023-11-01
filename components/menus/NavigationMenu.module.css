@@ -89,7 +89,7 @@
 }
 
 .modeButtonActive {
-	color: var(--color-accent);
+	color: var(--color-accent-100);
 }
 
 .modeButtonActive::before {
@@ -98,7 +98,7 @@
 	width: 2.35em;
 	height: 0.1em;
 	bottom: 0;
-	background-color: var(--color-accent);
+	background-color: var(--color-accent-100);
 	border-radius: var(--border-radius-small);
 }
 
@@ -116,7 +116,7 @@
 	background-color: transparent;
 	border: none;
 	font-size: 1.15rem;
-	color: var(--color-accent);
+	color: var(--color-accent-100);
 	border-radius: var(--border-radius-small);
 	display: flex;
 	justify-content: center;
@@ -129,7 +129,7 @@
 	content: "";
 	position: absolute;
 	inset: 0;
-	background-color: var(--color-accent);
+	background-color: var(--color-accent-100);
 	border-radius: var(--border-radius-small);
 	opacity: 0.15;
 	z-index: -1;

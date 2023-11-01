@@ -57,7 +57,7 @@
 }
 
 .typeSelectActive {
-	color: var(--color-accent);
+	color: var(--color-accent-100);
 }
 
 .files {

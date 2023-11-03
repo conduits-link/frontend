@@ -11,10 +11,9 @@ import {
 export async function POST(request: NextRequest) {
 	const { storeLocation, fileName } = await request.json();
 
-	const fileContent = fs.readFileSync(
-		path.join(storeLocation, fileName),
-		"utf8"
-	);
+	const filePath = decodeURI(path.join(storeLocation, fileName));
+
+	const fileContent = fs.readFileSync(filePath, "utf8");
 
 	const docStructure = convertMarkdownToNestedDoc(fileContent);
 
@@ -29,9 +28,11 @@ export async function POST(request: NextRequest) {
 export async function PUT(request: NextRequest) {
 	const { storeLocation, fileName, docStructure } = await request.json();
 
+	const filePath = decodeURI(path.join(storeLocation, fileName));
+
 	const fileContent = convertNestedDocToMarkdown(docStructure);
 
-	fs.writeFileSync(path.join(storeLocation, fileName), fileContent);
+	fs.writeFileSync(filePath, fileContent);
 
 	return new Response(JSON.stringify({}));
 }

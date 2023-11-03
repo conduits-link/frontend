@@ -35,10 +35,17 @@ function convertNestedDocToMarkdown(nestedDoc: Object[]): string {
 
 	nestedDoc.forEach((object, index) => {
 		if (object.type === "heading") {
-			fileContent +=
-				"#".repeat(object.level) + " " + object.children[0].text;
+			if (object.children[0].text)
+				fileContent +=
+					"#".repeat(object.level) + " " + object.children[0].text;
+			else
+				fileContent +=
+					"#".repeat(object.level) +
+					" " +
+					object.children[0].children[0].text;
 		} else if (object.type == "paragraph") {
-			fileContent += object.children[0].text;
+			if (object.children[0].text) fileContent += object.children[0].text;
+			else fileContent += object.children[0].children[0].text;
 		}
 
 		if (index !== nestedDoc.length - 1) fileContent += "\n";

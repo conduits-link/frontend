@@ -107,19 +107,19 @@ export default function Store() {
 								<div className={styles.fileButtons}>
 									<Link href={`/edit/${file.link}`}>
 										<button className={styles.button}>
-											<FaEye />
-										</button>
-									</Link>
-									<Link href={`/edit/${file.link}`}>
-										<button className={styles.button}>
 											<FaPenFancy />
 										</button>
 									</Link>
-									<Link href={`/edit/${file.link}`}>
+									<Link href={`/edit/${file.link}?mode=preview`}>
+										<button className={styles.button}>
+											<FaEye />
+										</button>
+									</Link>
+									{/* <Link href={`/edit/${file.link}`}>
 										<button className={styles.button}>
 											<FaTrash />
 										</button>
-									</Link>
+									</Link> */}
 								</div>
 							</div>
 						))}

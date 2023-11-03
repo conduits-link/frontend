@@ -82,6 +82,12 @@
 	background-color: var(--color-primary-400);
 }
 
+.fileInfo {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
 .fileInfo p {
 	margin-top: 0.35em;
 	font-size: 0.85rem;
@@ -97,7 +103,7 @@
 .fileButtons {
 	display: flex;
 	flex-direction: row;
-	gap: var(--spacing-small);
+	gap: var(--spacing-large);
 }
 
 .button {
@@ -108,7 +114,20 @@
 	justify-content: center;
 	border: var(--border-container);
 	border-radius: var(--border-radius-small);
-	color: var(--color-secondary-400);
+	color: var(--color-secondary-100);
 	background-color: transparent;
 	cursor: pointer;
+	transition-duration: 50ms;
+}
+
+.button:hover {
+	border-color: var(--color-secondary-100);
+	transform: scale(1.15);
+	transition-property: transform, border-color;
+	transition-duration: 150ms;
+}
+
+.button:active {
+	transform: scale(0.95);
+	transition: none !important;
 }

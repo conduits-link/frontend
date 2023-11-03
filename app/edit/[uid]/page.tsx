@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 import NavigationMenu from "@/components/menus/NavigationMenu";
 import FixedFormatMenu from "@/components/menus/FixedFormatMenu";
@@ -13,8 +14,15 @@ import { getStoreLocation } from "@/utils/storage";
 import { convertNestedDocToMarkdown } from "@/utils/parse";
 
 const Edit = ({ params }: { params: any }) => {
+	const searchParams = useSearchParams();
+
 	const [initialValue, setInitialValue] = useState<any[]>([]);
-	const [mode, setMode] = useState<string>("edit");
+
+	const [mode, setMode] = useState<string>(
+		["edit", "preview"].includes(searchParams.get("mode")!)
+			? searchParams.get("mode")!
+			: "edit"
+	);
 
 	function switchMode(newMode: string) {
 		setMode(newMode);
@@ -45,8 +53,6 @@ const Edit = ({ params }: { params: any }) => {
 	if (isLoading) return <p>Loading...</p>;
 
 	function save() {
-		console.log(editor.children);
-
 		fetch("/api/store/doc", {
 			method: "PUT",
 			body: JSON.stringify({

@@ -17,22 +17,21 @@ import { get } from "http";
 import { getStoreLocation } from "@/utils/storage";
 
 export default function Store() {
-	const [files, setFiles] = useState([]);
 	const [selectedType, setSelectedType] = useState("doc");
-	const [filteredFiles, setFilteredFiles] = useState(files);
-
 	const switchSelectedType = (type: string) => {
 		setSelectedType(type);
 		setFilteredFiles(files.filter((file) => file.type === type));
 	};
+
+	const [isLoading, setLoading] = useState(true);
+	const [files, setFiles] = useState([]);
+	const [filteredFiles, setFilteredFiles] = useState(files);
 
 	function searchFiles(search: string) {
 		setFilteredFiles(
 			files.filter((file) => file.title.toLowerCase().includes(search))
 		);
 	}
-
-	const [isLoading, setLoading] = useState(true);
 
 	useEffect(() => {
 		fetch("/api/store/docs", {
@@ -46,8 +45,6 @@ export default function Store() {
 				setLoading(false);
 			});
 	}, []);
-
-	if (isLoading) return <p>Loading...</p>;
 
 	return (
 		<div className={styles.container}>
@@ -64,8 +61,11 @@ export default function Store() {
 						<FaPlus />
 					</button>
 				</div>
-				<div className={styles.containerFiles}>
-					{/* <div className={styles.containerTypeSelect}>
+				{isLoading ? (
+					<p>Loading...</p>
+				) : (
+					<div className={styles.containerFiles}>
+						{/* <div className={styles.containerTypeSelect}>
 						<button
 							className={
 								styles.typeSelect +
@@ -89,12 +89,12 @@ export default function Store() {
 							<FaClipboardList />
 						</button>
 					</div> */}
-					<div className={styles.files}>
-						{filteredFiles.map((file) => (
-							<div className={styles.file}>
-								<div className={styles.fileInfo}>
-									<h3>{file.title}</h3>
-									{/* <p>
+						<div className={styles.files}>
+							{filteredFiles.map((file) => (
+								<div className={styles.file}>
+									<div className={styles.fileInfo}>
+										<h3>{file.title}</h3>
+										{/* <p>
 										<span className={styles.fileInfoType}>
 											{file.type === "doc" && <>Document</>}
 										</span>{" "}
@@ -103,28 +103,29 @@ export default function Store() {
 											{file.words} words
 										</span>
 									</p> */}
-								</div>
-								<div className={styles.fileButtons}>
-									<Link href={`/edit/${file.link}`}>
-										<button className={styles.button}>
-											<FaPenFancy />
-										</button>
-									</Link>
-									<Link href={`/edit/${file.link}?mode=preview`}>
-										<button className={styles.button}>
-											<FaEye />
-										</button>
-									</Link>
-									{/* <Link href={`/edit/${file.link}`}>
+									</div>
+									<div className={styles.fileButtons}>
+										<Link href={`/edit/${file.link}`}>
+											<button className={styles.button}>
+												<FaPenFancy />
+											</button>
+										</Link>
+										<Link href={`/edit/${file.link}?mode=preview`}>
+											<button className={styles.button}>
+												<FaEye />
+											</button>
+										</Link>
+										{/* <Link href={`/edit/${file.link}`}>
 										<button className={styles.button}>
 											<FaTrash />
 										</button>
 									</Link> */}
+									</div>
 								</div>
-							</div>
-						))}
+							))}
+						</div>
 					</div>
-				</div>
+				)}
 			</div>
 		</div>
 	);

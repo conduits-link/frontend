@@ -3,21 +3,19 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
+import { withReact } from "slate-react";
+import { createEditor } from "slate";
+
+import { getStoreLocation } from "@/utils/storage";
+
 import NavigationMenu from "@/components/menus/NavigationMenu";
 import FixedFormatMenu from "@/components/menus/FixedFormatMenu";
 import SlateEditor from "@/components/wrappers/SlateEditor";
 
 import styles from "./page.module.css";
-import { withReact } from "slate-react";
-import { Editor, createEditor } from "slate";
-import { getStoreLocation } from "@/utils/storage";
-import { convertNestedDocToMarkdown } from "@/utils/parse";
 
 const Edit = ({ params }: { params: any }) => {
 	const searchParams = useSearchParams();
-
-	const [initialValue, setInitialValue] = useState<any[]>([]);
-
 	const [mode, setMode] = useState<string>(
 		["edit", "preview"].includes(searchParams.get("mode")!)
 			? searchParams.get("mode")!
@@ -28,11 +26,8 @@ const Edit = ({ params }: { params: any }) => {
 		setMode(newMode);
 	}
 
-	// Stop remounting from breaking Slate children prop
-	const editor = useMemo(() => withReact(createEditor()), []);
-
-	const [fileContent, setFileContent] = useState("");
 	const [isLoading, setLoading] = useState(true);
+	const [file, setFile] = useState<Object>("");
 
 	useEffect(() => {
 		fetch("/api/store/doc", {
@@ -44,13 +39,10 @@ const Edit = ({ params }: { params: any }) => {
 		})
 			.then((res) => res.json())
 			.then((data) => {
-				setInitialValue(data.doc.docStructure);
-				setFileContent(data.doc.content);
+				setFile(data.doc);
 				setLoading(false);
 			});
 	}, []);
-
-	if (isLoading) return <p>Loading...</p>;
 
 	function save() {
 		fetch("/api/store/doc", {
@@ -63,6 +55,9 @@ const Edit = ({ params }: { params: any }) => {
 		});
 	}
 
+	// Stop remounting from breaking Slate children prop
+	const editor = useMemo(() => withReact(createEditor()), []);
+
 	return (
 		<div className={styles.container}>
 			<NavigationMenu
@@ -70,14 +65,20 @@ const Edit = ({ params }: { params: any }) => {
 				switchMode={switchMode}
 				save={save}
 			/>
-			<SlateEditor
-				editor={editor}
-				className={styles.page}
-				initialValue={initialValue}
-				readOnly={mode !== "edit"}
-				mode={mode}
-			/>
-			{mode !== "preview" && <FixedFormatMenu editor={editor} />}
+			{isLoading ? (
+				<p>Loading...</p>
+			) : (
+				<>
+					<SlateEditor
+						editor={editor}
+						className={styles.page}
+						initialValue={file.docStructure}
+						readOnly={mode !== "edit"}
+						mode={mode}
+					/>
+					{mode !== "preview" && <FixedFormatMenu editor={editor} />}
+				</>
+			)}
 		</div>
 	);
 };

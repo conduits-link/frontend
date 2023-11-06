@@ -13,8 +13,8 @@ import {
 } from "react-icons/fa6";
 
 import styles from "./page.module.css";
-import { get } from "http";
 import { getStoreLocation } from "@/utils/storage";
+import Button from "@/components/buttons/Button";
 
 export default function Store() {
 	const [selectedType, setSelectedType] = useState("doc");
@@ -57,9 +57,9 @@ export default function Store() {
 						className={styles.search}
 						onChange={(e) => searchFiles(e.target.value)}
 					/>
-					<button className={styles.buttonPrimary}>
+					<Button primary={true}>
 						<FaPlus />
-					</button>
+					</Button>
 				</div>
 				{isLoading ? (
 					<p>Loading...</p>

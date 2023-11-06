@@ -32,19 +32,6 @@
 	color: var(--color-secondary-100);
 }
 
-.buttonPrimary {
-	padding: 0.65em 2.15em;
-	border: var(--border-container);
-	border-color: var(--color-accent-100);
-	border-radius: var(--border-radius-small);
-	color: var(--color-accent-100);
-	background-color: var(--color-accent-400);
-	font-size: 1.15rem;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-
 .typeSelect {
 	margin: 0;
 	padding: 0;

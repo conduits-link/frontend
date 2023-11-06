@@ -63,12 +63,12 @@ export default function NavigationMenu({
 					</button>
 				</div>
 				<div className={styles.buttonContainer}>
-					<button
-						className={styles.button + " " + styles.buttonPrimary}
+					<Button
+						primary={true}
 						onClick={save}
 					>
 						<FaArrowRightToBracket />
-					</button>
+					</Button>
 				</div>
 			</div>
 		</div>

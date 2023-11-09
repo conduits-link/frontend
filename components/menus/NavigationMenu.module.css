@@ -1,8 +1,7 @@
 .container {
 	width: calc(100% - 2 * (2.35em - var(--spacing-large)));
 	height: 5em;
-	margin: calc(2.35em - var(--spacing-large) - 2px);
-	box-sizing: border-box;
+	padding: calc(2.35em - var(--spacing-large) - 2px);
 	display: flex;
 	justify-content: center;
 	position: fixed;

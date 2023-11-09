@@ -3,18 +3,13 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
-import {
-	FaClipboardList,
-	FaEye,
-	FaFile,
-	FaPenFancy,
-	FaPlus,
-	FaTrash,
-} from "react-icons/fa6";
+import { FaEye, FaPenFancy, FaPlus } from "react-icons/fa6";
+
+import { getStoreLocation } from "@/utils/storage";
+
+import Button from "@/components/buttons/Button";
 
 import styles from "./page.module.css";
-import { getStoreLocation } from "@/utils/storage";
-import Button from "@/components/buttons/Button";
 
 export default function Store() {
 	const [selectedType, setSelectedType] = useState("doc");

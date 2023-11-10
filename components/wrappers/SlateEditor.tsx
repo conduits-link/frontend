@@ -28,13 +28,13 @@ declare module "slate" {
 const SlateEditor = ({
 	editor,
 	className,
-	initialValue,
+	file,
 	readOnly,
 	mode,
 }: {
 	editor: Editor;
 	className?: string;
-	initialValue: any;
+	file: any;
 	readOnly: boolean;
 	mode: string;
 }) => {
@@ -42,7 +42,7 @@ const SlateEditor = ({
 		<NoSSR>
 			<Slate
 				editor={editor}
-				initialValue={initialValue}
+				initialValue={file.body}
 				onChange={(document) => {}}
 			>
 				<Editable

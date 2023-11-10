@@ -14,12 +14,14 @@ export async function POST(request: NextRequest) {
 	const filePath = decodeURI(path.join(storeLocation, fileName));
 
 	const fileContent = fs.readFileSync(filePath, "utf8");
+	const fileStats = fs.statSync(filePath);
 
 	const docStructure = convertMarkdownToNestedDoc(fileContent);
 
 	const doc = {
-		title: fileName.replace(/\.[^/.]+$/, ""),
-		docStructure,
+		title: decodeURI(fileName).replace(/\.[^/.]+$/, ""),
+		body: docStructure,
+		modified: fileStats.mtime,
 	};
 
 	return new Response(JSON.stringify({ doc }));

@@ -1,8 +1,15 @@
 .container {
-	margin: 2.35em;
+	margin: 2.35rem;
 }
 
 .page {
+	height: calc(100vh - 2.35rem * 2);
+	display: flex;
+	flex-direction: column;
+}
+
+.containerLoading {
+	flex-grow: 1;
 }
 
 .heading {

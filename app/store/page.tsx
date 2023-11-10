@@ -10,6 +10,7 @@ import { getStoreLocation } from "@/utils/storage";
 import Button from "@/components/buttons/Button";
 
 import styles from "./page.module.css";
+import Loading from "@/components/wrappers/Loading";
 
 export default function Store() {
 	const [selectedType, setSelectedType] = useState("doc");
@@ -46,18 +47,24 @@ export default function Store() {
 			<div className={styles.page}>
 				<div className={styles.heading}>
 					<h1>Files</h1>
-					<input
-						type="text"
-						placeholder="Search"
-						className={styles.search}
-						onChange={(e) => searchFiles(e.target.value)}
-					/>
+					{isLoading ? (
+						<></>
+					) : (
+						<input
+							type="text"
+							placeholder="Search"
+							className={styles.search}
+							onChange={(e) => searchFiles(e.target.value)}
+						/>
+					)}
 					<Button primary={true}>
 						<FaPlus />
 					</Button>
 				</div>
 				{isLoading ? (
-					<p>Loading...</p>
+					<div className={styles.containerLoading}>
+						<Loading>Loading files...</Loading>
+					</div>
 				) : (
 					<div className={styles.containerFiles}>
 						{/* <div className={styles.containerTypeSelect}>

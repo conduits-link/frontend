@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import {
@@ -7,18 +8,30 @@ import {
 	FaPenFancy,
 } from "react-icons/fa6";
 
+import { timeAgo } from "@/utils/helpers";
+
 import Button from "../buttons/Button";
 
 import styles from "./NavigationMenu.module.css";
 
 export default function NavigationMenu({
+	file,
 	mode,
 	switchMode,
+	save,
 }: {
+	file: any;
 	mode: string;
 	switchMode: (mode: string) => void;
+	save: () => void;
 }) {
 	const router = useRouter();
+
+	const [lastModified, setLastModified] = useState<string>("");
+
+	useEffect(() => {
+		setLastModified(file.modified);
+	}, []);
 
 	return (
 		<div className={styles.container}>
@@ -33,9 +46,9 @@ export default function NavigationMenu({
 						<FaChevronLeft />
 					</Button>
 					<div className={styles.returnInfo}>
-						<div className={styles.returnInfoTitle}>Example document</div>
+						<div className={styles.returnInfoTitle}>{file.title}</div>
 						<small className={styles.returnInfoTime}>
-							Edited just now
+							Edited {timeAgo(lastModified)}
 						</small>
 					</div>
 				</div>
@@ -61,12 +74,15 @@ export default function NavigationMenu({
 					</button>
 				</div>
 				<div className={styles.buttonContainer}>
-					<button
-						className={styles.button + " " + styles.buttonPrimary}
-						onClick={() => {}}
+					<Button
+						primary={true}
+						onClick={() => {
+							setLastModified(new Date().toISOString());
+							save();
+						}}
 					>
 						<FaArrowRightToBracket />
-					</button>
+					</Button>
 				</div>
 			</div>
 		</div>

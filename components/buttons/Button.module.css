@@ -38,3 +38,31 @@
 	font-size: 0.65rem;
 	color: var(--color-secondary-100);
 }
+
+.primary {
+	padding: 0 1.85em;
+	background-color: transparent;
+	border: none;
+	font-size: 1.15rem;
+	color: var(--color-accent-100);
+	background-color: var(--color-accent-400);
+	border-radius: var(--border-radius-small);
+	border: 2px solid transparent;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+	cursor: pointer;
+	transition-duration: 150ms;
+}
+
+.primary:hover {
+	border-color: var(--color-accent-100);
+	transform: scale(1.1);
+	transition-property: transform, border-color;
+}
+
+.primary:active {
+	transform: scale(0.95);
+	transition: none !important;
+}

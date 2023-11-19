@@ -1,6 +1,6 @@
 .container {
 	width: 100%;
-	padding: var(--spacing-large) 0;
+	padding: calc(2.35em - var(--spacing-large) - 2px) 0;
 	display: flex;
 	gap: var(--spacing-large);
 	justify-content: center;

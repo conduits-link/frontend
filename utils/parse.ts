@@ -11,7 +11,12 @@ function convertMarkdownToNestedDoc(fileContent: string): Object[] {
 				level,
 				children: [
 					{
-						text: line.replace("#".repeat(level), "").trim(),
+						type: "text",
+						children: [
+							{
+								text: line.replace("#".repeat(level), "").trim(),
+							},
+						],
 					},
 				],
 			});
@@ -20,7 +25,12 @@ function convertMarkdownToNestedDoc(fileContent: string): Object[] {
 				type: "paragraph",
 				children: [
 					{
-						text: line.trim(),
+						type: "text",
+						children: [
+							{
+								text: line.trim(),
+							},
+						],
 					},
 				],
 			});

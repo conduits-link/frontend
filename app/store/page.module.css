@@ -1,0 +1,127 @@
+.container {
+	margin: 2.35rem;
+}
+
+.page {
+	height: calc(100vh - 2.35rem * 2);
+	display: flex;
+	flex-direction: column;
+}
+
+.containerLoading {
+	flex-grow: 1;
+}
+
+.heading {
+	margin-bottom: 3.5em;
+	display: flex;
+	justify-content: space-between;
+}
+
+.heading h1 {
+	font-size: 2.35rem;
+	font-weight: 900;
+}
+
+.containerFiles {
+	margin-top: var(--spacing-large);
+}
+
+.containerTypeSelect {
+}
+
+.search {
+	width: 35%;
+	padding: 0.65em 1.15em;
+	border: var(--border-container);
+	border-radius: var(--border-radius-large);
+	background-color: var(--color-primary-100);
+	color: var(--color-secondary-100);
+}
+
+.typeSelect {
+	margin: 0;
+	padding: 0;
+	background-color: transparent;
+	border: none;
+	color: var(--color-secondary-100);
+	font-size: 1.65rem;
+	/* font-weight: ; */
+	cursor: pointer;
+}
+
+.typeSelectActive {
+	color: var(--color-accent-100);
+}
+
+.files {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-large);
+}
+
+.file {
+	padding: var(--spacing-large) 1.15em;
+	display: flex;
+	flex-direction: row;
+	gap: 1.15em;
+	justify-content: space-between;
+	border: var(--border-container);
+	border-radius: var(--border-radius-large);
+	background-color: var(--color-primary-100);
+	color: var(--color-secondary-100);
+}
+
+.file:hover {
+	background-color: var(--color-primary-400);
+}
+
+.fileInfo {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.fileInfo p {
+	margin-top: 0.35em;
+	font-size: 0.85rem;
+}
+
+.fileInfoType {
+	text-transform: capitalize;
+}
+
+.fileInfoWords {
+}
+
+.fileButtons {
+	display: flex;
+	flex-direction: row;
+	gap: var(--spacing-large);
+}
+
+.button {
+	height: 100%;
+	padding: 0.85em 1em;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: var(--border-container);
+	border-radius: var(--border-radius-small);
+	color: var(--color-secondary-100);
+	background-color: transparent;
+	cursor: pointer;
+	transition-duration: 50ms;
+}
+
+.button:hover {
+	border-color: var(--color-secondary-100);
+	transform: scale(1.15);
+	transition-property: transform, border-color;
+	transition-duration: 150ms;
+}
+
+.button:active {
+	transform: scale(0.95);
+	transition: none !important;
+}

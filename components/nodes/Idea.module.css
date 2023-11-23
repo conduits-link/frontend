@@ -1,0 +1,41 @@
+.container {
+	padding: var(--spacing-large);
+	line-height: 1.85rem;
+	border-radius: var(--border-radius-large);
+	border: var(--border-container);
+	background-color: var(--color-primary-100);
+	backdrop-filter: blur(6px);
+	overflow: hidden;
+	box-sizing: border-box;
+}
+
+.containerButtons {
+	margin-bottom: var(--spacing-small);
+	gap: var(--spacing-small);
+	display: flex;
+	flex-direction: row;
+}
+
+.buttonAction {
+	padding: var(--spacing-small);
+	position: relative;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: transparent;
+	color: var(--color-secondary-100);
+	font-size: 1rem;
+	border-radius: var(--border-radius-small);
+	border: none;
+	cursor: pointer;
+}
+
+.buttonAction:hover::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background-color: var(--color-primary-400);
+	opacity: 0.8;
+	z-index: -1;
+}

@@ -1,8 +1,7 @@
 .container {
-	width: 100%;
-	height: var(--header-height);
-	padding: var(--spacing-large);
-	box-sizing: border-box;
+	width: calc(100% - 2 * (2.35em - var(--spacing-large)));
+	height: 5em;
+	padding: calc(2.35em - var(--spacing-large) - 2px);
 	display: flex;
 	justify-content: center;
 	position: fixed;
@@ -24,20 +23,11 @@
 	justify-content: space-between;
 	align-items: center;
 	border-radius: var(--border-radius-large);
-	border: 2px solid var(--color-secondary-400);
+	border: var(--border-container);
+	background-color: var(--color-primary-100);
 	box-sizing: border-box;
 	backdrop-filter: blur(6px);
 	position: relative;
-}
-
-.element::before {
-	content: "";
-	position: absolute;
-	inset: 0;
-	border-radius: var(--border-radius-large);
-	background-color: var(--color-primary-100);
-	opacity: 0.6;
-	z-index: -1;
 }
 
 /* Return button */
@@ -98,7 +88,7 @@
 }
 
 .modeButtonActive {
-	color: var(--color-accent);
+	color: var(--color-accent-100);
 }
 
 .modeButtonActive::before {
@@ -107,7 +97,7 @@
 	width: 2.35em;
 	height: 0.1em;
 	bottom: 0;
-	background-color: var(--color-accent);
+	background-color: var(--color-accent-100);
 	border-radius: var(--border-radius-small);
 }
 
@@ -118,36 +108,5 @@
 	height: 100%;
 	display: flex;
 	justify-content: flex-end;
-}
-
-.button {
-	padding: 0 1.85em;
-	background-color: transparent;
-	border: none;
-	font-size: 1.15rem;
-	color: var(--color-accent);
-	border-radius: var(--border-radius-small);
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	position: relative;
-	cursor: pointer;
-}
-
-.button::before {
-	content: "";
-	position: absolute;
-	inset: 0;
-	background-color: var(--color-accent);
-	border-radius: var(--border-radius-small);
-	opacity: 0.15;
-	z-index: -1;
-}
-
-.button:not(:last-child) {
-	margin-right: var(--spacing-large);
-}
-
-.button:active {
-	transform: scale(0.85);
+	transition-duration: 10ms !important;
 }

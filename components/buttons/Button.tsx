@@ -13,8 +13,9 @@ export default function Button({
 	onFocus,
 	onBlur,
 	children,
+	primary,
 }: {
-	className: string;
+	className?: string;
 	onClick?: React.MouseEventHandler;
 	onMouseEnter?: React.MouseEventHandler;
 	onMouseOver?: React.MouseEventHandler;
@@ -24,10 +25,16 @@ export default function Button({
 	onFocus?: React.FocusEventHandler;
 	onBlur?: React.FocusEventHandler;
 	children: ReactNode;
+	primary?: Boolean;
 }) {
 	return (
 		<button
-			className={className + " " + styles.element}
+			className={
+				className +
+				" " +
+				styles.element +
+				(primary ? " " + styles.primary : "")
+			}
 			onClick={onClick}
 			onMouseEnter={onMouseEnter}
 			onMouseOver={onMouseOver}

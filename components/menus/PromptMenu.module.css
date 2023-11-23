@@ -1,5 +1,14 @@
 .container {
+	width: 12em;
+	padding: var(--spacing-small);
+	gap: var(--spacing-small);
 	display: flex;
 	flex-direction: column;
+	border-radius: 0 var(--border-radius-large) var(--border-radius-large) 0;
+	border: var(--border-container);
 	background-color: var(--color-primary-100);
+	backdrop-filter: blur(6px);
+	overflow: hidden;
+	box-sizing: border-box;
+	cursor: pointer;
 }

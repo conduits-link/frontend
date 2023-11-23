@@ -1,6 +1,7 @@
 :root {
-	--color-accent: #ffb81e;
-	--color-dark-100: #1b1c1d;
+	--color-accent-100: #ffb81e;
+	--color-accent-400: #ffb81e15;
+	--color-dark-100: #1b1c1d99;
 	--color-dark-400: #0f0f0f;
 	--color-light-100: #eff1f3;
 	--color-light-400: #28292b;
@@ -10,13 +11,12 @@
 	--color-secondary-100: var(--color-light-100);
 	--color-secondary-400: var(--color-light-400);
 
-	--header-height: 6.5rem;
-
 	--spacing-large: 0.85rem;
 	--spacing-small: 0.65rem;
 
 	--border-radius-large: 0.85em;
 	--border-radius-small: 0.65em;
+	--border-container: 2px solid var(--color-secondary-400);
 
 	--editor-width: 65em;
 }
@@ -28,24 +28,17 @@ body {
 	min-height: 100%;
 	color: var(--color-secondary-100);
 	background-color: var(--color-primary-400);
-	font-family: "Lora", "Serif";
+	font-family: "Lato", "Serif";
 }
 
-/* Tiptap */
-
-.ProseMirror {
-	min-height: calc(100vh - 2 * 8.5rem);
-	box-sizing: border-box;
-}
-
-.ProseMirror:focus {
-	outline: none;
-}
-
-.ProseMirror p.is-editor-empty:first-child::before {
-	content: attr(data-placeholder);
-	float: left;
-	color: var(--color-secondary-100);
-	pointer-events: none;
-	height: 0;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol {
+	margin: 0;
 }

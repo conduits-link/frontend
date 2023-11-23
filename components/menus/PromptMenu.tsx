@@ -1,57 +1,37 @@
-import { useRef, useState } from "react";
-
-import { Editor, BubbleMenu } from "@tiptap/react";
-
-import prompts, { Prompt } from "@/utils/prompts";
+import prompts from "@/utils/prompts";
 
 import PromptButton from "../buttons/PromptButton";
 
+import { ApiResponse } from "@/utils/fetch";
+
 import styles from "./PromptMenu.module.css";
 
-export default function PromptMenu({ editor }: { editor: Editor }) {
-	const promptSearch = useRef<HTMLInputElement>(null);
-	const [activePrompts, setActivePrompts] = useState<Prompt[]>(prompts);
-
-	function onSearch(e: React.FormEvent<HTMLInputElement>): void {
-		const term: string = e.currentTarget.value.toLowerCase();
-
-		const filteredPrompts = prompts.filter((prompt) =>
-			prompt.name.toLowerCase().includes(term)
-		);
-
-		setActivePrompts(filteredPrompts);
-	}
-
+const PromptMenu = ({
+	className,
+	handleRequest,
+	handleResponse,
+}: {
+	className?: string;
+	handleRequest: () => string;
+	handleResponse: (response: ApiResponse) => void;
+}) => {
 	return (
-		<BubbleMenu
-			className={styles.container}
-			editor={editor}
-			tippyOptions={{
-				duration: 100,
-				onMount: () => {
-					promptSearch.current!.value = "";
-					// promptSearch.current!.focus();
-					setActivePrompts(prompts);
-				},
-			}}
-		>
-			<input
-				type="text"
-				ref={promptSearch}
-				onInput={onSearch}
-			></input>
-			{activePrompts &&
-				activePrompts.map((prompt: Prompt, i: number) => {
+		<div className={className + " " + styles.container}>
+			{prompts &&
+				prompts.map((prompt, index) => {
 					return (
 						<PromptButton
-							handleResponse={() => {}}
 							prompt={prompt.prompt}
-							key={prompt.name}
+							handleRequest={handleRequest}
+							handleResponse={handleResponse}
+							key={index}
 						>
 							{prompt.name}
 						</PromptButton>
 					);
 				})}
-		</BubbleMenu>
+		</div>
 	);
-}
+};
+
+export default PromptMenu;

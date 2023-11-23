@@ -72,7 +72,7 @@ const renderElement = (
 	}
 };
 
-const onType = (e: KeyboardEvent, editor: Editor) => {
+const onType = (e: React.KeyboardEvent, editor: Editor) => {
 	switch (e.key) {
 		case "Enter": {
 			e.preventDefault();

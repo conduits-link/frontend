@@ -92,7 +92,8 @@ const onType = (e: React.KeyboardEvent, editor: Editor) => {
 				};
 
 				// Insert the new sub-item node at the end of the container's children
-				Transforms.insertNodes(editor, newItem, {
+				// TODO: make type more robust
+				Transforms.insertNodes(editor, newItem as unknown as Node, {
 					at: [topLevelNode + 1],
 				});
 

@@ -40,10 +40,10 @@ function convertMarkdownToNestedDoc(fileContent: string): Object[] {
 	return nestedDoc;
 }
 
-function convertNestedDocToMarkdown(nestedDoc: Object[]): string {
+function convertNestedDocToMarkdown(nestedDoc: any): string {
 	var fileContent: string = "";
 
-	nestedDoc.forEach((object, index) => {
+	nestedDoc.forEach((object: any, i: number) => {
 		if (object.type === "heading") {
 			if (object.children[0].text)
 				fileContent +=
@@ -58,7 +58,7 @@ function convertNestedDocToMarkdown(nestedDoc: Object[]): string {
 			else fileContent += object.children[0].children[0].text;
 		}
 
-		if (index !== nestedDoc.length - 1) fileContent += "\n";
+		if (i !== nestedDoc.length - 1) fileContent += "\n";
 		fileContent += "\n";
 	});
 

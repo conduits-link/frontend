@@ -11,6 +11,7 @@ import Button from "@/components/buttons/Button";
 
 import styles from "./page.module.css";
 import Loading from "@/components/wrappers/Loading";
+import { file } from "@/utils/interfaces";
 
 export default function Store() {
 	const [selectedType, setSelectedType] = useState("doc");
@@ -20,7 +21,15 @@ export default function Store() {
 	};
 
 	const [isLoading, setLoading] = useState(true);
-	const [files, setFiles] = useState([]);
+	const [files, setFiles] = useState<file[]>([
+		{
+			title: "",
+			body: [],
+			modified: new Date(),
+			link: "",
+			type: "",
+		},
+	]);
 	const [filteredFiles, setFilteredFiles] = useState(files);
 
 	function searchFiles(search: string) {

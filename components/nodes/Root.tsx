@@ -49,12 +49,16 @@ const RootNode = ({
 
 		if (Node.has(node, [1])) {
 			// If there are already ideas, add the new idea to the end of the list
-			Transforms.insertNodes(editor, idea, {
+			// TODO: make type more robust
+			Transforms.insertNodes(editor, idea as unknown as Node, {
 				at: [getPath(), 1, [...Node.children(node, [1])].length],
 			});
 		} else {
 			// If there are no ideas, create the container and add the idea
-			Transforms.insertNodes(editor, container, { at: [getPath(), 1] });
+			// TODO: make type more robust
+			Transforms.insertNodes(editor, container as unknown as Node, {
+				at: [getPath(), 1],
+			});
 		}
 	};
 

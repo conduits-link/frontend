@@ -4,13 +4,12 @@ Noteworthy is an LLM-based text editor, with an intuitive and powerful graphical
 
 ## Contents
 
-- [Demo](#demo)
-- [Documentation](#documentation)
-- [Run](#run)
-- [Planned features](#planned-features)
+-  [Demo](#demo)
+-  [Run](#run)
+-  [Documentation](#documentation)
+-  [(Planned) Features](#planned-features)
 
 _See [noteworthy-frontend](https://github.com/jhels/noteworthy-frontend/) and [noteworthy-backend](https://github.com/jhels/noteworthy-backend) for deployment of this technology._
-
 
 ## Demo
 
@@ -40,32 +39,59 @@ Responses to prompts for are collected underneath the node they were applied to.
 
 ![Multiple prompt responses screenshot](/public/demos/screenshot-prompt-response-multiple.png "Multiple prompt responses")
 
+## Run
+
+### Development
+
+1. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+   -  If you are pulling after recent commits (and dependencies have changed/updated), reinstall dependencies:
+
+      ```bash
+      npm ci
+      ```
+
+2. Run in developer mode:
+
+   ```bash
+   npm run dev
+   ```
+
+### Production
+
+1. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+   -  If you are pulling after recent commits (and dependencies have changed/updated), reinstall dependencies:
+
+      ```bash
+      npm ci
+      ```
+
+2. Build the project:
+
+   ```bash
+   npm run build
+   ```
+
+3. Run in production mode:
+
+   ```bash
+   npm run start
+   ```
+
 ## Documentation
 
 -  [API reference](/docs/api.md)
 
-## Run
-
-After pulling from this repo, install all dependencies.
-
-```bash
-npm ci
-```
-
-Run in developer mode (no pre-rendering)...
-
-```bash
-npm run dev
-```
-
-... or build and run in production mode.
-
-```bash
-npm run build
-npm run start
-```
-
-## Planned Features
+## (Planned) Features
 
 1. File upload
    -  Copy file content

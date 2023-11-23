@@ -29,7 +29,8 @@ const Idea = (props: any) => {
 
 		Transforms.delete(editor, { at: path });
 
-		const prompt = Editor.node(editor, getPath())[0].prompt;
+		const prompt = (Editor.node(editor, getPath())[0] as { prompt?: string })
+			?.prompt;
 
 		sendFetch("/api", "POST", "", { prompt, input }).then((res) => {
 			const content = (res as ApiResponse).answer;
@@ -59,12 +60,14 @@ const Idea = (props: any) => {
 			],
 		};
 
-		Transforms.insertNodes(editor, newNode, { at: path });
+		// TODO: make type more robust
+		Transforms.insertNodes(editor, newNode as unknown as Node, { at: path });
 	};
 
 	const removeThisNode = () => {
 		const ideaContainer = Editor.node(editor, [getParentIndex(), 1])[0];
-		const empty = ideaContainer.children.length == 1;
+		const empty =
+			(ideaContainer as { children?: any[] }).children?.length == 1;
 
 		if (empty) Transforms.delete(editor, { at: [getParentIndex(), 1] });
 		else Transforms.delete(editor, { at: getPath() });

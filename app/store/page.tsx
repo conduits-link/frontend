@@ -92,8 +92,11 @@ export default function Store() {
 						</button>
 					</div> */}
 						<div className={styles.files}>
-							{filteredFiles.map((file) => (
-								<div className={styles.file}>
+							{filteredFiles.map((file, i: number) => (
+								<div
+									className={styles.file}
+									key={i}
+								>
 									<div className={styles.fileInfo}>
 										<h3>{file.title}</h3>
 										{/* <p>

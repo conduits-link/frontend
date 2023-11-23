@@ -11,7 +11,7 @@ import styles from "./RootEditor.module.css";
 import { Editor, createEditor } from "slate";
 import { withReact } from "slate-react";
 
-export default async ({ file, uid }: { file: any; uid: string }) => {
+const Component = ({ file, uid }: { file: any; uid: string }) => {
 	// // Stop remounting from breaking Slate children prop
 	const editor = useMemo(() => withReact(createEditor()), []);
 
@@ -37,18 +37,6 @@ export default async ({ file, uid }: { file: any; uid: string }) => {
 		});
 	}
 
-	// useEffect(() => {
-	// 	const f = fetch("http://localhost:3000/api/store/doc", {
-	// 		method: "POST",
-	// 		body: JSON.stringify({
-	// 			storeLocation: "/home/dan/Downloads",
-	// 			fileName: "AScaryRabbit.md",
-	// 		}),
-	// 	})
-	// 		.then((res) => res.json())
-	// 		.then((data) => console.log(JSON.stringify(data.doc, null, 2)));
-	// });
-
 	return (
 		<div className={styles.container}>
 			<NavigationMenu
@@ -68,3 +56,5 @@ export default async ({ file, uid }: { file: any; uid: string }) => {
 		</div>
 	);
 };
+
+export default Component;

@@ -65,6 +65,10 @@ function convertNestedDocToMarkdown(nestedDoc: Object[]): string {
 	return fileContent;
 }
 
+function parseFileName(fileName: string): string {
+	return decodeURI(fileName).replace(/\.[^/.]+$/, "");
+}
+
 const singleOrDoubleDollar = /\$\$(.*?)\$\$|\$(.*?)\$/g;
 
 const replaceWithLatex = (
@@ -81,4 +85,9 @@ function parseLatex(html: string): string {
 	return html.replace(singleOrDoubleDollar, replaceWithLatex);
 }
 
-export { convertMarkdownToNestedDoc, convertNestedDocToMarkdown, parseLatex };
+export {
+	convertMarkdownToNestedDoc,
+	convertNestedDocToMarkdown,
+	parseFileName,
+	parseLatex,
+};

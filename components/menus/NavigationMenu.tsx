@@ -31,7 +31,7 @@ export default function NavigationMenu({
 
 	useEffect(() => {
 		setLastModified(file.modified);
-	}, []);
+	}, [file.modified]);
 
 	return (
 		<div className={styles.container}>

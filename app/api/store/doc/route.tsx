@@ -6,6 +6,7 @@ import path from "path";
 import {
 	convertMarkdownToNestedDoc,
 	convertNestedDocToMarkdown,
+	parseFileName,
 } from "@/utils/parse";
 
 export async function POST(request: NextRequest) {
@@ -19,7 +20,7 @@ export async function POST(request: NextRequest) {
 	const docStructure = convertMarkdownToNestedDoc(fileContent);
 
 	const doc = {
-		title: decodeURI(fileName).replace(/\.[^/.]+$/, ""),
+		title: parseFileName(fileName),
 		body: docStructure,
 		modified: fileStats.mtime,
 	};

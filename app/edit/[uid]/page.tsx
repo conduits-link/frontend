@@ -14,8 +14,9 @@ import SlateEditor from "@/components/wrappers/SlateEditor";
 
 import styles from "./page.module.css";
 import Loading from "@/components/wrappers/Loading";
+import { parseFileName } from "@/utils/parse";
 
-export default ({ params }: { params: any }) => {
+const Page = ({ params }: { params: any }) => {
 	const [isLoading, setLoading] = useState(true);
 	const [file, setFile] = useState<Object>("");
 
@@ -32,7 +33,7 @@ export default ({ params }: { params: any }) => {
 				setFile(data.doc);
 				setLoading(false);
 			});
-	}, []);
+	}, [params.uid]);
 
 	const searchParams = useSearchParams();
 	const [mode, setMode] = useState<string>(
@@ -62,7 +63,9 @@ export default ({ params }: { params: any }) => {
 	if (isLoading)
 		return (
 			<div style={{ height: "100vh" }}>
-				<Loading>Loading 'Quantum Entanglement'...</Loading>
+				<Loading>
+					Loading &apos;{parseFileName(params.uid)}&apos;...
+				</Loading>
 			</div>
 		);
 
@@ -85,3 +88,5 @@ export default ({ params }: { params: any }) => {
 		</div>
 	);
 };
+
+export default Page;

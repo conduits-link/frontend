@@ -1,18 +1,26 @@
 import styles from "./Loading.module.css";
 
-const Component = ({ children }: { children: React.ReactNode }) => {
+const Component = ({
+	loader = true,
+	children,
+}: {
+	loader?: boolean;
+	children: React.ReactNode;
+}) => {
 	return (
 		<div className={styles.container}>
-			<div className={styles.icon}>
-				<span></span>
-				<span></span>
-				<span></span>
-				<span></span>
-				<span></span>
-				<span></span>
-				<span></span>
-				<span></span>
-			</div>
+			{loader && (
+				<div className={styles.icon}>
+					<span></span>
+					<span></span>
+					<span></span>
+					<span></span>
+					<span></span>
+					<span></span>
+					<span></span>
+					<span></span>
+				</div>
+			)}
 			{children}
 		</div>
 	);

@@ -14,18 +14,22 @@ export async function POST(request: NextRequest) {
 
 	const filePath = decodeURI(path.join(storeLocation, fileName));
 
-	const fileContent = fs.readFileSync(filePath, "utf8");
-	const fileStats = fs.statSync(filePath);
+	if (fs.existsSync(filePath)) {
+		const fileContent = fs.readFileSync(filePath, "utf8");
+		const fileStats = fs.statSync(filePath);
 
-	const docStructure = convertMarkdownToNestedDoc(fileContent);
+		const docStructure = convertMarkdownToNestedDoc(fileContent);
 
-	const doc = {
-		title: parseFileName(fileName),
-		body: docStructure,
-		modified: fileStats.mtime,
-	};
+		const doc = {
+			title: parseFileName(fileName),
+			body: docStructure,
+			modified: fileStats.mtime,
+		};
 
-	return new Response(JSON.stringify({ doc }));
+		return new Response(JSON.stringify({ doc }));
+	}
+
+	return new Response(JSON.stringify({ doc: null }));
 }
 
 export async function PUT(request: NextRequest) {
@@ -33,9 +37,11 @@ export async function PUT(request: NextRequest) {
 
 	const filePath = decodeURI(path.join(storeLocation, fileName));
 
-	const fileContent = convertNestedDocToMarkdown(docStructure);
+	if (fs.existsSync(filePath)) {
+		const fileContent = convertNestedDocToMarkdown(docStructure);
 
-	fs.writeFileSync(filePath, fileContent);
+		fs.writeFileSync(filePath, fileContent);
+	}
 
 	return new Response(JSON.stringify({}));
 }

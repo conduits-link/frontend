@@ -69,6 +69,15 @@ const Page = ({ params }: { params: any }) => {
 			</div>
 		);
 
+	if (file === null)
+		return (
+			<div style={{ height: "100vh" }}>
+				<Loading loader={false}>
+					No file named &apos;{parseFileName(params.uid)}&apos; exists.
+				</Loading>
+			</div>
+		);
+
 	return (
 		<div className={styles.container}>
 			<NavigationMenu

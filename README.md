@@ -5,7 +5,7 @@ Noteworthy is an LLM-based text editor, with an intuitive and powerful graphical
 ## Contents
 
 -  [Demo](#demo)
--  [Run](#run)
+-  [Run locally](#run-locally)
 -  [Documentation](#documentation)
 -  [(Planned) Features](#planned-features)
 
@@ -39,7 +39,13 @@ Responses to prompts for are collected underneath the node they were applied to.
 
 ![Multiple prompt responses screenshot](/public/demos/screenshot-prompt-response-multiple.png "Multiple prompt responses")
 
-## Run
+## Run locally
+
+Add the following environment variables to a `.env.local` file in the root directory:
+
+| Variable         | Description                  |
+| ---------------- | ---------------------------- |
+| `OPENAI_API_KEY` | API key for an OpenAI model. |
 
 ### Development
 
@@ -60,6 +66,10 @@ Responses to prompts for are collected underneath the node they were applied to.
    ```bash
    npm run dev
    ```
+
+3. Go to `/settings` and enter the absolute path to a folder on your machine that you want to read/write files to/from.
+
+   -  For example, `/home/<username>/Documents`.
 
 ### Production
 
@@ -86,6 +96,10 @@ Responses to prompts for are collected underneath the node they were applied to.
    ```bash
    npm run start
    ```
+
+4. Go to `/settings` and enter the absolute path to a folder on your machine that you want to read/write files to/from.
+
+   -  For example, `/home/<username>/Documents`.
 
 ## Documentation
 

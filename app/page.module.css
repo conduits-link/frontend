@@ -15,7 +15,7 @@
 }
 
 .name {
-	color: var(--color-accent);
+	color: var(--color-accent-100);
 }
 
 .page h1 {
@@ -36,20 +36,26 @@
 	font-style: italic;
 }
 
+.info:last-of-type {
+	margin: 1.5em 0;
+}
+
 .page p {
 	font-size: 1.35rem;
 	line-height: 1.85rem;
 }
 
 .image {
-	margin: 0 0 2.5em 0;
+	width: 100%;
+	height: auto;
+	margin: 1.15em 0 2.5em 0;
 }
 
 .page ol,
 .page ul {
 	padding-left: 0.65rem;
 	font-size: 1.35rem;
-	line-height: 1.85rem;
+	line-height: 2.15rem;
 }
 
 .page li {

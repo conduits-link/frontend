@@ -8,7 +8,7 @@ export default function Landing() {
 			<div className={styles.page}>
 				<div className={styles.splash}>
 					<h1>
-						<em className={styles.name}>Noteworthy.</em>The generative AI
+						<em className={styles.name}>Noteworthy.</em> The generative AI
 						revolution brought to an interface.
 					</h1>
 				</div>
@@ -17,63 +17,57 @@ export default function Landing() {
 					graphical user interface. Employ an AI assistant to help you
 					write without typing any prompts!
 				</p>
-				{/* <h2>Demo</h2> */}
-				<p>Edit documents as normal...</p>
+				<p>Edit documents as normal:</p>
 				<Image
 					className={styles.image}
 					src="/demos/screenshot-mode-edit.png"
 					alt=""
-					width={600}
-					height={400}
-					layout="responsive"
+					width={960}
+					height={600}
 				/>
 
 				<p>
 					Run a pre-engineered prompt on a text node, without typing
-					anything...
+					anything:
 				</p>
 				<Image
 					className={styles.image}
 					src="/demos/screenshot-prompt-menu.png"
 					alt=""
-					width={600}
-					height={400}
-					layout="responsive"
+					width={960}
+					height={600}
 				/>
 				<p>
-					Combine, edit, rework, and improve the results of your prompts...
+					Combine, edit, rework, and improve the results of your prompts:
 				</p>
 				<Image
 					className={styles.image}
 					src="/demos/screenshot-prompt-response-single.png"
 					alt=""
-					width={600}
-					height={400}
-					layout="responsive"
+					width={960}
+					height={600}
 				/>
 				<Image
 					className={styles.image}
 					src="/demos/screenshot-prompt-response-multiple.png"
 					alt=""
-					width={600}
-					height={400}
-					layout="responsive"
+					width={960}
+					height={600}
 				/>
 				<p>
 					View your documents without the clutter of the editor (and avoid
-					accidentally making changes when reviewing)...
+					accidentally making changes when reviewing):
 				</p>
 				<Image
 					className={styles.image}
 					src="/demos/screenshot-mode-view.png"
 					alt=""
-					width={600}
-					height={400}
-					layout="responsive"
+					width={960}
+					height={600}
 				/>
 				<p className={styles.info}>
-					...and that&apos;s just the beginning! Check out everything
-					that&apos;s to come...
+					And that&apos;s just the beginning! Check out everything
+					that&apos;s to come:
 				</p>
 				<ol>
 					<li>
@@ -116,7 +110,7 @@ export default function Landing() {
 					<li>
 						<strong>UI</strong>
 						<ul>
-							<li>Movable, collapsable generated material</li>
+							<li>Movable, collapsible generated material</li>
 							<li>Code syntax highlighting</li>
 							<li>Search bar</li>
 							<li>
@@ -147,7 +141,7 @@ export default function Landing() {
 						<strong>Social media features</strong>
 						<ul>
 							<li>Profile pictures, friends, etc.</li>
-							<li>Sharable, user-created prompt libraries.</li>
+							<li>Shareable, user-created prompt libraries.</li>
 						</ul>
 					</li>
 				</ol>

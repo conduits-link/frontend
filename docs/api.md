@@ -16,7 +16,7 @@ _**Note: all non-auth endpoints require a `same-site`, `http-only` JWT cookie th
 
 ### `/auth/register` : `POST`
 
-Sends an email to the user, with a link to `/auth/register/:uid` for them to create an account.
+Sends an email to the user, with a link to `/auth/register/:uid` (where `uid` is an encoded version of their email address) for them to create an account.
 
 #### Request
 

@@ -1,121 +1,178 @@
 # API
 
-This document lays out the API servers and endpoints that Noteworthy communicates with to transmit data between servers, data stores, and AI models.
+This document details the endpoints that this frontend communicates with in order to transmit and store data. The API is structured in a way that allows any server could be used, so long as it hosts these endpoints and provides the following interfaces.
 
-The Noteworthy API is structured in a way that means any server could be used, so long as it hosts these endpoints and provides the following interfaces.
+> **Terminology**
+>
+> -  Request: a JSON object that is sent _from_ the frontend (this repo) _to_ a server.
+> -  Response: a JSON object that is sent _to_ the frontend (this repo) _from_ a server.
+> -  `:uid`: a dynamic part of a route, where a unique identifier is represented (such as the ID of a file).
 
-Terminology:
+## Backend
 
--  **Request**: a JSON object that is sent _from_ Noteworthy _to_ a server.
--  **Response**: a JSON object that is sent _to_ Noteworthy _from_ a server.
--  `:slug`: a dynamic part of a route, where a unique identifier is represented (such as the ID of a file)
+The following endpoints are hosted by the server `process.env.BACKEND_URL`: a server address set as an environment variable in the file `.env.local` in the root directory of this repo.
 
-## `NEXT_PUBLIC_BACKEND_URL`
+_**Note: all non-auth endpoints require a `same-site`, `http-only` JWT cookie that is set by the server hosting these endpoints, on authentication.**_
 
-The following endpoints are hosted by the server `NEXT_PUBLIC_BACKEND_URL`: an environment variable defined in `.env.local` in the root directory of Noteworthy.
+### `/auth/register` : `POST`
 
-### `/store` : `GET`
+Sends an email to the user, with a link to `/auth/register/:uid` for them to create an account.
 
-#### Response
-
-`body`:
+#### Request
 
 ```json
 {
-	"message": <string>,
-	"files": <array>[
+	"email": "string"
+}
+```
+
+### `/auth/register/:uid` : `POST`
+
+Creates a user, and sets a `same-site`, `http-only` JWT cookie.
+
+#### Request
+
+```json
+{
+	"username": "string",
+	"email": "string",
+	"password": "string"
+}
+```
+
+### `/auth/login` : `POST`
+
+Authenticates a user, and sets a `same-site`, `http-only` JWT cookie.
+
+#### Request
+
+```json
+{
+	"email": "string",
+	"password": "string"
+}
+```
+
+### `/store/docs` : `GET`
+
+Retrieves all docs for the authenticated user.
+
+#### Response
+
+```json
+{
+	"status": "number",
+	"message": "string",
+	"files": [
 		{
-			"_id": <string>,
-			"title": <string>,
-			"created": <date>,
-			"modified": <date>
+			"_id": "string",
+			"title": "string",
+			"body": "Object[]",
+			"created": "Date",
+			"modified": "Date"
 		}
 	]
 }
 ```
 
-### `/file` : `POST`
+### `/store/docs/:uid` : `GET`
+
+Retrieves a specific doc for the authenticated user.
 
 #### Response
 
-`body`:
-
 ```json
 {
-	"message": <string>,
+	"status": "number",
+	"message": "string",
 	"file": {
-		"_id": <string>,
-		"created": <date>,
-		"modified": <date>
+		"_id": "string",
+		"title": "string",
+		"body": "Object[]",
+		"created": "Date",
+		"modified": "Date"
 	}
 }
 ```
 
-### `/file/:slug` : `GET`
+### `/store/docs` : `POST`
 
-#### Response
-
-`body`:
-
-```json
-{
-	"message": <string>,
-	"file": {
-		"title": <string>,
-		"body": <string>,
-		"created": <date>,
-		"modified": <date>
-	}
-}
-```
-
-### `/file/:slug` : `PATCH`
+Creates a new doc for the authenticated user.
 
 #### Request
 
-`body`:
-
 ```json
 {
 	"file": {
-		"title": <string>,
-		"body": <string>
+		"title": "string",
+		"body": "Object[]"
 	}
 }
 ```
 
 #### Response
 
-`body`:
-
 ```json
 {
-	"message": <string>,
+	"status": "number",
+	"message": "string",
 	"file": {
-		"title": <string>,
-		"body": <string>,
-		"created": <date>,
-		"modified": <date>
+		"_id": "string",
+		"title": "string",
+		"body": "Object[]",
+		"created": "Date",
+		"modified": "Date"
 	}
 }
 ```
 
-### `/file/:slug` : `DELETE`
+### `/store/docs/:uid` : `PUT`
+
+Updates a specific doc for the authenticated user.
 
 #### Request
 
-#### Response
+```json
+{
+	"file": {
+		"title": "string",
+		"body": "Object[]"
+	}
+}
+```
 
-`body`:
+#### Response
 
 ```json
 {
-	"message": <string>,
+	"status": "number",
+	"message": "string",
 	"file": {
-		"title": <string>,
-		"body": <string>,
-		"created": <date>,
-		"modified": <date>
+		"_id": "string",
+		"title": "string",
+		"body": "Object[]",
+		"created": "Date",
+		"modified": "Date"
+	}
+}
+```
+
+### `/store/docs/:uid` : `DELETE`
+
+Removes a specific doc from the authenticated user.
+
+#### Response
+
+```json
+{
+	"status": "number",
+	"message": "string",
+	"file": {
+		"_id": "string",
+		"title": "string",
+		"body": "Object[]",
+		"created": "Date",
+		"modified": "Date"
 	}
 }
 ```

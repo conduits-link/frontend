@@ -43,9 +43,10 @@ Responses to prompts for are collected underneath the node they were applied to.
 
 Add the following environment variables to a `.env.local` file in the root directory:
 
-| Variable         | Description                  |
-| ---------------- | ---------------------------- |
-| `OPENAI_API_KEY` | API key for an OpenAI model. |
+| Variable         | Description                                                                                                                                                                                                              |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `OPENAI_API_KEY` | API key for an OpenAI model.                                                                                                                                                                                             |
+| `BACKEND_URL`    | URL of the backend server _(note: if this is not set, this frontend will use its own local API instead - such as reading files from the system of the machine it is running on, instead of storing them on a database)_. |
 
 ### Development
 
@@ -67,7 +68,7 @@ Add the following environment variables to a `.env.local` file in the root direc
    npm run dev
    ```
 
-3. Go to `/settings` and enter the absolute path to a folder on your machine that you want to read/write files to/from.
+3. **If you did not set the `BACKEND_URL` environment variable**, go to `/settings` and enter the absolute path to a folder on your machine that you want to read/write files to/from.
 
    -  For example, `/home/<username>/Documents`.
 
@@ -97,7 +98,7 @@ Add the following environment variables to a `.env.local` file in the root direc
    npm run start
    ```
 
-4. Go to `/settings` and enter the absolute path to a folder on your machine that you want to read/write files to/from.
+4. **If you did not set the `BACKEND_URL` environment variable**, go to `/settings` and enter the absolute path to a folder on your machine that you want to read/write files to/from.
 
    -  For example, `/home/<username>/Documents`.
 

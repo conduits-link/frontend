@@ -26,6 +26,18 @@ Sends an email to the user, with a link to `/auth/register/:uid` (where `uid` is
 }
 ```
 
+#### Response
+
+```json
+{
+	"status": "number",
+	"message": "string",
+	"user": {
+		"email": "string"
+	}
+}
+```
+
 ### `/auth/register/:uid` : `POST`
 
 Creates a user, and sets a `same-site`, `http-only` JWT cookie.
@@ -40,6 +52,19 @@ Creates a user, and sets a `same-site`, `http-only` JWT cookie.
 }
 ```
 
+#### Response
+
+```json
+{
+	"status": "number",
+	"message": "string",
+	"user": {
+		"username": "string",
+		"email": "string"
+	}
+}
+```
+
 ### `/auth/login` : `POST`
 
 Authenticates a user, and sets a `same-site`, `http-only` JWT cookie.
@@ -50,6 +75,19 @@ Authenticates a user, and sets a `same-site`, `http-only` JWT cookie.
 {
 	"email": "string",
 	"password": "string"
+}
+```
+
+#### Response
+
+```json
+{
+	"status": "number",
+	"message": "string",
+	"user": {
+		"username": "string",
+		"email": "string"
+	}
 }
 ```
 

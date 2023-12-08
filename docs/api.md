@@ -214,3 +214,38 @@ Removes a specific doc from the authenticated user.
 	}
 }
 ```
+
+### `/generate/text` : `POST`
+
+Inferences a generative model to generate text, given a prompt.
+
+#### Request
+
+```json
+{
+	"input": {
+		"messages": [
+			{
+				"role": "string",
+				"content": "string"
+			}
+		]
+	}
+}
+```
+
+#### Response
+
+```json
+{
+	"status": "number",
+	"message": "string",
+	"output": {
+		"messages": [
+			{
+				"content": "string"
+			}
+		]
+	}
+}
+```

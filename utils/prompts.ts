@@ -3,6 +3,10 @@ export interface Prompt {
 	prompt: string;
 }
 
+function constructPrompt(input: string, prompt: string): string {
+	return prompt + "\n'" + input + "'";
+}
+
 const prompts: Prompt[] = [
 	{
 		name: "Summarise",
@@ -21,4 +25,4 @@ const prompts: Prompt[] = [
 	},
 ];
 
-export default prompts;
+export { constructPrompt, prompts };

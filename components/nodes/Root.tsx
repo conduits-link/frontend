@@ -7,7 +7,6 @@ import { LuAtom } from "react-icons/lu";
 
 import styles from "./Root.module.css";
 import PromptMenu from "../menus/PromptMenu";
-import { ApiResponse } from "@/utils/fetch";
 
 const RootNode = ({
 	children,
@@ -35,11 +34,11 @@ const RootNode = ({
 
 	const getPath = () => ReactEditor.findPath(editor, node)[0];
 
-	const addIdea = (res: ApiResponse) => {
+	const addIdea = (res: apiPrompt) => {
 		const idea = {
 			type: "idea",
-			children: [{ text: res.answer }],
-			prompt: res.prompt,
+			children: [{ text: res.messages[0].content }],
+			promptName: res.promptName,
 		};
 
 		const container = {
@@ -67,7 +66,7 @@ const RootNode = ({
 		return Node.string(Editor.node(editor, [getPath(), 0])[0]);
 	};
 
-	const handleResponse = (res: ApiResponse): void => {
+	const handleResponse = (res: apiPrompt): void => {
 		addIdea(res);
 	};
 

@@ -15,7 +15,8 @@ import {
 } from "react-icons/tb";
 
 import styles from "./Idea.module.css";
-import sendFetch, { ApiResponse } from "@/utils/fetch";
+import sendFetch from "@/utils/fetch";
+import { constructPrompt, prompts } from "@/utils/prompts";
 
 const Idea = (props: any) => {
 	const { editor, node } = props;
@@ -23,20 +24,38 @@ const Idea = (props: any) => {
 	const getParentIndex = () => ReactEditor.findPath(editor, node)[0];
 	const getPath = () => ReactEditor.findPath(editor, node);
 
-	const replaceParentNodeTextWithApiResponse = (input: string) => {
+	const replaceParentNodeTextWithApiResponse = async (input: string) => {
 		const path = getPath();
 		path.push(0);
 
 		Transforms.delete(editor, { at: path });
 
-		const prompt = (Editor.node(editor, getPath())[0] as { prompt?: string })
-			?.prompt;
+		const promptName: string = (
+			Editor.node(editor, getPath())[0] as { promptName?: string }
+		)?.promptName!;
 
-		sendFetch("/api", "POST", "", { prompt, input }).then((res) => {
-			const content = (res as ApiResponse).answer;
+		const content = constructPrompt(
+			input,
+			prompts.find((prompt) => prompt.name == promptName)!.prompt
+		);
 
-			Transforms.insertText(editor, content, { at: path });
-		});
+		const res = (await sendFetch(
+			`${process.env.NEXT_PUBLIC_API_URL}/generate/text`,
+			"POST",
+			"",
+			{
+				promptName,
+				messages: [
+					{
+						role: "user",
+						content,
+					},
+				],
+			}
+		)) as apiResponse;
+
+		const body = (res.data as apiPrompt).messages[0].content;
+		Transforms.insertText(editor, body, { at: path });
 	};
 
 	const setParentNodeText = (content: string) => {

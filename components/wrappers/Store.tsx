@@ -10,8 +10,12 @@ import Button from "@/components/buttons/Button";
 import styles from "./Store.module.css";
 import Loading from "@/components/wrappers/Loading";
 import { file } from "@/utils/interfaces";
+import sendFetch from "@/utils/fetch";
+import { useRouter } from "next/navigation";
 
 const StoreComponent = ({ files }: { files: any }) => {
+	const router = useRouter();
+
 	const [selectedType, setSelectedType] = useState("doc");
 	const switchSelectedType = (type: string) => {
 		setSelectedType(type);
@@ -25,6 +29,27 @@ const StoreComponent = ({ files }: { files: any }) => {
 		setFilteredFiles(
 			files.filter((file: file) => file.title.toLowerCase().includes(search))
 		);
+	}
+
+	async function create() {
+		const res = (await sendFetch(
+			`${process.env.NEXT_PUBLIC_API_URL}/store/docs`,
+			"POST",
+			"",
+			{
+				file: {
+					title: "Untitled",
+					body: [
+						{
+							type: "paragraph",
+							children: [{ type: "text", children: [{ text: "" }] }],
+						},
+					],
+				},
+			}
+		)) as apiResponse;
+
+		router.push(`/edit/${res.data.file._id}`);
 	}
 
 	return (
@@ -42,7 +67,10 @@ const StoreComponent = ({ files }: { files: any }) => {
 							onChange={(e) => searchFiles(e.target.value)}
 						/>
 					)}
-					<Button primary={true}>
+					<Button
+						primary={true}
+						onClick={create}
+					>
 						<FaPlus />
 					</Button>
 				</div>
@@ -77,7 +105,7 @@ const StoreComponent = ({ files }: { files: any }) => {
 						</button>
 					</div> */}
 						<div className={styles.files}>
-							{filteredFiles.map((file, i: number) => (
+							{filteredFiles.map((file: file, i: number) => (
 								<div
 									className={styles.file}
 									key={i}

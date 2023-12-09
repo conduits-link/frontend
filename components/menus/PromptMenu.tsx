@@ -1,8 +1,6 @@
-import prompts from "@/utils/prompts";
+import { prompts } from "@/utils/prompts";
 
 import PromptButton from "../buttons/PromptButton";
-
-import { ApiResponse } from "@/utils/fetch";
 
 import styles from "./PromptMenu.module.css";
 
@@ -13,7 +11,7 @@ const PromptMenu = ({
 }: {
 	className?: string;
 	handleRequest: () => string;
-	handleResponse: (response: ApiResponse) => void;
+	handleResponse: (res: apiPrompt) => void;
 }) => {
 	return (
 		<div className={className + " " + styles.container}>
@@ -21,6 +19,7 @@ const PromptMenu = ({
 				prompts.map((prompt, index) => {
 					return (
 						<PromptButton
+							promptName={prompt.name}
 							prompt={prompt.prompt}
 							handleRequest={handleRequest}
 							handleResponse={handleResponse}

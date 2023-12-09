@@ -10,8 +10,9 @@ import SlateEditor from "@/components/wrappers/SlateEditor";
 import styles from "./RootEditor.module.css";
 import { Editor, createEditor } from "slate";
 import { withReact } from "slate-react";
+import sendFetch from "@/utils/fetch";
 
-const Component = ({ file, uid }: { file: any; uid: string }) => {
+const RootEditorComponent = ({ file, uid }: { file: any; uid: string }) => {
 	// // Stop remounting from breaking Slate children prop
 	const editor = useMemo(() => withReact(createEditor()), []);
 
@@ -27,14 +28,17 @@ const Component = ({ file, uid }: { file: any; uid: string }) => {
 	}
 
 	function save() {
-		fetch("/api/store/doc", {
-			method: "PUT",
-			body: JSON.stringify({
-				storeLocation: process.env.STORE_LOCATION,
-				fileName: uid,
-				docStructure: editor.children,
-			}),
-		});
+		sendFetch(
+			`${process.env.NEXT_PUBLIC_API_URL}/store/docs/${uid}`,
+			"PUT",
+			"",
+			{
+				file: {
+					title: uid,
+					body: editor.children,
+				},
+			}
+		);
 	}
 
 	return (
@@ -57,4 +61,4 @@ const Component = ({ file, uid }: { file: any; uid: string }) => {
 	);
 };
 
-export default Component;
+export default RootEditorComponent;

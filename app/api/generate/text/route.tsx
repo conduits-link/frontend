@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-async function getAiResponse(prompt: string) {
+async function getAiResponse(messages: Object[]) {
 	const response = await fetch("https://api.openai.com/v1/chat/completions", {
 		method: "POST",
 		headers: {
@@ -9,13 +9,13 @@ async function getAiResponse(prompt: string) {
 		},
 		body: JSON.stringify({
 			model: "gpt-3.5-turbo",
-			messages: [{ role: "user", content: prompt }],
+			messages,
 			temperature: 0.7,
 			top_p: 1,
 			frequency_penalty: 0,
 			presence_penalty: 0,
 			max_tokens: 200,
-			stream: false, // use instead of loading icon
+			stream: false, // should use instead of loading icon
 			n: 1,
 		}),
 	});
@@ -25,13 +25,21 @@ async function getAiResponse(prompt: string) {
 }
 
 export async function POST(request: NextRequest) {
-	const { prompt, input } = await request.json();
-	const toSend = prompt + "\n'" + input + "'";
-	const answer = await getAiResponse(toSend);
+	const { promptName, messages } = await request.json();
+
+	const answer = await getAiResponse(messages);
 
 	return NextResponse.json({
-		prompt,
-		input,
-		answer,
+		status: 200,
+		message: "Response generated.",
+		data: {
+			promptName,
+			messages: [
+				{
+					role: "user",
+					content: answer,
+				},
+			],
+		},
 	});
 }

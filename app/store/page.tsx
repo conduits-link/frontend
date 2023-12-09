@@ -1,11 +1,15 @@
+import sendFetch from "@/utils/fetch";
+
 import StoreComponent from "@/components/wrappers/Store";
 
 const StorePage = async () => {
-	const files = await fetch(`${process.env.BACKEND_URL}/store`, {
-		method: "GET",
-	}).then((res) => res.json());
+	const res = (await sendFetch(
+		`${process.env.NEXT_PUBLIC_API_URL}/store/docs`,
+		"GET",
+		""
+	)) as apiResponse;
 
-	return <StoreComponent files={files} />;
+	return <StoreComponent files={res.data.files} />;
 };
 
 export default StorePage;

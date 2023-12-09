@@ -37,7 +37,14 @@ function convertMarkdownToNestedDoc(fileContent: string): Object[] {
 		}
 	});
 
-	return nestedDoc;
+	return nestedDoc.length > 0
+		? nestedDoc
+		: [
+				{
+					type: "paragraph",
+					children: [{ type: "text", children: [{ text: "" }] }],
+				},
+		  ];
 }
 
 function convertNestedDocToMarkdown(nestedDoc: any): string {

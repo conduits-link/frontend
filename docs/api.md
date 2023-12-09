@@ -32,8 +32,10 @@ Sends an email to the user, with a link to `/auth/register/:uid` (where `uid` is
 {
 	"status": "number",
 	"message": "string",
-	"user": {
-		"email": "string"
+	"data": {
+		"user": {
+			"email": "string"
+		}
 	}
 }
 ```
@@ -58,9 +60,11 @@ Creates a user, and sets a `same-site`, `http-only` JWT cookie.
 {
 	"status": "number",
 	"message": "string",
-	"user": {
-		"username": "string",
-		"email": "string"
+	"data": {
+		"user": {
+			"username": "string",
+			"email": "string"
+		}
 	}
 }
 ```
@@ -84,9 +88,11 @@ Authenticates a user, and sets a `same-site`, `http-only` JWT cookie.
 {
 	"status": "number",
 	"message": "string",
-	"user": {
-		"username": "string",
-		"email": "string"
+	"data": {
+		"user": {
+			"username": "string",
+			"email": "string"
+		}
 	}
 }
 ```
@@ -101,15 +107,17 @@ Retrieves all docs for the authenticated user.
 {
 	"status": "number",
 	"message": "string",
-	"files": [
-		{
-			"_id": "string",
-			"title": "string",
-			"body": "Object[]",
-			"created": "Date",
-			"modified": "Date"
-		}
-	]
+	"data": {
+		"files": [
+			{
+				"_id": "string",
+				"title": "string",
+				"body": "Object[]",
+				"created": "Date",
+				"modified": "Date"
+			}
+		]
+	}
 }
 ```
 
@@ -123,12 +131,14 @@ Retrieves a specific doc for the authenticated user.
 {
 	"status": "number",
 	"message": "string",
-	"file": {
-		"_id": "string",
-		"title": "string",
-		"body": "Object[]",
-		"created": "Date",
-		"modified": "Date"
+	"data": {
+		"file": {
+			"_id": "string",
+			"title": "string",
+			"body": "Object[]",
+			"created": "Date",
+			"modified": "Date"
+		}
 	}
 }
 ```
@@ -154,12 +164,14 @@ Creates a new doc for the authenticated user.
 {
 	"status": "number",
 	"message": "string",
-	"file": {
-		"_id": "string",
-		"title": "string",
-		"body": "Object[]",
-		"created": "Date",
-		"modified": "Date"
+	"data": {
+		"file": {
+			"_id": "string",
+			"title": "string",
+			"body": "Object[]",
+			"created": "Date",
+			"modified": "Date"
+		}
 	}
 }
 ```
@@ -185,12 +197,14 @@ Updates a specific doc for the authenticated user.
 {
 	"status": "number",
 	"message": "string",
-	"file": {
-		"_id": "string",
-		"title": "string",
-		"body": "Object[]",
-		"created": "Date",
-		"modified": "Date"
+	"data": {
+		"file": {
+			"_id": "string",
+			"title": "string",
+			"body": "Object[]",
+			"created": "Date",
+			"modified": "Date"
+		}
 	}
 }
 ```
@@ -205,12 +219,14 @@ Removes a specific doc from the authenticated user.
 {
 	"status": "number",
 	"message": "string",
-	"file": {
-		"_id": "string",
-		"title": "string",
-		"body": "Object[]",
-		"created": "Date",
-		"modified": "Date"
+	"data": {
+		"file": {
+			"_id": "string",
+			"title": "string",
+			"body": "Object[]",
+			"created": "Date",
+			"modified": "Date"
+		}
 	}
 }
 ```
@@ -223,14 +239,13 @@ Inferences a generative model to generate text, given a prompt.
 
 ```json
 {
-	"input": {
-		"messages": [
-			{
-				"role": "string",
-				"content": "string"
-			}
-		]
-	}
+	"promptName": "string",
+	"messages": [
+		{
+			"role": "string",
+			"content": "string"
+		}
+	]
 }
 ```
 
@@ -240,9 +255,11 @@ Inferences a generative model to generate text, given a prompt.
 {
 	"status": "number",
 	"message": "string",
-	"output": {
+	"data": {
+		"promptName": "string",
 		"messages": [
 			{
+				"role": "string",
 				"content": "string"
 			}
 		]

@@ -2,7 +2,7 @@ export default function sendFetch(
 	route: string,
 	method: string,
 	cookie: string,
-	data: Object
+	data?: Object
 ) {
 	return new Promise((resolve, reject) => {
 		fetch(route, {
@@ -15,6 +15,7 @@ export default function sendFetch(
 			},
 			credentials: "include",
 			body: JSON.stringify(data),
+			cache: "no-store", // disable cache
 		})
 			.then((res) => {
 				return res.json();
@@ -24,11 +25,3 @@ export default function sendFetch(
 			});
 	});
 }
-
-interface ApiResponse {
-	prompt: string;
-	input: string;
-	answer: string;
-}
-
-export type { ApiResponse };

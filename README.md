@@ -5,7 +5,7 @@ Noteworthy is an LLM-based text editor, with an intuitive and powerful graphical
 ## Contents
 
 -  [Demo](#demo)
--  [Run locally](#run-locally)
+-  [Setup](#setup)
 -  [Documentation](#documentation)
 -  [(Planned) Features](#planned-features)
 
@@ -39,42 +39,21 @@ Responses to prompts for are collected underneath the node they were applied to.
 
 ![Multiple prompt responses screenshot](/public/demos/screenshot-prompt-response-multiple.png "Multiple prompt responses")
 
-## Run locally
+## Setup
 
-Add the following environment variables to a `.env.local` file in the root directory:
+### Run with built-in API
 
-| Variable         | Description                                                                                                                                                                                                              |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `OPENAI_API_KEY` | API key for an OpenAI model.                                                                                                                                                                                             |
-| `BACKEND_URL`    | URL of the backend server _(note: if this is not set, this frontend will use its own local API instead - such as reading files from the system of the machine it is running on, instead of storing them on a database)_. |
+This is the easiest way to run Noteworthy, as it uses the local API built into the frontend. This means that all files are stored/read from the system of the machine that Noteworthy is running on. However, there is obviously no syncing between different machines or choices of generative AI usage (there is only currently support for OpenAI locally).
 
-### Development
+1. Add the following environment variables to a `.env.local` file in the root directory of this project:
 
-1. Install dependencies:
+   | Variable              | Value                                                                                                                 |
+   | --------------------- | --------------------------------------------------------------------------------------------------------------------- |
+   | `NEXT_PUBLIC_API_URL` | `http://localhost:3000/api`                                                                                           |
+   | `STORE_LOCATION`      | The absolute location of the folder you want to read/write files to on your machine (e.g., `/home/<user>/Documents`). |
+   | `OPENAI_API_KEY`      | An OpenAI API key.                                                                                                    |
 
-   ```bash
-   npm install
-   ```
-
-   -  If you are pulling after recent commits (and dependencies have changed/updated), reinstall dependencies:
-
-      ```bash
-      npm ci
-      ```
-
-2. Run in developer mode:
-
-   ```bash
-   npm run dev
-   ```
-
-3. **If you did not set the `BACKEND_URL` environment variable**, go to `/settings` and enter the absolute path to a folder on your machine that you want to read/write files to/from.
-
-   -  For example, `/home/<username>/Documents`.
-
-### Production
-
-1. Install dependencies:
+2. Install dependencies:
 
    ```bash
    npm install
@@ -86,21 +65,55 @@ Add the following environment variables to a `.env.local` file in the root direc
       npm ci
       ```
 
-2. Build the project:
+3. Run in _either_:
+
+   -  Development mode:
+
+      ```bash
+      npm run dev
+      ```
+
+   -  Production mode:
+
+      ```bash
+      npm run start
+      ```
+
+### Run with external API
+
+This is how Noteworthy works in production: a separate backend handles authentication, file storage, and generative AI usage. Any backend can be used, so long as it hosts [these endpoints](/docs/api.md#backend).
+
+1. Add the following environment variables to a `.env.local` file in the root directory of this project:
+
+   | Variable              | Value                                                                            |
+   | --------------------- | -------------------------------------------------------------------------------- |
+   | `NEXT_PUBLIC_API_URL` | The URL of the backend that hosts hosts [these endpoints](/docs/api.md#backend). |
+
+2. Install dependencies:
 
    ```bash
-   npm run build
+   npm install
    ```
 
-3. Run in production mode:
+   -  If you are pulling after recent commits (and dependencies have changed/updated), reinstall dependencies:
 
-   ```bash
-   npm run start
-   ```
+      ```bash
+      npm ci
+      ```
 
-4. **If you did not set the `BACKEND_URL` environment variable**, go to `/settings` and enter the absolute path to a folder on your machine that you want to read/write files to/from.
+3. Run in _either_:
 
-   -  For example, `/home/<username>/Documents`.
+   -  Development mode:
+
+      ```bash
+      npm run dev
+      ```
+
+   -  Production mode:
+
+      ```bash
+      npm run start
+      ```
 
 ## Documentation
 

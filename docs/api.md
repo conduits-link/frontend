@@ -10,7 +10,7 @@ This document details the endpoints that this frontend communicates with in orde
 
 ## Backend
 
-The following endpoints are hosted by the server `process.env.BACKEND_URL`: a server address set as an environment variable in the file `.env.local` in the root directory of this repo.
+The following endpoints are hosted by the server `process.env.NEXT_PUBLIC_API_URL`: a server address set as an environment variable in the file `.env.local` in the root directory of this repo.
 
 _**Note: all non-auth endpoints require a `same-site`, `http-only` JWT cookie that is set by the server hosting these endpoints, on authentication.**_
 

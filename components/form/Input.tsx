@@ -14,14 +14,20 @@ export default function Input({
 	value?: string;
 }) {
 	return (
-		<div>
-			<label htmlFor={name}>{label}</label>
+		<div className={styles.container}>
+			<label
+				htmlFor={name}
+				className={styles.label}
+			>
+				{label}
+			</label>
 			<input
 				id={name}
 				name={name}
 				type={type}
 				placeholder={placeholder}
-			></input>
+				className={styles.element}
+			/>
 		</div>
 	);
 }

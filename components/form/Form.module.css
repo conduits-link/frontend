@@ -1,24 +1,28 @@
 .container {
+	width: 25em;
+	padding: 1.5em;
 	display: flex;
 	flex-direction: column;
-	gap: var(--spacing-small);
-}
-
-.label {
-}
-
-.element {
-	padding: var(--spacing-large);
+	gap: 1.65em;
 	border-radius: var(--border-radius-large);
 	border: var(--border-container);
 	background-color: var(--color-primary-100);
-	color: var(--color-secondary-100);
 	backdrop-filter: blur(6px);
 	box-sizing: border-box;
 	position: relative;
-	font-size: 1rem;
 }
 
-.element:focus {
-	outline: 2px solid white;
+.container button {
+	padding: var(--spacing-small) 1.85em;
+	font-size: 1rem;
+	font-weight: 700;
+}
+
+.container button:hover {
+	transform: scale(1.05);
+}
+
+.container button:active {
+	transform: scale(0.95);
+	transition: none !important;
 }

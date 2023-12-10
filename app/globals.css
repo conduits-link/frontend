@@ -42,3 +42,7 @@ ul,
 ol {
 	margin: 0;
 }
+
+:focus:not(:focus-visible) {
+	outline: none !important;
+}

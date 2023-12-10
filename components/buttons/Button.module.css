@@ -1,6 +1,4 @@
 .element {
-	/* width: 3.85rem;
-	height: 2.65rem; */
 	padding: var(--spacing-small);
 	border: none;
 	display: flex;
@@ -27,6 +25,10 @@
 
 .element:active {
 	transform: scale(0.85);
+}
+
+.element:focus {
+	outline: 2px solid white;
 }
 
 .element svg {

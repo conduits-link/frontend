@@ -15,6 +15,7 @@
 .heading {
 	margin-bottom: 3.5em;
 	display: flex;
+	gap: 22vw;
 	justify-content: space-between;
 }
 

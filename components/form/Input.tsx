@@ -9,7 +9,7 @@ export default function Input({
 	onChange,
 }: {
 	name: string;
-	label: string;
+	label?: string;
 	type: string;
 	placeholder: string;
 	value?: string;
@@ -17,12 +17,14 @@ export default function Input({
 }) {
 	return (
 		<div className={styles.container}>
-			<label
-				htmlFor={name}
-				className={styles.label}
-			>
-				{label}
-			</label>
+			{label && (
+				<label
+					htmlFor={name}
+					className={styles.label}
+				>
+					{label}
+				</label>
+			)}
 			<input
 				id={name}
 				name={name}

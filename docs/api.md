@@ -42,7 +42,16 @@ Sends an email to the user, with a link to `/auth/register/:uid` (where `uid` is
 
 ### `/auth/register/:uid` : `POST`
 
-Creates a user, and sets a `same-site`, `http-only` JWT cookie.
+Creates a user, and creates a JWT with the user's email address as the payload.
+
+> **Note about the JWT**
+>
+> The JWT must be set as a cookie with the following attributes:
+>
+> -  `same-site` : `strict`
+> -  `secure` : `true`
+> -  `http-only` : `true`
+> -  `domain` : `process.env.NEXT_PUBLIC_API_URL` (the server address of this backend)
 
 #### Request
 
@@ -71,7 +80,16 @@ Creates a user, and sets a `same-site`, `http-only` JWT cookie.
 
 ### `/auth/login` : `POST`
 
-Authenticates a user, and sets a `same-site`, `http-only` JWT cookie.
+Authenticates a user, and creates a JWT with the user's email address as the payload.
+
+> **Note about the JWT**
+>
+> The JWT must be set as a cookie with the following attributes:
+>
+> -  `same-site` : `strict`
+> -  `secure` : `true`
+> -  `http-only` : `true`
+> -  `domain` : `process.env.NEXT_PUBLIC_API_URL` (the server address of this backend)
 
 #### Request
 

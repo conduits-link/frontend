@@ -8,7 +8,6 @@ import { FaEye, FaPenFancy, FaPlus } from "react-icons/fa6";
 import Button from "@/components/buttons/Button";
 
 import styles from "./Store.module.css";
-import Loading from "@/components/wrappers/Loading";
 import { file } from "@/utils/interfaces";
 import sendFetch from "@/utils/fetch";
 import { useRouter } from "next/navigation";

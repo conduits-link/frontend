@@ -12,10 +12,12 @@ export default function Button({
 	onMouseLeave,
 	onFocus,
 	onBlur,
+	disabled,
 	children,
 	primary,
 }: {
 	className?: string;
+	type?: "button" | "submit" | "reset";
 	onClick?: React.MouseEventHandler;
 	onMouseEnter?: React.MouseEventHandler;
 	onMouseOver?: React.MouseEventHandler;
@@ -24,6 +26,7 @@ export default function Button({
 	onMouseLeave?: React.MouseEventHandler;
 	onFocus?: React.FocusEventHandler;
 	onBlur?: React.FocusEventHandler;
+	disabled?: Boolean;
 	children: ReactNode;
 	primary?: Boolean;
 }) {
@@ -33,7 +36,8 @@ export default function Button({
 				className +
 				" " +
 				styles.element +
-				(primary ? " " + styles.primary : "")
+				(primary ? " " + styles.primary : "") +
+				(disabled ? " " + styles.disabled : "")
 			}
 			onClick={onClick}
 			onMouseEnter={onMouseEnter}
@@ -43,6 +47,7 @@ export default function Button({
 			onMouseLeave={onMouseLeave}
 			onFocus={onFocus}
 			onBlur={onBlur}
+			disabled={!!disabled}
 		>
 			{children}
 		</button>

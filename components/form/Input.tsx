@@ -6,12 +6,14 @@ export default function Input({
 	type,
 	placeholder,
 	value,
+	onChange,
 }: {
 	name: string;
 	label: string;
 	type: string;
 	placeholder: string;
 	value?: string;
+	onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) {
 	return (
 		<div className={styles.container}>
@@ -27,6 +29,7 @@ export default function Input({
 				type={type}
 				placeholder={placeholder}
 				className={styles.element}
+				onChange={onChange}
 			/>
 		</div>
 	);

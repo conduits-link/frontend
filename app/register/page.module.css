@@ -1,0 +1,9 @@
+.containerSubmitted {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.containerSubmitted p {
+	margin-top: var(--spacing-small);
+}

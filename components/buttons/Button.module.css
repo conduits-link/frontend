@@ -68,3 +68,8 @@
 	transform: scale(0.95);
 	transition: none !important;
 }
+
+.disabled {
+	pointer-events: none;
+	opacity: 0.25;
+}

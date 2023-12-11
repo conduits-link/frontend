@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import CenterFillPageComponent from "@/components/wrappers/CenterFillPage";
+import FillPageComponent from "@/components/wrappers/FillPage";
 import Button from "@/components/buttons/Button";
 import Input from "@/components/form/Input";
 import Form from "@/components/form/Form";
@@ -14,7 +14,7 @@ const PreRegisterPage = () => {
 	const [email, setEmail] = useState("");
 
 	return (
-		<CenterFillPageComponent>
+		<FillPageComponent>
 			{!submitted && (
 				<Form
 					url="/auth/register"
@@ -40,7 +40,7 @@ const PreRegisterPage = () => {
 					<p>Please check your email to finish creating your account.</p>
 				</div>
 			)}
-		</CenterFillPageComponent>
+		</FillPageComponent>
 	);
 };
 

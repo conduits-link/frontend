@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import CenterFillPageComponent from "@/components/wrappers/CenterFillPage";
+import FillPageComponent from "@/components/wrappers/FillPage";
 import Button from "@/components/buttons/Button";
 import Input from "@/components/form/Input";
 import Form from "@/components/form/Form";
@@ -12,7 +12,7 @@ const LoginPage = () => {
 	const [password, setPassword] = useState("");
 
 	return (
-		<CenterFillPageComponent>
+		<FillPageComponent>
 			<Form
 				url="/auth/login"
 				data={{ email, password }}
@@ -35,7 +35,7 @@ const LoginPage = () => {
 				/>
 				<Button primary={true}>Login</Button>
 			</Form>
-		</CenterFillPageComponent>
+		</FillPageComponent>
 	);
 };
 

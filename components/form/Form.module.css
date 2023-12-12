@@ -3,13 +3,21 @@
 	padding: 1.5em;
 	display: flex;
 	flex-direction: column;
-	gap: 1.65em;
+	gap: var(--spacing-large);
 	border-radius: var(--border-radius-large);
 	border: var(--border-container);
 	background-color: var(--color-primary-100);
 	backdrop-filter: blur(6px);
 	box-sizing: border-box;
 	position: relative;
+}
+
+.container > :first-child {
+	margin-bottom: calc(var(--spacing-large) + var(--spacing-small));
+}
+
+.container > :last-child {
+	margin-top: var(--spacing-large);
 }
 
 .container button {

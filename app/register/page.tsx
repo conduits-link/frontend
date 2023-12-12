@@ -13,6 +13,24 @@ const PreRegisterPage = () => {
 	const [submitted, setSubmitted] = useState(false);
 	const [email, setEmail] = useState("");
 
+	const [validationErrors, setValidationErrors] = useState({
+		email: true,
+	});
+
+	const handleValidationError = (name: string) => {
+		setValidationErrors((prevErrors) => ({
+			...prevErrors,
+			[name]: true,
+		}));
+	};
+
+	const handleValidationSuccess = (name: string) => {
+		setValidationErrors((prevErrors) => ({
+			...prevErrors,
+			[name]: false,
+		}));
+	};
+
 	return (
 		<FillPageComponent>
 			{!submitted && (
@@ -30,8 +48,27 @@ const PreRegisterPage = () => {
 						type="email"
 						placeholder="Enter your email"
 						onChange={(e) => setEmail(e.target.value)}
+						validations={[
+							{
+								type: "required",
+								errorMessage: "Please enter your email address.",
+							},
+							{
+								type: "email",
+								errorMessage: "Please enter a valid email address.",
+							},
+						]}
+						onValidationError={() => handleValidationError("email")}
+						onValidationSuccess={() => handleValidationSuccess("email")}
 					/>
-					<Button primary={true}>Register</Button>
+					<Button
+						primary={true}
+						disabled={Object.values(validationErrors).some(
+							(error) => error
+						)}
+					>
+						Register
+					</Button>
 				</Form>
 			)}
 			{submitted && (

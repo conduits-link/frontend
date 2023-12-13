@@ -9,7 +9,7 @@ Noteworthy is an LLM-based text editor, with an intuitive and powerful graphical
 -  [Documentation](#documentation)
 -  [(Planned) Features](#planned-features)
 
-_See [noteworthy-frontend](https://github.com/jhels/noteworthy-frontend/) and [noteworthy-backend](https://github.com/jhels/noteworthy-backend) for deployment of this technology._
+_See [noteworthy-backend](https://github.com/jhels/noteworthy-backend) for backend deployment of this technology._
 
 ## Demo
 

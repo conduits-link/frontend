@@ -104,7 +104,7 @@ export default function Input({
 				}}
 				required={validations?.some((v) => v.type === "required")}
 			/>
-			<small className={styles.error}>{error && error}</small>
+			{validations && <small className={styles.error}>{error && error}</small>}
 		</div>
 	);
 }

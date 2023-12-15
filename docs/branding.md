@@ -12,9 +12,11 @@
 -  Noteworthy
 -  Conductor (as in both a train conductor and the electricity double meaning)
 -  Ally
--  Skipper/Captain/etc.
+-  Skipper/Captain/etc. (Skipper could be written as skippr or similar)
 -  Conduit (it has UI in it)
--  Nile (or other river names)
+-  Nile/Rhine (or other river names)
 -  Aim (AI Messenger)
 -  Junction
 -  Reservoir
+-  Cistern
+-  Nexus

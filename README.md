@@ -125,6 +125,7 @@ This is how Noteworthy works in production: a separate backend handles authentic
    -  Copy file content
    -  Summarise file content
    -  Consolidate content from multiple files
+   -  Individually extract text, images, LaTex, and code
 2. Text highlighting
    -  Re-write (in the style of X)
    -  Summarise

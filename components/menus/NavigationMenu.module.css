@@ -51,6 +51,22 @@
 	margin-left: var(--spacing-large);
 }
 
+.returnInfoTitle input {
+	padding: 0;
+	color: var(--color-secondary-100);
+	background-color: transparent;
+	border: none;
+	border-radius: 5px;
+	font-size: 1rem;
+	font-weight: 700;
+	text-overflow: ellipsis;
+}
+
+.returnInfoTitle input:focus {
+	outline: 2px solid var(--color-secondary-100);
+	outline-offset:  4px;
+}
+
 .returnInfoTitle {
 	margin-bottom: 0.25em;
 	font-weight: 700;

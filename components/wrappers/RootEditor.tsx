@@ -27,27 +27,14 @@ const RootEditorComponent = ({ file, uid }: { file: any; uid: string }) => {
 		setMode(newMode);
 	}
 
-	function save() {
-		sendFetch(
-			`${process.env.NEXT_PUBLIC_API_URL}/store/docs/${uid}`,
-			"PUT",
-			"",
-			{
-				file: {
-					title: uid,
-					body: editor.children,
-				},
-			}
-		);
-	}
-
 	return (
 		<div className={styles.container}>
 			<NavigationMenu
+				editor={editor}
 				file={file}
 				mode={mode}
 				switchMode={switchMode}
-				save={save}
+				uid={uid}
 			/>
 			<SlateEditor
 				editor={editor}

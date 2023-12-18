@@ -66,14 +66,28 @@ export async function PUT(
 
 		fs.writeFileSync(filePath, fileContent);
 
-		const fileStats = fs.statSync(filePath);
+		let _id = params.uid;
+		let { birthtime, mtime } = fs.statSync(filePath);
+
+		if (file.title !== parseFileName(params.uid)) {
+			const newFilePath = path.join(
+				process.env.STORE_LOCATION as string,
+				file.title + ".md"
+			);
+
+			fs.renameSync(filePath, newFilePath);
+
+			_id = file.title + ".md";
+			birthtime = fs.statSync(newFilePath).birthtime;
+			mtime = fs.statSync(newFilePath).mtime;
+		}
 
 		const doc = {
-			_id: params.uid,
-			title: parseFileName(params.uid),
+			_id,
+			title: file.title,
 			body: file.body,
-			created: fileStats.birthtime,
-			modified: fileStats.mtime,
+			created: birthtime,
+			modified: mtime,
 		};
 
 		return new Response(

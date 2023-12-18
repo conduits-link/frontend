@@ -13,21 +13,44 @@ import { timeAgo } from "@/utils/helpers";
 import Button from "../buttons/Button";
 
 import styles from "./NavigationMenu.module.css";
+import sendFetch from "@/utils/fetch";
+import { Editor } from "slate";
 
 export default function NavigationMenu({
+	editor,
 	file,
 	mode,
 	switchMode,
-	save,
+	uid,
 }: {
+	editor: Editor;
 	file: any;
 	mode: string;
 	switchMode: (mode: string) => void;
-	save: () => void;
+	uid: string;
 }) {
 	const router = useRouter();
 
+	const [title, setTitle] = useState<string>(file.title);
 	const [lastModified, setLastModified] = useState<string>("");
+
+	async function save() {
+		const res = (await sendFetch(
+			`${process.env.NEXT_PUBLIC_API_URL}/store/docs/${uid}`,
+			"PUT",
+			"",
+			{
+				file: {
+					title: title,
+					body: editor.children,
+				},
+			}
+		)) as apiResponse;
+
+		if (res.data.file._id !== uid) {
+			router.push(`/edit/${res.data.file._id}`);
+		}
+	}
 
 	useEffect(() => {
 		setLastModified(file.modified);
@@ -46,7 +69,13 @@ export default function NavigationMenu({
 						<FaChevronLeft />
 					</Button>
 					<div className={styles.returnInfo}>
-						<div className={styles.returnInfoTitle}>{file.title}</div>
+						<div className={styles.returnInfoTitle}>
+							<input
+								type="text"
+								value={title}
+								onChange={(e) => setTitle(e.target.value)}
+							/>
+						</div>
 						<small className={styles.returnInfoTime}>
 							Edited {timeAgo(lastModified)}
 						</small>
@@ -56,7 +85,9 @@ export default function NavigationMenu({
 					<button
 						className={
 							styles.modeButton +
-							(mode === "edit" ? " " + styles.modeButtonActive : "")
+							(mode === "edit"
+								? " " + styles.modeButtonActive
+								: "")
 						}
 						onClick={() => switchMode("edit")}
 					>
@@ -66,7 +97,9 @@ export default function NavigationMenu({
 					<button
 						className={
 							styles.modeButton +
-							(mode === "preview" ? " " + styles.modeButtonActive : "")
+							(mode === "preview"
+								? " " + styles.modeButtonActive
+								: "")
 						}
 						onClick={() => switchMode("preview")}
 					>

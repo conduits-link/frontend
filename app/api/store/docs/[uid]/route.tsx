@@ -111,3 +111,36 @@ export async function PUT(
 		})
 	);
 }
+
+export async function DELETE(
+	req: Request,
+	{ params }: { params: { uid: string } }
+) {
+	const filePath = decodeURI(
+		path.join(process.env.STORE_LOCATION as string, params.uid)
+	);
+
+	if (fs.existsSync(filePath)) {
+		fs.unlinkSync(filePath);
+
+		return new Response(
+			JSON.stringify({
+				status: 200,
+				message: "File deleted.",
+				data: {
+					file: null,
+				},
+			})
+		);
+	}
+
+	return new Response(
+		JSON.stringify({
+			status: 500,
+			message: "Something went wrong.",
+			data: {
+				file: null,
+			},
+		})
+	);
+}

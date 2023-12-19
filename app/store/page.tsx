@@ -13,7 +13,7 @@ const StorePage = async (params: any) => {
 		cookieStore.get("JWT") ? `JWT=${cookieStore.get("JWT")?.value}` : ""
 	)) as apiResponse;
 
-	return <StoreComponent files={res.data.files} />;
+	return <StoreComponent initialFiles={res.data.files} />;
 };
 
 export default StorePage;

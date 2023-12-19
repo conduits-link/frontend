@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
 
-import { FaEye, FaPenFancy, FaPlus } from "react-icons/fa6";
+import { FaEye, FaPenFancy, FaPlus, FaTrash } from "react-icons/fa6";
 
 import { countWordsInObject } from "@/utils/parse";
 import sendFetch from "@/utils/fetch";
@@ -15,9 +15,10 @@ import NoSSR from "./NoSSR";
 
 import styles from "./Store.module.css";
 
-const StoreComponent = ({ files }: { files: any }) => {
+const StoreComponent = ({ initialFiles }: { initialFiles: any }) => {
 	const router = useRouter();
 
+	const [files, setFiles] = useState(initialFiles);
 	const [filteredFiles, setFilteredFiles] = useState(files);
 
 	function searchFiles(search: string) {
@@ -26,7 +27,7 @@ const StoreComponent = ({ files }: { files: any }) => {
 		);
 	}
 
-	async function create() {
+	async function createDoc() {
 		const res = (await sendFetch(
 			`${process.env.NEXT_PUBLIC_API_URL}/store/docs`,
 			"POST",
@@ -47,6 +48,19 @@ const StoreComponent = ({ files }: { files: any }) => {
 		router.push(`/edit/${res.data.file._id}`);
 	}
 
+	async function deleteDoc(id: string) {
+		const res = (await sendFetch(
+			`${process.env.NEXT_PUBLIC_API_URL}/store/docs/${id}`,
+			"DELETE",
+			""
+		)) as apiResponse;
+
+		if (res.status === 200) {
+			setFiles(files.filter((file: doc) => file._id !== id));
+			setFilteredFiles(filteredFiles.filter((file: doc) => file._id !== id));
+		}
+	}
+
 	return (
 		<NoSSR>
 			<div className={styles.container}>
@@ -59,7 +73,7 @@ const StoreComponent = ({ files }: { files: any }) => {
 							placeholder="Search"
 							onChange={(e) => searchFiles(e.target.value)}
 						/>
-						<Button primary={true} onClick={create}>
+						<Button primary={true} onClick={createDoc}>
 							<FaPlus />
 						</Button>
 					</div>
@@ -92,6 +106,12 @@ const StoreComponent = ({ files }: { files: any }) => {
 													<FaEye />
 												</button>
 											</Link>
+											<button
+												onClick={() => deleteDoc(file._id)}
+												className={styles.button}
+											>
+												<FaTrash />
+											</button>
 										</div>
 									</div>
 								);

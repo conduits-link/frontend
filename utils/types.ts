@@ -1,3 +1,5 @@
+// API
+
 type apiResponse = {
 	status: number;
 	message: string;
@@ -12,4 +14,14 @@ type apiPrompt = {
 			content: string;
 		}
 	];
+};
+
+// Files
+
+type doc = {
+	_id: string;
+	title: string;
+	body: any;
+	created: Date;
+	modified: Date;
 };

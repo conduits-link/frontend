@@ -76,6 +76,18 @@ function parseFileName(fileName: string): string {
 	return decodeURI(fileName).replace(/\.[^/.]+$/, "");
 }
 
+function countWordsInObject(obj: any) {
+	let count = 0;
+	for (let key in obj) {
+		if (key == "text" && typeof obj[key] === "string") {
+			count += obj[key].split(/\s+/).length;
+		} else if (typeof obj[key] === "object" && obj[key] !== null) {
+			count += countWordsInObject(obj[key]);
+		}
+	}
+	return count;
+}
+
 const singleOrDoubleDollar = /\$\$(.*?)\$\$|\$(.*?)\$/g;
 
 const replaceWithLatex = (
@@ -95,6 +107,7 @@ function parseLatex(html: string): string {
 export {
 	convertMarkdownToNestedDoc,
 	convertNestedDocToMarkdown,
+	countWordsInObject,
 	parseFileName,
 	parseLatex,
 };

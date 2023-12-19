@@ -12,6 +12,8 @@ import { Editor, createEditor } from "slate";
 import { withReact } from "slate-react";
 import sendFetch from "@/utils/fetch";
 
+import NoSSR from "./NoSSR";
+
 const RootEditorComponent = ({ file, uid }: { file: any; uid: string }) => {
 	// // Stop remounting from breaking Slate children prop
 	const editor = useMemo(() => withReact(createEditor()), []);
@@ -28,23 +30,25 @@ const RootEditorComponent = ({ file, uid }: { file: any; uid: string }) => {
 	}
 
 	return (
-		<div className={styles.container}>
-			<NavigationMenu
-				editor={editor}
-				file={file}
-				mode={mode}
-				switchMode={switchMode}
-				uid={uid}
-			/>
-			<SlateEditor
-				editor={editor}
-				className={styles.page}
-				file={file}
-				readOnly={mode !== "edit"}
-				mode={mode}
-			/>
-			{mode !== "preview" && <FixedFormatMenu editor={editor} />}
-		</div>
+		<NoSSR>
+			<div className={styles.container}>
+				<NavigationMenu
+					editor={editor}
+					file={file}
+					mode={mode}
+					switchMode={switchMode}
+					uid={uid}
+				/>
+				<SlateEditor
+					editor={editor}
+					className={styles.page}
+					file={file}
+					readOnly={mode !== "edit"}
+					mode={mode}
+				/>
+				{mode !== "preview" && <FixedFormatMenu editor={editor} />}
+			</div>
+		</NoSSR>
 	);
 };
 

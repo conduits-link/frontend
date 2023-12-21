@@ -4,6 +4,8 @@ import IdeaContainer from "@/components/nodes/IdeaContainer";
 import Paragraph from "@/components/nodes/Paragraph";
 import { Editor, Node, Range, Transforms } from "slate";
 import { areEquivalent } from "./helpers";
+import { useCallback } from "react";
+import Leaf from "@/components/nodes/Leaf";
 
 const renderElement = (
 	{
@@ -36,12 +38,7 @@ const renderElement = (
 			);
 		case "idea":
 			return (
-				<Idea
-					{...attributes}
-					editor={editor}
-					node={element}
-					mode={mode}
-				>
+				<Idea {...attributes} editor={editor} node={element} mode={mode}>
 					{children}
 				</Idea>
 			);
@@ -58,18 +55,17 @@ const renderElement = (
 			);
 		case "heading":
 			return (
-				<Heading
-					{...attributes}
-					editor={editor}
-					node={element}
-					mode={mode}
-				>
+				<Heading {...attributes} editor={editor} node={element} mode={mode}>
 					{children}
 				</Heading>
 			);
 		default:
 			return null;
 	}
+};
+
+const renderLeaf = (props: any) => {
+	return <Leaf {...props} />;
 };
 
 const onType = (e: React.KeyboardEvent, editor: Editor) => {
@@ -108,6 +104,13 @@ const onType = (e: React.KeyboardEvent, editor: Editor) => {
 		switch (e.key) {
 			case "b": {
 				e.preventDefault();
+				CustomEditor.toggleBoldMark(editor);
+				break;
+			}
+			case "i": {
+				e.preventDefault();
+				CustomEditor.toggleItalicMark(editor);
+				console.log(editor.children);
 				break;
 			}
 		}
@@ -154,6 +157,30 @@ const CustomEditor = {
 			}
 		}
 	},
+	isBoldMarkActive(editor: Editor) {
+		const marks = Editor.marks(editor);
+		return marks ? marks.bold === true : false;
+	},
+	toggleBoldMark(editor: Editor) {
+		const isActive = CustomEditor.isBoldMarkActive(editor);
+		if (isActive) {
+			Editor.removeMark(editor, "bold");
+		} else {
+			Editor.addMark(editor, "bold", true);
+		}
+	},
+	isItalicMarkActive(editor: Editor) {
+		const marks = Editor.marks(editor);
+		return marks ? marks.italic === true : false;
+	},
+	toggleItalicMark(editor: Editor) {
+		const isActive = CustomEditor.isItalicMarkActive(editor);
+		if (isActive) {
+			Editor.removeMark(editor, "italic");
+		} else {
+			Editor.addMark(editor, "italic", true);
+		}
+	},
 };
 
-export { renderElement, onType, CustomEditor };
+export { renderElement, renderLeaf, onType, CustomEditor };

@@ -6,7 +6,12 @@ import { Slate, Editable, withReact } from "slate-react";
 import { BaseEditor } from "slate";
 import { ReactEditor } from "slate-react";
 import NoSSR from "./NoSSR";
-import { CustomEditor, onType, renderElement } from "@/utils/editor";
+import {
+	CustomEditor,
+	onType,
+	renderElement,
+	renderLeaf,
+} from "@/utils/editor";
 
 // TODO: Slate.js types - I THINK THESE SHOULD BE USED TO REDUCE ERRORS
 type CustomElement = {
@@ -47,6 +52,7 @@ const SlateEditor = ({
 					renderElement={(props) =>
 						renderElement({ ...props }, editor, mode) || <></>
 					}
+					renderLeaf={renderLeaf}
 					onKeyDown={(e: React.KeyboardEvent) => onType(e, editor)}
 					readOnly={readOnly}
 				/>

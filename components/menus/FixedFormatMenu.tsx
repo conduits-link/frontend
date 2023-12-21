@@ -1,9 +1,16 @@
 import { Editor, Node } from "slate";
 
+import {
+	LuBold,
+	LuHeading1,
+	LuHeading2,
+	LuHeading3,
+	LuItalic,
+} from "react-icons/lu";
+
 import FormatButton from "../buttons/FormatButton";
 
 import styles from "./FixedFormatMenu.module.css";
-import { LuHeading1, LuHeading2, LuHeading3 } from "react-icons/lu";
 
 export default function FixedMenu({ editor }: { editor: Editor }) {
 	return (
@@ -32,6 +39,23 @@ export default function FixedMenu({ editor }: { editor: Editor }) {
 					className={""}
 				>
 					<LuHeading3 />
+				</FormatButton>
+			</div>
+			<div className={styles.element}>
+				<FormatButton
+					editor={editor}
+					nodeType={"heading"}
+					options={{ level: 1 }}
+					className={""}
+				>
+					<LuBold />
+				</FormatButton>
+				<FormatButton
+					editor={editor}
+					nodeType={"heading"}
+					className={""}
+				>
+					<LuItalic />
 				</FormatButton>
 			</div>
 		</div>

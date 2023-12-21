@@ -27,8 +27,3 @@
 	box-sizing: border-box;
 	position: relative;
 }
-
-/* Hacky fix for Z-index layering issue with sub menus.  */
-.container {
-	flex-direction: row-reverse;
-}

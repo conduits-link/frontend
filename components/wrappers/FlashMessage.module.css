@@ -1,0 +1,14 @@
+.container {
+	width: 100%;
+	position: fixed;
+	transition: top 0.5s ease-in-out;
+   top: -100%;
+}
+
+.error {
+	background-color: var(--color-error-100);
+}
+
+.show {
+	top: 0;
+}

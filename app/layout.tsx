@@ -1,6 +1,8 @@
 import React, { ReactNode } from "react";
 import { Lato } from "next/font/google";
 
+import FlashMessageContainer from "@/components/wrappers/FlashMessageContainer";
+
 import "./globals.css";
 
 export const metadata = {
@@ -15,10 +17,14 @@ const font = Lato({
 	display: "swap",
 });
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+const RootLayout = ({ children }: { children: ReactNode }) => {
 	return (
 		<html lang="en">
-			<body className={font.className}>{children}</body>
+			<body className={font.className}>
+				<FlashMessageContainer>{children}</FlashMessageContainer>
+			</body>
 		</html>
 	);
-}
+};
+
+export default RootLayout;

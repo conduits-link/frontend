@@ -1,14 +1,43 @@
 .container {
-	width: 100%;
+	max-width: 65em;
+	width: fit-content;
+	height: 3.5em;
+	padding: 1.5em 2em;
+	box-sizing: border-box;
+	inset: -3.5em auto 0 auto;
 	position: fixed;
-	transition: top 0.5s ease-in-out;
-   top: -100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-weight: 700;
+	border-radius: var(--border-radius-large);
+	transition: top 0.35s ease-in-out;
+	z-index: 999;
+}
+
+.show {
+	top: 0.85em;
+	animation: slideIn 0.35s ease-in-out;
+}
+
+@keyframes slideIn {
+	from {
+		top: -3.5em;
+	}
+
+	to {
+		top: 0.85em;
+	}
+}
+
+.success {
+	background-color: var(--color-success-100);
 }
 
 .error {
 	background-color: var(--color-error-100);
 }
 
-.show {
-	top: 0;
+.info {
+	background-color: var(--color-info-100);
 }

@@ -1,5 +1,6 @@
-import FlashMessage from "@/components/wrappers/FlashMessage";
 import { createContext, ReactNode, useContext, useState } from "react";
+
+import FlashMessage from "@/components/wrappers/FlashMessage";
 
 interface FlashMessageContextProps {
 	children: ReactNode;
@@ -25,15 +26,26 @@ export const FlashMessageProvider: React.FC<FlashMessageContextProps> = ({
 
 	const showFlashMessage = (type: FlashMessage["type"], text: string) => {
 		setFlashMessage({ type, text });
+		setTimeout(() => {
+			setFlashMessage(null);
+		}, 5500); // 5050 is the length of time the flash message displays for (inside FlashMessage.tsx) plus the animation duration (inside FlashMessage.module.css) plus a buffer
 	};
 
 	return (
 		<FlashMessageContext.Provider value={{ showFlashMessage }}>
 			{flashMessage && (
-				<FlashMessage
-					type={flashMessage!.type}
-					message={flashMessage!.text}
-				/>
+				<div
+					style={{
+						width: "100vw",
+						display: "flex",
+						justifyContent: "center",
+					}}
+				>
+					<FlashMessage
+						type={flashMessage!.type}
+						message={flashMessage!.text}
+					/>
+				</div>
 			)}
 			{children}
 		</FlashMessageContext.Provider>

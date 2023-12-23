@@ -69,6 +69,8 @@ const renderLeaf = (props: any, editor: Editor, mode: string) => {
 			style={{
 				fontWeight: props.leaf.bold ? "bold" : "normal",
 				fontStyle: props.leaf.italic ? "italic" : "normal",
+				textDecoration: props.leaf.strikethrough ? "line-through" : "none",
+				backgroundColor: props.leaf.code ? "grey" : "transparent",
 			}}
 		>
 			{props.children}
@@ -118,6 +120,16 @@ const onType = (e: React.KeyboardEvent, editor: Editor) => {
 			case "i": {
 				e.preventDefault();
 				CustomEditor.toggleMark(editor, "italic");
+				break;
+			}
+			case "~": {
+				e.preventDefault();
+				CustomEditor.toggleMark(editor, "strikethrough");
+				break;
+			}
+			case "`": {
+				e.preventDefault();
+				CustomEditor.toggleMark(editor, "code");
 				break;
 			}
 		}

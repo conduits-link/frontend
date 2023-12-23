@@ -2,10 +2,12 @@ import { Editor, Node } from "slate";
 
 import {
 	LuBold,
+	LuCode,
 	LuHeading1,
 	LuHeading2,
 	LuHeading3,
 	LuItalic,
+	LuStrikethrough,
 } from "react-icons/lu";
 
 import FormatButton from "../buttons/FormatButton";
@@ -21,7 +23,6 @@ export default function FixedMenu({ editor }: { editor: Editor }) {
 					isNode={true}
 					type={"heading"}
 					options={{ level: 1 }}
-					className={""}
 				>
 					<LuHeading1 />
 				</FormatButton>
@@ -30,7 +31,6 @@ export default function FixedMenu({ editor }: { editor: Editor }) {
 					isNode={true}
 					type={"heading"}
 					options={{ level: 2 }}
-					className={""}
 				>
 					<LuHeading2 />
 				</FormatButton>
@@ -39,27 +39,22 @@ export default function FixedMenu({ editor }: { editor: Editor }) {
 					isNode={true}
 					type={"heading"}
 					options={{ level: 3 }}
-					className={""}
 				>
 					<LuHeading3 />
 				</FormatButton>
 			</div>
 			<div className={styles.element}>
-				<FormatButton
-					editor={editor}
-					isNode={false}
-					type={"bold"}
-					className={""}
-				>
+				<FormatButton editor={editor} isNode={false} type={"bold"}>
 					<LuBold />
 				</FormatButton>
-				<FormatButton
-					editor={editor}
-					isNode={false}
-					type={"italic"}
-					className={""}
-				>
+				<FormatButton editor={editor} isNode={false} type={"italic"}>
 					<LuItalic />
+				</FormatButton>
+				<FormatButton editor={editor} isNode={false} type={"strikethrough"}>
+					<LuStrikethrough />
+				</FormatButton>
+				<FormatButton editor={editor} isNode={false} type={"code"}>
+					<LuCode />
 				</FormatButton>
 			</div>
 		</div>

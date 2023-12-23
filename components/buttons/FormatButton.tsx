@@ -26,7 +26,7 @@ export default function FormatButton({
 	isNode: Boolean;
 	type: string;
 	options?: any;
-	className: string;
+	className?: string;
 	onClick?: React.MouseEventHandler;
 	onMouseEnter?: React.MouseEventHandler;
 	onMouseOver?: React.MouseEventHandler;

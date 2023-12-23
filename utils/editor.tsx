@@ -4,8 +4,6 @@ import IdeaContainer from "@/components/nodes/IdeaContainer";
 import Paragraph from "@/components/nodes/Paragraph";
 import { Editor, Node, Range, Transforms } from "slate";
 import { areEquivalent } from "./helpers";
-import { useCallback } from "react";
-import Leaf from "@/components/nodes/Leaf";
 
 const renderElement = (
 	{
@@ -64,8 +62,18 @@ const renderElement = (
 	}
 };
 
-const renderLeaf = (props: any) => {
-	return <Leaf {...props} />;
+const renderLeaf = (props: any, editor: Editor, mode: string) => {
+	return (
+		<span
+			{...props.attributes}
+			style={{
+				fontWeight: props.leaf.bold ? "bold" : "normal",
+				fontStyle: props.leaf.italic ? "italic" : "normal",
+			}}
+		>
+			{props.children}
+		</span>
+	);
 };
 
 const onType = (e: React.KeyboardEvent, editor: Editor) => {
@@ -104,13 +112,12 @@ const onType = (e: React.KeyboardEvent, editor: Editor) => {
 		switch (e.key) {
 			case "b": {
 				e.preventDefault();
-				CustomEditor.toggleBoldMark(editor);
+				CustomEditor.toggleMark(editor, "bold");
 				break;
 			}
 			case "i": {
 				e.preventDefault();
-				CustomEditor.toggleItalicMark(editor);
-				console.log(editor.children);
+				CustomEditor.toggleMark(editor, "italic");
 				break;
 			}
 		}
@@ -157,28 +164,17 @@ const CustomEditor = {
 			}
 		}
 	},
-	isBoldMarkActive(editor: Editor) {
+	isMarkActive(editor: Editor, markType: string) {
 		const marks = Editor.marks(editor);
-		return marks ? marks.bold === true : false;
+		// TODO: make mark type more robust
+		return marks ? (marks as any)[markType] === true : false;
 	},
-	toggleBoldMark(editor: Editor) {
-		const isActive = CustomEditor.isBoldMarkActive(editor);
+	toggleMark(editor: Editor, markType: string) {
+		const isActive = CustomEditor.isMarkActive(editor, markType);
 		if (isActive) {
-			Editor.removeMark(editor, "bold");
+			Editor.removeMark(editor, markType);
 		} else {
-			Editor.addMark(editor, "bold", true);
-		}
-	},
-	isItalicMarkActive(editor: Editor) {
-		const marks = Editor.marks(editor);
-		return marks ? marks.italic === true : false;
-	},
-	toggleItalicMark(editor: Editor) {
-		const isActive = CustomEditor.isItalicMarkActive(editor);
-		if (isActive) {
-			Editor.removeMark(editor, "italic");
-		} else {
-			Editor.addMark(editor, "italic", true);
+			Editor.addMark(editor, markType, true);
 		}
 	},
 };

@@ -18,7 +18,8 @@ export default function FixedMenu({ editor }: { editor: Editor }) {
 			<div className={styles.element}>
 				<FormatButton
 					editor={editor}
-					nodeType={"heading"}
+					isNode={true}
+					type={"heading"}
 					options={{ level: 1 }}
 					className={""}
 				>
@@ -26,7 +27,8 @@ export default function FixedMenu({ editor }: { editor: Editor }) {
 				</FormatButton>
 				<FormatButton
 					editor={editor}
-					nodeType={"heading"}
+					isNode={true}
+					type={"heading"}
 					options={{ level: 2 }}
 					className={""}
 				>
@@ -34,7 +36,8 @@ export default function FixedMenu({ editor }: { editor: Editor }) {
 				</FormatButton>
 				<FormatButton
 					editor={editor}
-					nodeType={"heading"}
+					isNode={true}
+					type={"heading"}
 					options={{ level: 3 }}
 					className={""}
 				>
@@ -44,15 +47,16 @@ export default function FixedMenu({ editor }: { editor: Editor }) {
 			<div className={styles.element}>
 				<FormatButton
 					editor={editor}
-					nodeType={"heading"}
-					options={{ level: 1 }}
+					isNode={false}
+					type={"bold"}
 					className={""}
 				>
 					<LuBold />
 				</FormatButton>
 				<FormatButton
 					editor={editor}
-					nodeType={"heading"}
+					isNode={false}
+					type={"italic"}
 					className={""}
 				>
 					<LuItalic />

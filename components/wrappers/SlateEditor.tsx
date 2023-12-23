@@ -52,7 +52,7 @@ const SlateEditor = ({
 					renderElement={(props) =>
 						renderElement({ ...props }, editor, mode) || <></>
 					}
-					renderLeaf={renderLeaf}
+					renderLeaf={(props) => renderLeaf({ ...props }, editor, mode)}
 					onKeyDown={(e: React.KeyboardEvent) => onType(e, editor)}
 					readOnly={readOnly}
 				/>

@@ -2,8 +2,11 @@ import Heading from "@/components/nodes/Heading";
 import Idea from "@/components/nodes/Idea";
 import IdeaContainer from "@/components/nodes/IdeaContainer";
 import Paragraph from "@/components/nodes/Paragraph";
-import { Editor, Node, Range, Transforms } from "slate";
+import { Editor, Node, Range, Transforms, Element, Path } from "slate";
 import { areEquivalent } from "./helpers";
+import ListItem from "@/components/nodes/ListItem";
+import ListOrdered from "@/components/nodes/ListOrdered";
+import ListUnordered from "@/components/nodes/ListUnordered";
 
 const renderElement = (
 	{
@@ -56,6 +59,39 @@ const renderElement = (
 				<Heading {...attributes} editor={editor} node={element} mode={mode}>
 					{children}
 				</Heading>
+			);
+		case "list-item-ordered" || "list-item-unordered":
+			return (
+				<ListItem
+					{...attributes}
+					editor={editor}
+					node={element}
+					mode={mode}
+				>
+					{children}
+				</ListItem>
+			);
+		case "list-ordered":
+			return (
+				<ListOrdered
+					{...attributes}
+					editor={editor}
+					node={element}
+					mode={mode}
+				>
+					{children}
+				</ListOrdered>
+			);
+		case "list-unordered":
+			return (
+				<ListUnordered
+					{...attributes}
+					editor={editor}
+					node={element}
+					mode={mode}
+				>
+					{children}
+				</ListUnordered>
 			);
 		default:
 			return null;
@@ -137,7 +173,7 @@ const onType = (e: React.KeyboardEvent, editor: Editor) => {
 };
 
 const CustomEditor = {
-	toggleNodeType(
+	toggleBlock(
 		nodeType: string,
 		editor: Editor,
 		path?: number[],
@@ -155,24 +191,90 @@ const CustomEditor = {
 
 		if (actualPath) {
 			const node = Editor.node(editor, actualPath)[0];
-			const currNodeOptions: any = { ...node };
-			delete currNodeOptions["children"];
-			const nodeToCompare = Object.assign(options, { type: nodeType });
-			const isActive: boolean = areEquivalent(
-				currNodeOptions,
-				nodeToCompare
-			);
 
-			if (isActive) {
+			if (
+				node.type !== nodeType &&
+				!node.type.startsWith("list") &&
+				nodeType.startsWith("list")
+			) {
+				const currNodeOptions: any = { ...node };
+				delete currNodeOptions["children"];
+				const nodeToCompare = Object.assign(options, { type: nodeType });
+				const isActive: boolean = areEquivalent(
+					currNodeOptions,
+					nodeToCompare
+				);
+
+				if (isActive) {
+					Transforms.setNodes(
+						editor,
+						Object.assign({ type: "paragraph" }),
+						{
+							at: actualPath,
+						}
+					);
+				} else {
+					Transforms.setNodes(
+						editor,
+						Object.assign({ type: nodeType }, options),
+						{ at: actualPath }
+					);
+				}
+
+				if (
+					nodeType === "list-item-ordered" ||
+					nodeType === "list-item-unordered"
+				) {
+					// if there is not a 'list-ordered' or 'list-unordered' parent node, add one
+					const parentPath = Path.parent(actualPath);
+					const parentNode = Editor.node(editor, parentPath);
+					const parentProperties = parentNode[0];
+
+					if (
+						parentNode &&
+						parentProperties.type !== "list-ordered" &&
+						parentProperties.type !== "list-unordered"
+					) {
+						Transforms.wrapNodes(
+							editor,
+							{
+								type:
+									nodeType === "list-item-ordered"
+										? "list-ordered"
+										: "list-unordered",
+								children: [],
+							},
+							{ at: actualPath }
+						);
+					}
+				} else {
+					// if the parent node is a 'list-ordered' or 'list-unordered' node, remove it
+					const parent = Node.parent(editor, actualPath);
+					if (
+						(parent && parent[0].type === "list-ordered") ||
+						parent[0].type === "list-unordered"
+					) {
+						Transforms.unwrapNodes(editor, { at: actualPath });
+					}
+				}
+			} else {
+				// untoggle block
+
 				Transforms.setNodes(editor, Object.assign({ type: "paragraph" }), {
 					at: actualPath,
 				});
-			} else {
-				Transforms.setNodes(
-					editor,
-					Object.assign({ type: nodeType }, options),
-					{ at: actualPath }
-				);
+
+				if (nodeType.startsWith("list")) {
+					for (let i = 0; i < node.children.length; i++) {
+						Transforms.setNodes(
+							editor,
+							Object.assign({ type: "paragraph" }),
+							{
+								at: [...actualPath, i],
+							}
+						);
+					}
+				}
 			}
 		}
 	},

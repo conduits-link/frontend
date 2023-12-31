@@ -47,7 +47,7 @@ export default function FormatButton({
 				e.preventDefault();
 
 				if (isNode)
-					CustomEditor.toggleNodeType(type, editor, undefined, options);
+					CustomEditor.toggleBlock(type, editor, undefined, options);
 				else CustomEditor.toggleMark(editor, type);
 
 				if (onMouseDown) onMouseDown(e);

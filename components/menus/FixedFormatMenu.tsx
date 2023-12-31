@@ -7,6 +7,8 @@ import {
 	LuHeading2,
 	LuHeading3,
 	LuItalic,
+	LuList,
+	LuListOrdered,
 	LuStrikethrough,
 } from "react-icons/lu";
 
@@ -41,6 +43,22 @@ export default function FixedMenu({ editor }: { editor: Editor }) {
 					options={{ level: 3 }}
 				>
 					<LuHeading3 />
+				</FormatButton>
+				<FormatButton
+					editor={editor}
+					isNode={true}
+					type={"list-item-ordered"}
+					options={{}}
+				>
+					<LuListOrdered />
+				</FormatButton>
+				<FormatButton
+					editor={editor}
+					isNode={true}
+					type={"list-item-unordered"}
+					options={{}}
+				>
+					<LuList />
 				</FormatButton>
 			</div>
 			<div className={styles.element}>

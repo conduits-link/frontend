@@ -173,6 +173,23 @@ const onType = (e: React.KeyboardEvent, editor: Editor) => {
 };
 
 const CustomEditor = {
+	isParentAList(editor: Editor, nodePath: number[]) {
+		const parentPath = Path.parent(nodePath);
+		const parentNode = Editor.node(editor, parentPath);
+		const parentProperties = parentNode[0];
+
+		return (
+			parentNode &&
+			parentProperties.type === "list-ordered" &&
+			parentProperties.type === "list-unordered"
+		);
+	},
+	newBlockIsSameAsCurrentBlock(node: Node, nodeType: string, options: any) {
+		const currNodeOptions: any = { ...node };
+		delete currNodeOptions["children"];
+		const nodeToCompare = Object.assign(options, { type: nodeType });
+		return areEquivalent(currNodeOptions, nodeToCompare);
+	},
 	toggleBlock(
 		nodeType: string,
 		editor: Editor,
@@ -189,94 +206,82 @@ const CustomEditor = {
 			}
 		}
 
-		if (actualPath) {
-			const node = Editor.node(editor, actualPath)[0];
+		const node = Editor.node(editor, actualPath)[0];
+		const newBlockIsSame = CustomEditor.newBlockIsSameAsCurrentBlock(
+			node,
+			nodeType,
+			options
+		);
 
-			if (
-				node.type !== nodeType &&
-				!node.type.startsWith("list") &&
-				nodeType.startsWith("list")
-			) {
-				const currNodeOptions: any = { ...node };
-				delete currNodeOptions["children"];
-				const nodeToCompare = Object.assign(options, { type: nodeType });
-				const isActive: boolean = areEquivalent(
-					currNodeOptions,
-					nodeToCompare
-				);
-
-				if (isActive) {
-					Transforms.setNodes(
-						editor,
-						Object.assign({ type: "paragraph" }),
-						{
-							at: actualPath,
-						}
-					);
-				} else {
-					Transforms.setNodes(
-						editor,
-						Object.assign({ type: nodeType }, options),
-						{ at: actualPath }
-					);
-				}
-
-				if (
-					nodeType === "list-item-ordered" ||
-					nodeType === "list-item-unordered"
-				) {
-					// if there is not a 'list-ordered' or 'list-unordered' parent node, add one
-					const parentPath = Path.parent(actualPath);
-					const parentNode = Editor.node(editor, parentPath);
-					const parentProperties = parentNode[0];
-
-					if (
-						parentNode &&
-						parentProperties.type !== "list-ordered" &&
-						parentProperties.type !== "list-unordered"
-					) {
-						Transforms.wrapNodes(
-							editor,
-							{
-								type:
-									nodeType === "list-item-ordered"
-										? "list-ordered"
-										: "list-unordered",
-								children: [],
-							},
-							{ at: actualPath }
-						);
-					}
-				} else {
-					// if the parent node is a 'list-ordered' or 'list-unordered' node, remove it
-					const parent = Node.parent(editor, actualPath);
-					if (
-						(parent && parent[0].type === "list-ordered") ||
-						parent[0].type === "list-unordered"
-					) {
-						Transforms.unwrapNodes(editor, { at: actualPath });
-					}
-				}
-			} else {
-				// untoggle block
-
-				Transforms.setNodes(editor, Object.assign({ type: "paragraph" }), {
-					at: actualPath,
-				});
-
-				if (nodeType.startsWith("list")) {
-					for (let i = 0; i < node.children.length; i++) {
-						Transforms.setNodes(
-							editor,
-							Object.assign({ type: "paragraph" }),
-							{
-								at: [...actualPath, i],
-							}
-						);
-					}
-				}
-			}
+		if (newBlockIsSame) {
+			Transforms.setNodes(editor, Object.assign({ type: "paragraph" }), {
+				at: actualPath,
+			});
+		} else {
+			Transforms.setNodes(
+				editor,
+				Object.assign({ type: nodeType }, options),
+				{ at: actualPath }
+			);
 		}
+
+		// if (
+		// 	nodeType === "list-item-ordered" ||
+		// 	nodeType === "list-item-unordered"
+		// ) {
+		// 	// if there is not a 'list-ordered' or 'list-unordered' parent node, add one
+		// 	const parentPath = Path.parent(actualPath);
+		// 	const parentNode = Editor.node(editor, parentPath);
+		// 	const parentProperties = parentNode[0];
+
+		// 	if (
+		// 		parentNode &&
+		// 		parentProperties.type !== "list-ordered" &&
+		// 		parentProperties.type !== "list-unordered"
+		// 	) {
+		// 		Transforms.wrapNodes(
+		// 			editor,
+		// 			{
+		// 				type:
+		// 					nodeType === "list-item-ordered"
+		// 						? "list-ordered"
+		// 						: "list-unordered",
+		// 				children: [],
+		// 			},
+		// 			{ at: actualPath }
+		// 		);
+		// 	}
+		// } else {
+		// 	// if the parent node is a 'list-ordered' or 'list-unordered' node, remove it
+		// 	const parent = Node.parent(editor, actualPath);
+		// 	console.log(parent);
+		// 	if (
+		// 		parent &&
+		// 		parent[0] &&
+		// 		(parent[0].type === "list-ordered" ||
+		// 			parent[0].type === "list-unordered")
+		// 	) {
+		// 		Transforms.unwrapNodes(editor, { at: actualPath });
+		// 	}
+		// }
+
+		// // untoggle block
+
+		// Transforms.setNodes(editor, Object.assign({ type: "paragraph" }), {
+		// 	at: actualPath,
+		// });
+
+		// if (nodeType.startsWith("list")) {
+		// 	for (let i = 0; i < node.children.length; i++) {
+		// 		Transforms.setNodes(
+		// 			editor,
+		// 			Object.assign({ type: "paragraph" }),
+		// 			{
+		// 				at: [...actualPath, i],
+		// 			}
+		// 		);
+		// 	}
+		// }
 	},
 	isMarkActive(editor: Editor, markType: string) {
 		const marks = Editor.marks(editor);
@@ -284,8 +289,8 @@ const CustomEditor = {
 		return marks ? (marks as any)[markType] === true : false;
 	},
 	toggleMark(editor: Editor, markType: string) {
-		const isActive = CustomEditor.isMarkActive(editor, markType);
-		if (isActive) {
+		const newBlockIsSame = CustomEditor.isMarkActive(editor, markType);
+		if (newBlockIsSame) {
 			Editor.removeMark(editor, markType);
 		} else {
 			Editor.addMark(editor, markType, true);

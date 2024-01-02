@@ -60,7 +60,7 @@ const renderElement = (
 					{children}
 				</Heading>
 			);
-		case "list-item-ordered" || "list-item-unordered":
+		case "list-ordered-item" || "list-unordered-item":
 			return (
 				<ListItem
 					{...attributes}
@@ -172,17 +172,15 @@ const onType = (e: React.KeyboardEvent, editor: Editor) => {
 	}
 };
 
-const CustomEditor = {
-	isParentAList(editor: Editor, nodePath: number[]) {
-		const parentPath = Path.parent(nodePath);
-		const parentNode = Editor.node(editor, parentPath);
-		const parentProperties = parentNode[0];
+const LIST_TYPES = ["list-ordered", "list-unordered"];
+const LIST_ITEMS = ["list-ordered-item", "list-unordered-item"];
 
-		return (
-			parentNode &&
-			parentProperties.type === "list-ordered" &&
-			parentProperties.type === "list-unordered"
-		);
+const CustomEditor = {
+	isBlockAList(editor: Editor, blockPath: number[]) {
+		const block = Editor.node(editor, blockPath);
+		const blockProperties = block[0];
+
+		return block && LIST_TYPES.includes(blockProperties.type as string);
 	},
 	newBlockIsSameAsCurrentBlock(node: Node, nodeType: string, options: any) {
 		const currNodeOptions: any = { ...node };
@@ -202,7 +200,9 @@ const CustomEditor = {
 			const currentSelection = editor.selection;
 			if (currentSelection) {
 				const [start] = Range.edges(currentSelection);
-				actualPath = [start.path[0]];
+
+				// remove the two trailing 'text' nodes from the path
+				actualPath = start.path.slice(0, -2);
 			}
 		}
 
@@ -225,63 +225,51 @@ const CustomEditor = {
 			);
 		}
 
-		// if (
-		// 	nodeType === "list-item-ordered" ||
-		// 	nodeType === "list-item-unordered"
-		// ) {
-		// 	// if there is not a 'list-ordered' or 'list-unordered' parent node, add one
-		// 	const parentPath = Path.parent(actualPath);
-		// 	const parentNode = Editor.node(editor, parentPath);
-		// 	const parentProperties = parentNode[0];
+		// if we are toggling a list item
+		if (LIST_ITEMS.includes(nodeType)) {
+			const LIST_WRAPPER_TYPE = nodeType.slice(
+				0,
+				nodeType.lastIndexOf("-item")
+			);
 
-		// 	if (
-		// 		parentNode &&
-		// 		parentProperties.type !== "list-ordered" &&
-		// 		parentProperties.type !== "list-unordered"
-		// 	) {
-		// 		Transforms.wrapNodes(
-		// 			editor,
-		// 			{
-		// 				type:
-		// 					nodeType === "list-item-ordered"
-		// 						? "list-ordered"
-		// 						: "list-unordered",
-		// 				children: [],
-		// 			},
-		// 			{ at: actualPath }
-		// 		);
-		// 	}
-		// } else {
-		// 	// if the parent node is a 'list-ordered' or 'list-unordered' node, remove it
-		// 	const parent = Node.parent(editor, actualPath);
-		// 	console.log(parent);
-		// 	if (
-		// 		parent &&
-		// 		parent[0] &&
-		// 		(parent[0].type === "list-ordered" ||
-		// 			parent[0].type === "list-unordered")
-		// 	) {
-		// 		Transforms.unwrapNodes(editor, { at: actualPath });
-		// 	}
-		// }
+			if (!this.isBlockAList(editor, [actualPath[0]])) {
+				// if there is not a 'list-ordered' or 'list-unordered' parent node, add one
 
-		// // untoggle block
+				Transforms.wrapNodes(
+					editor,
+					{
+						type: LIST_WRAPPER_TYPE,
+						children: [],
+					},
+					{ at: actualPath }
+				);
+			} else {
+				// if there is a 'list-ordered' or 'list-unordered' parent node, split the list at the
+				// selected child, creating a list above (if there are children before this) and one
+				// below (if there are children after this) and change the selected child into a paragraph
+				// in the middle of the (up to) two lists
 
-		// Transforms.setNodes(editor, Object.assign({ type: "paragraph" }), {
-		// 	at: actualPath,
-		// });
+				const childIndex = actualPath[actualPath.length - 1];
 
-		// if (nodeType.startsWith("list")) {
-		// 	for (let i = 0; i < node.children.length; i++) {
-		// 		Transforms.setNodes(
-		// 			editor,
-		// 			Object.assign({ type: "paragraph" }),
-		// 			{
-		// 				at: [...actualPath, i],
-		// 			}
-		// 		);
-		// 	}
-		// }
+				// move child from its parent to before its parent
+				Transforms.moveNodes(editor, {
+					at: actualPath,
+					to: [actualPath[0]],
+				});
+
+				// set the child to type paragraph
+				Transforms.setNodes(
+					editor,
+					{ type: "paragraph" },
+					{ at: [actualPath[0]] }
+				);
+
+				// if the remaining list contains no children, remove it
+				if (!Editor.node(editor, [actualPath[0] + 1])[0].children[0].text) {
+					Transforms.removeNodes(editor, { at: [actualPath[0] + 1] });
+				}
+			}
+		}
 	},
 	isMarkActive(editor: Editor, markType: string) {
 		const marks = Editor.marks(editor);

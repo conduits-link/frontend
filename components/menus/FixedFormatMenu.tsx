@@ -47,7 +47,7 @@ export default function FixedMenu({ editor }: { editor: Editor }) {
 				<FormatButton
 					editor={editor}
 					isNode={true}
-					type={"list-item-ordered"}
+					type={"list-ordered-item"}
 					options={{}}
 				>
 					<LuListOrdered />
@@ -55,7 +55,7 @@ export default function FixedMenu({ editor }: { editor: Editor }) {
 				<FormatButton
 					editor={editor}
 					isNode={true}
-					type={"list-item-unordered"}
+					type={"list-unordered-item"}
 					options={{}}
 				>
 					<LuList />

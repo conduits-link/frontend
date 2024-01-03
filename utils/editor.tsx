@@ -153,9 +153,12 @@ const onType = (e: React.KeyboardEvent, editor: Editor) => {
 					};
 
 					insertPath = [rootNodePath, deepestNodeIndex + 1];
-				} else if (!node.children[0].children[0].text) {
-					// If the current node is empty, remove it and insert the new node in its place
-					Transforms.removeNodes(editor, { at: nodePath });
+				} else if (
+					!node.children[0].children[0].text &&
+					rootNode.children.length - 1 &&
+					deepestNodeIndex
+				) {
+					CustomEditor.splitList(editor, rootNodePath, deepestNodeIndex);
 				}
 
 				// Insert the new sub-item node at the end of the container's children
@@ -294,6 +297,47 @@ const CustomEditor = {
 					Transforms.removeNodes(editor, { at: [actualPath[0] + 1] });
 				}
 			}
+		}
+	},
+	splitList(editor: Editor, listIndex: number, listItemIndex: number) {
+		const beforeList = {
+			type: "list-ordered",
+			children: [],
+		};
+
+		for (let i = 0; i < listItemIndex; i++) {
+			const listItem = Editor.node(editor, [listIndex, i])[0];
+			beforeList.children.push(listItem);
+		}
+
+		const afterList = {
+			type: "list-ordered",
+			children: [],
+		};
+
+		for (
+			let i = listItemIndex + 1;
+			i < Editor.node(editor, [listIndex])[0].children.length;
+			i++
+		) {
+			const listItem = Editor.node(editor, [listIndex, i])[0];
+			afterList.children.push(listItem);
+		}
+
+		Transforms.delete(editor, { at: [listIndex] });
+
+		if (beforeList.children.length > 0) {
+			// TODO: make type more robust
+			Transforms.insertNodes(editor, beforeList as unknown as Node, {
+				at: [listIndex],
+			});
+		}
+
+		if (afterList.children.length > 0) {
+			// TODO: make type more robust
+			Transforms.insertNodes(editor, afterList as unknown as Node, {
+				at: [listIndex + 1],
+			});
 		}
 	},
 	isMarkActive(editor: Editor, markType: string) {

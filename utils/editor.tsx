@@ -2,7 +2,7 @@ import Heading from "@/components/nodes/Heading";
 import Idea from "@/components/nodes/Idea";
 import IdeaContainer from "@/components/nodes/IdeaContainer";
 import Paragraph from "@/components/nodes/Paragraph";
-import { Editor, Node, Range, Transforms, Element, Path } from "slate";
+import { Editor, Node, Range, Transforms, Element, Path, node } from "slate";
 import { areEquivalent } from "./helpers";
 import ListItem from "@/components/nodes/ListItem";
 import ListOrdered from "@/components/nodes/ListOrdered";
@@ -121,7 +121,10 @@ const onType = (e: React.KeyboardEvent, editor: Editor) => {
 
 			const selection = editor.selection;
 			if (selection) {
-				const topLevelNodePath = selection.anchor.path[0];
+				const nodePath = selection.anchor.path.slice(0, -2);
+				const deepestNodePath = nodePath[nodePath.length - 1];
+				const rootNodePath = nodePath[0];
+				const rootNode = Editor.node(editor, [rootNodePath])[0];
 
 				let newItem = {
 					type: "paragraph",
@@ -132,14 +135,11 @@ const onType = (e: React.KeyboardEvent, editor: Editor) => {
 						},
 					],
 				};
-				let insertPath = [topLevelNodePath + 1];
+				let insertPath = [rootNodePath + 1];
 
-				const topLevelNode = Editor.node(editor, [topLevelNodePath])[0];
-
-				if (LIST_TYPES.includes(topLevelNode.type)) {
+				if (LIST_TYPES.includes(rootNode.type)) {
 					newItem = {
-						type:
-							Editor.node(editor, [topLevelNodePath])[0].type + "-item",
+						type: Editor.node(editor, [rootNodePath])[0].type + "-item",
 						children: [
 							{
 								type: "text",
@@ -148,7 +148,7 @@ const onType = (e: React.KeyboardEvent, editor: Editor) => {
 						],
 					};
 
-					insertPath = [topLevelNodePath, topLevelNode.children.length];
+					insertPath = [rootNodePath, deepestNodePath + 1];
 				}
 
 				// Insert the new sub-item node at the end of the container's children

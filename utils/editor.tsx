@@ -121,9 +121,9 @@ const onType = (e: React.KeyboardEvent, editor: Editor) => {
 
 			const selection = editor.selection;
 			if (selection) {
-				const topLevelNode = selection.anchor.path[0];
+				const topLevelNodePath = selection.anchor.path[0];
 
-				const newItem = {
+				let newItem = {
 					type: "paragraph",
 					children: [
 						{
@@ -132,14 +132,32 @@ const onType = (e: React.KeyboardEvent, editor: Editor) => {
 						},
 					],
 				};
+				let insertPath = [topLevelNodePath + 1];
+
+				const topLevelNode = Editor.node(editor, [topLevelNodePath])[0];
+
+				if (LIST_TYPES.includes(topLevelNode.type)) {
+					newItem = {
+						type:
+							Editor.node(editor, [topLevelNodePath])[0].type + "-item",
+						children: [
+							{
+								type: "text",
+								children: [{ text: "" }],
+							},
+						],
+					};
+
+					insertPath = [topLevelNodePath, topLevelNode.children.length];
+				}
 
 				// Insert the new sub-item node at the end of the container's children
 				// TODO: make type more robust
 				Transforms.insertNodes(editor, newItem as unknown as Node, {
-					at: [topLevelNode + 1],
+					at: insertPath,
 				});
 
-				Transforms.select(editor, [topLevelNode + 1]);
+				Transforms.select(editor, insertPath);
 			}
 
 			break;
@@ -172,8 +190,8 @@ const onType = (e: React.KeyboardEvent, editor: Editor) => {
 	}
 };
 
-const LIST_TYPES = ["list-ordered", "list-unordered"];
-const LIST_ITEMS = ["list-ordered-item", "list-unordered-item"];
+export const LIST_TYPES = ["list-ordered", "list-unordered"];
+export const LIST_ITEMS = ["list-ordered-item", "list-unordered-item"];
 
 const CustomEditor = {
 	isBlockAList(editor: Editor, blockPath: number[]) {

@@ -46,7 +46,13 @@ const RootNode = ({
 			children: [idea],
 		};
 
-		if (Node.has(node, [1])) {
+		const rootNode = Editor.node(editor, [getPath()])[0];
+		const lastRootNodeChild = Editor.node(editor, [
+			getPath(),
+			rootNode.children.length - 1,
+		])[0];
+
+		if (lastRootNodeChild.type.startsWith("idea-container")) {
 			// If there are already ideas, add the new idea to the end of the list
 			// TODO: make type more robust
 			Transforms.insertNodes(editor, idea as unknown as Node, {

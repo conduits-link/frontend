@@ -122,7 +122,8 @@ const onType = (e: React.KeyboardEvent, editor: Editor) => {
 			const selection = editor.selection;
 			if (selection) {
 				const nodePath = selection.anchor.path.slice(0, -2);
-				const deepestNodePath = nodePath[nodePath.length - 1];
+				const node = Editor.node(editor, nodePath)[0];
+				const deepestNodeIndex = nodePath[nodePath.length - 1];
 				const rootNodePath = nodePath[0];
 				const rootNode = Editor.node(editor, [rootNodePath])[0];
 
@@ -137,7 +138,10 @@ const onType = (e: React.KeyboardEvent, editor: Editor) => {
 				};
 				let insertPath = [rootNodePath + 1];
 
-				if (LIST_TYPES.includes(rootNode.type)) {
+				if (
+					LIST_TYPES.includes(rootNode.type) &&
+					node.children[0].children[0].text
+				) {
 					newItem = {
 						type: Editor.node(editor, [rootNodePath])[0].type + "-item",
 						children: [
@@ -148,7 +152,10 @@ const onType = (e: React.KeyboardEvent, editor: Editor) => {
 						],
 					};
 
-					insertPath = [rootNodePath, deepestNodePath + 1];
+					insertPath = [rootNodePath, deepestNodeIndex + 1];
+				} else if (!node.children[0].children[0].text) {
+					// If the current node is empty, remove it and insert the new node in its place
+					Transforms.removeNodes(editor, { at: nodePath });
 				}
 
 				// Insert the new sub-item node at the end of the container's children

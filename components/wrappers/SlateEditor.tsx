@@ -1,5 +1,12 @@
-import React, { useState } from "react";
-import { Node, createEditor, Transforms, select, Editor } from "slate";
+import React, { ChangeEventHandler, useState } from "react";
+import {
+	Node,
+	createEditor,
+	Transforms,
+	select,
+	Editor,
+	Descendant,
+} from "slate";
 import { Slate, Editable, withReact } from "slate-react";
 
 // TypeScript users only add this code
@@ -8,6 +15,7 @@ import { ReactEditor } from "slate-react";
 import NoSSR from "./NoSSR";
 import {
 	CustomEditor,
+	onChange,
 	onType,
 	renderElement,
 	renderLeaf,
@@ -45,7 +53,7 @@ const SlateEditor = ({
 			<Slate
 				editor={editor}
 				initialValue={file.body}
-				onChange={(document) => {}}
+				onChange={(value: Descendant[]) => onChange(value, editor)}
 			>
 				<Editable
 					className={className}

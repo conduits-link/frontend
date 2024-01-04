@@ -2,7 +2,7 @@ import Heading from "@/components/nodes/Heading";
 import Idea from "@/components/nodes/Idea";
 import IdeaContainer from "@/components/nodes/IdeaContainer";
 import Paragraph from "@/components/nodes/Paragraph";
-import { Editor, Node, Range, Transforms, Element, Path, node } from "slate";
+import { Editor, Node, Range, Transforms, Descendant } from "slate";
 import { areEquivalent } from "./helpers";
 import ListItem from "@/components/nodes/ListItem";
 import ListOrdered from "@/components/nodes/ListOrdered";
@@ -200,8 +200,22 @@ const onType = (e: React.KeyboardEvent, editor: Editor) => {
 	}
 };
 
+const onChange = (value: Descendant[], editor: Editor) => {
+	// check if there are adjacent lists and merge them
+	for (let i = 0; i < value.length; i++) {
+		const node = value[i];
+		const nextNode = value[i + 1];
+
+		if (LIST_TYPES.includes(node.type) && node.type === nextNode.type) {
+			CustomEditor.mergeLists(editor, i);
+		}
+	}
+};
+
 export const LIST_TYPES = ["list-ordered", "list-unordered"];
 export const LIST_ITEMS = ["list-ordered-item", "list-unordered-item"];
+
+// TODO: make sure options are removed from a node if not applicable to that node type
 
 const CustomEditor = {
 	isBlockAList(editor: Editor, blockPath: number[]) {
@@ -340,6 +354,35 @@ const CustomEditor = {
 			});
 		}
 	},
+	mergeLists(editor: Editor, beforeListIndex: number) {
+		const beforeList = Editor.node(editor, [beforeListIndex])[0];
+		const afterList = Editor.node(editor, [beforeListIndex + 1])[0];
+
+		const newList = {
+			type: beforeList.type,
+			children: [],
+		};
+
+		for (let i = 0; i < beforeList.children.length; i++) {
+			const listItem = Editor.node(editor, [beforeListIndex, i])[0];
+			newList.children.push(listItem);
+		}
+
+		for (let i = 0; i < afterList.children.length; i++) {
+			const listItem = Editor.node(editor, [beforeListIndex + 1, i])[0];
+			newList.children.push(listItem);
+		}
+
+		Transforms.delete(editor, { at: [beforeListIndex] });
+		Transforms.delete(editor, { at: [beforeListIndex] });
+
+		if (newList.children.length > 0) {
+			// TODO: make type more robust
+			Transforms.insertNodes(editor, newList as unknown as Node, {
+				at: [beforeListIndex],
+			});
+		}
+	},
 	isMarkActive(editor: Editor, markType: string) {
 		const marks = Editor.marks(editor);
 		// TODO: make mark type more robust
@@ -355,4 +398,4 @@ const CustomEditor = {
 	},
 };
 
-export { renderElement, renderLeaf, onType, CustomEditor };
+export { renderElement, renderLeaf, onType, onChange, CustomEditor };

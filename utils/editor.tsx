@@ -208,6 +208,7 @@ const onChange = (value: Descendant[], editor: Editor) => {
 
 		if (LIST_TYPES.includes(node.type) && node.type === nextNode.type) {
 			CustomEditor.mergeLists(editor, i);
+			return;
 		}
 	}
 };
@@ -286,41 +287,18 @@ const CustomEditor = {
 					{ at: actualPath }
 				);
 			} else {
-				// if there is a 'list-ordered' or 'list-unordered' parent node, split the list at the
-				// selected child, creating a list above (if there are children before this) and one
-				// below (if there are children after this) and change the selected child into a paragraph
-				// in the middle of the (up to) two lists
-
-				const childIndex = actualPath[actualPath.length - 1];
-
-				// move child from its parent to before its parent
-				Transforms.moveNodes(editor, {
-					at: actualPath,
-					to: [actualPath[0]],
-				});
-
-				// set the child to type paragraph
-				Transforms.setNodes(
-					editor,
-					{ type: "paragraph" },
-					{ at: [actualPath[0]] }
-				);
-
-				// if the remaining list contains no children, remove it
-				if (!Editor.node(editor, [actualPath[0] + 1])[0].children[0].text) {
-					Transforms.removeNodes(editor, { at: [actualPath[0] + 1] });
-				}
+				this.splitList(editor, actualPath[0], actualPath[1]);
 			}
 		}
 	},
-	splitList(editor: Editor, listIndex: number, listItemIndex: number) {
+	splitList(editor: Editor, rootNodeIndex: number, listItemIndex: number) {
 		const beforeList = {
 			type: "list-ordered",
 			children: [],
 		};
 
 		for (let i = 0; i < listItemIndex; i++) {
-			const listItem = Editor.node(editor, [listIndex, i])[0];
+			const listItem = Editor.node(editor, [rootNodeIndex, i])[0];
 			beforeList.children.push(listItem);
 		}
 
@@ -331,28 +309,51 @@ const CustomEditor = {
 
 		for (
 			let i = listItemIndex + 1;
-			i < Editor.node(editor, [listIndex])[0].children.length;
+			i < Editor.node(editor, [rootNodeIndex])[0].children.length;
 			i++
 		) {
-			const listItem = Editor.node(editor, [listIndex, i])[0];
+			const listItem = Editor.node(editor, [rootNodeIndex, i])[0];
 			afterList.children.push(listItem);
 		}
 
-		Transforms.delete(editor, { at: [listIndex] });
+		const listItemNode = Editor.node(editor, [
+			rootNodeIndex,
+			listItemIndex,
+		])[0];
+		const newNode = {
+			type: "paragraph",
+			children: [
+				{
+					type: "text",
+					children: [{ text: Node.string(listItemNode) }],
+				},
+			],
+		};
+
+		Transforms.delete(editor, { at: [rootNodeIndex] });
+
+		let insertIndex = rootNodeIndex;
 
 		if (beforeList.children.length > 0) {
 			// TODO: make type more robust
 			Transforms.insertNodes(editor, beforeList as unknown as Node, {
-				at: [listIndex],
+				at: [insertIndex],
 			});
+			insertIndex++;
 		}
+
+		Transforms.insertNodes(editor, newNode as unknown as Node, {
+			at: [insertIndex],
+		});
 
 		if (afterList.children.length > 0) {
 			// TODO: make type more robust
 			Transforms.insertNodes(editor, afterList as unknown as Node, {
-				at: [listIndex + 1],
+				at: [insertIndex + 1],
 			});
 		}
+
+		Transforms.select(editor, [insertIndex]);
 	},
 	mergeLists(editor: Editor, beforeListIndex: number) {
 		const beforeList = Editor.node(editor, [beforeListIndex])[0];

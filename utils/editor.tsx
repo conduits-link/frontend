@@ -2,7 +2,7 @@ import Heading from "@/components/nodes/Heading";
 import Idea from "@/components/nodes/Idea";
 import IdeaContainer from "@/components/nodes/IdeaContainer";
 import Paragraph from "@/components/nodes/Paragraph";
-import { Editor, Node, Range, Transforms, Descendant } from "slate";
+import { Editor, Node, Range, Transforms, Descendant, select } from "slate";
 import { areEquivalent } from "./helpers";
 import ListItem from "@/components/nodes/ListItem";
 import ListOrdered from "@/components/nodes/ListOrdered";
@@ -335,29 +335,31 @@ const CustomEditor = {
 		Transforms.delete(editor, { at: [rootNodeIndex] });
 
 		let insertIndex = rootNodeIndex;
+		let selectIndex = rootNodeIndex;
 
 		if (beforeList.children.length > 0) {
 			// TODO: make type more robust
 			Transforms.insertNodes(editor, beforeList as unknown as Node, {
-				at: [insertIndex],
+				at: [insertIndex++],
 			});
+			selectIndex++;
 		}
 
 		if (Node.string(listItemNode) !== "") {
-			insertIndex++;
 			Transforms.insertNodes(editor, newNode as unknown as Node, {
-				at: [insertIndex],
+				at: [insertIndex++],
 			});
 		}
 
 		if (afterList.children.length > 0) {
 			// TODO: make type more robust
 			Transforms.insertNodes(editor, afterList as unknown as Node, {
-				at: [insertIndex + 1],
+				at: [insertIndex],
 			});
 		}
 
-		Transforms.select(editor, [insertIndex]);
+		Transforms.select(editor, [selectIndex]);
+		Transforms.collapse(editor, { edge: "end" });
 	},
 	mergeLists(editor: Editor, beforeListIndex: number) {
 		const beforeList = Editor.node(editor, [beforeListIndex])[0];
@@ -378,6 +380,22 @@ const CustomEditor = {
 			newList.children.push(listItem);
 		}
 
+		const selection = editor.selection;
+		const pathExists = Node.isNode(selection?.anchor.path);
+
+		// if selection is above list, set selection to the first element of the list
+		let selectIndex = 0;
+		if (
+			!pathExists &&
+			selection &&
+			selection.anchor.path[0] > beforeListIndex
+		) {
+			selectIndex = newList.children.length - 1;
+			console.log(selectIndex);
+		} else if (pathExists && selection) {
+			selectIndex = selection.anchor.path[1];
+		}
+
 		Transforms.delete(editor, { at: [beforeListIndex] });
 		Transforms.delete(editor, { at: [beforeListIndex] });
 
@@ -387,6 +405,9 @@ const CustomEditor = {
 				at: [beforeListIndex],
 			});
 		}
+
+		Transforms.select(editor, [beforeListIndex, selectIndex]);
+		Transforms.collapse(editor, { edge: "end" });
 	},
 	isMarkActive(editor: Editor, markType: string) {
 		const marks = Editor.marks(editor);

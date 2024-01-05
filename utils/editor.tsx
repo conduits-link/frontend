@@ -269,7 +269,7 @@ const CustomEditor = {
 		}
 
 		// if we are toggling a list item
-		if (LIST_ITEMS.includes(nodeType)) {
+		if (LIST_ITEMS.includes(nodeType) || LIST_ITEMS.includes(node.type)) {
 			const LIST_WRAPPER_TYPE = nodeType.slice(
 				0,
 				nodeType.lastIndexOf("-item")
@@ -321,7 +321,9 @@ const CustomEditor = {
 			listItemIndex,
 		])[0];
 		const newNode = {
-			type: "paragraph",
+			type: LIST_ITEMS.includes(listItemNode.type)
+				? "paragraph"
+				: listItemNode.type,
 			children: [
 				{
 					type: "text",
@@ -339,12 +341,14 @@ const CustomEditor = {
 			Transforms.insertNodes(editor, beforeList as unknown as Node, {
 				at: [insertIndex],
 			});
-			insertIndex++;
 		}
 
-		Transforms.insertNodes(editor, newNode as unknown as Node, {
-			at: [insertIndex],
-		});
+		if (Node.string(listItemNode) !== "") {
+			insertIndex++;
+			Transforms.insertNodes(editor, newNode as unknown as Node, {
+				at: [insertIndex],
+			});
+		}
 
 		if (afterList.children.length > 0) {
 			// TODO: make type more robust

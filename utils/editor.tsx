@@ -8,6 +8,9 @@ import ListItem from "@/components/nodes/ListItem";
 import ListOrdered from "@/components/nodes/ListOrdered";
 import ListUnordered from "@/components/nodes/ListUnordered";
 
+export const LIST_TYPES = ["list-ordered", "list-unordered"];
+export const LIST_ITEMS = ["list-ordered-item", "list-unordered-item"];
+
 const renderElement = (
 	{
 		attributes,
@@ -127,32 +130,52 @@ const onType = (e: React.KeyboardEvent, editor: Editor) => {
 				const rootNodePath = nodePath[0];
 				const rootNode = Editor.node(editor, [rootNodePath])[0];
 
+				// get index of cursor inside node
+				const offset = selection.anchor.offset;
+				const nodeContent = Node.string(node);
+				const newNodeContent = nodeContent.substring(
+					offset,
+					nodeContent.length
+				);
+
+				let { type, children, ...options } = node;
+
 				let newItem = {
-					type: "paragraph",
+					type: node.type,
 					children: [
 						{
 							type: "text",
-							children: [{ text: "" }],
+							children: [
+								{
+									text: newNodeContent,
+								},
+							],
 						},
 					],
+					...options,
 				};
 				let insertPath = [rootNodePath + 1];
+
+				if (newNodeContent === "") {
+					newItem = {
+						type: "paragraph",
+						children: newItem.children,
+					};
+				}
+
+				Transforms.insertText(editor, nodeContent.slice(0, offset), {
+					at: selection.anchor.path,
+				});
 
 				if (
 					LIST_TYPES.includes(rootNode.type) &&
 					node.children[0].children[0].text
 				) {
-					newItem = {
-						type: Editor.node(editor, [rootNodePath])[0].type + "-item",
-						children: [
-							{
-								type: "text",
-								children: [{ text: "" }],
-							},
-						],
-					};
-
 					insertPath = [rootNodePath, deepestNodeIndex + 1];
+					newItem = {
+						type: node.type,
+						children: newItem.children,
+					};
 				} else if (
 					!node.children[0].children[0].text &&
 					rootNode.children.length - 1 &&
@@ -168,6 +191,7 @@ const onType = (e: React.KeyboardEvent, editor: Editor) => {
 				});
 
 				Transforms.select(editor, insertPath);
+				Transforms.collapse(editor, { edge: "start" });
 			}
 
 			break;
@@ -212,9 +236,6 @@ const onChange = (value: Descendant[], editor: Editor) => {
 		}
 	}
 };
-
-export const LIST_TYPES = ["list-ordered", "list-unordered"];
-export const LIST_ITEMS = ["list-ordered-item", "list-unordered-item"];
 
 // TODO: make sure options are removed from a node if not applicable to that node type
 

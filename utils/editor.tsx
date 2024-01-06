@@ -133,35 +133,24 @@ const onType = (e: React.KeyboardEvent, editor: Editor) => {
 				// get index of cursor inside node
 				const offset = selection.anchor.offset;
 				const nodeContent = Node.string(node);
-				const newNodeContent = nodeContent.substring(
-					offset,
-					nodeContent.length
-				);
-
-				let { type, children, ...options } = node;
 
 				let newItem = {
-					type: node.type,
+					type: "paragraph",
 					children: [
 						{
 							type: "text",
 							children: [
 								{
-									text: newNodeContent,
+									text: nodeContent.substring(
+										offset,
+										nodeContent.length
+									),
 								},
 							],
 						},
 					],
-					...options,
 				};
 				let insertPath = [rootNodePath + 1];
-
-				if (newNodeContent === "") {
-					newItem = {
-						type: "paragraph",
-						children: newItem.children,
-					};
-				}
 
 				Transforms.insertText(editor, nodeContent.slice(0, offset), {
 					at: selection.anchor.path,
@@ -172,10 +161,7 @@ const onType = (e: React.KeyboardEvent, editor: Editor) => {
 					node.children[0].children[0].text
 				) {
 					insertPath = [rootNodePath, deepestNodeIndex + 1];
-					newItem = {
-						type: node.type,
-						children: newItem.children,
-					};
+					newItem.type = node.type;
 				} else if (
 					!node.children[0].children[0].text &&
 					rootNode.children.length - 1 &&

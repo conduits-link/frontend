@@ -63,7 +63,18 @@ const renderElement = (
 					{children}
 				</Heading>
 			);
-		case "list-ordered-item" || "list-unordered-item":
+		case "list-ordered-item":
+			return (
+				<ListItem
+					{...attributes}
+					editor={editor}
+					node={element}
+					mode={mode}
+				>
+					{children}
+				</ListItem>
+			);
+		case "list-unordered-item":
 			return (
 				<ListItem
 					{...attributes}
@@ -294,13 +305,20 @@ const CustomEditor = {
 					{ at: actualPath }
 				);
 			} else {
-				this.splitList(editor, actualPath[0], actualPath[1]);
+				this.splitList(editor, actualPath[0], actualPath[1], nodeType);
 			}
 		}
 	},
-	splitList(editor: Editor, rootNodeIndex: number, listItemIndex: number) {
+	splitList(
+		editor: Editor,
+		rootNodeIndex: number,
+		listItemIndex: number,
+		newNodeType?: string
+	) {
+		const beforeListNode = Editor.node(editor, [rootNodeIndex])[0];
+
 		const beforeList = {
-			type: "list-ordered",
+			type: beforeListNode.type,
 			children: [],
 		};
 
@@ -310,7 +328,7 @@ const CustomEditor = {
 		}
 
 		const afterList = {
-			type: "list-ordered",
+			type: beforeListNode.type,
 			children: [],
 		};
 
@@ -328,18 +346,38 @@ const CustomEditor = {
 			listItemIndex,
 		])[0];
 		const { type, children, ...options } = listItemNode;
-		const newNode = {
-			type: LIST_ITEMS.includes(listItemNode.type)
-				? "paragraph"
-				: listItemNode.type,
-			children: [
-				{
-					type: "text",
-					children: [{ text: Node.string(listItemNode) }],
-				},
-			],
-			...options,
-		};
+
+		let newNode = {};
+		if (!newNodeType) {
+			newNode = {
+				type: LIST_ITEMS.includes(listItemNode.type)
+					? "paragraph"
+					: listItemNode.type,
+				children: [
+					{
+						type: "text",
+						children: [{ text: Node.string(listItemNode) }],
+					},
+				],
+				...options,
+			};
+		} else {
+			newNode = {
+				type: newNodeType.slice(0, newNodeType.lastIndexOf("-item")),
+				children: [
+					{
+						type: newNodeType,
+						children: [
+							{
+								type: "text",
+								children: [{ text: Node.string(listItemNode) }],
+							},
+						],
+						...options,
+					},
+				],
+			};
+		}
 
 		Transforms.delete(editor, { at: [rootNodeIndex] });
 

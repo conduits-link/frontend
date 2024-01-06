@@ -327,6 +327,7 @@ const CustomEditor = {
 			rootNodeIndex,
 			listItemIndex,
 		])[0];
+		const { type, children, ...options } = listItemNode;
 		const newNode = {
 			type: LIST_ITEMS.includes(listItemNode.type)
 				? "paragraph"
@@ -337,6 +338,7 @@ const CustomEditor = {
 					children: [{ text: Node.string(listItemNode) }],
 				},
 			],
+			...options,
 		};
 
 		Transforms.delete(editor, { at: [rootNodeIndex] });

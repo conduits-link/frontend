@@ -11,7 +11,9 @@
 	--color-secondary-100: var(--color-light-100);
 	--color-secondary-400: var(--color-light-400);
 
+	--color-success-100: #32a879;
 	--color-error-100: #ec4b4b;
+	--color-info-100: #4b9dec;
 
 	--spacing-large: 0.85rem;
 	--spacing-small: 0.65rem;

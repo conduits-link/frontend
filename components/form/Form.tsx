@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import sendFetch from "@/utils/fetch";
 
 import styles from "./Form.module.css";
+import { useFlashMessage } from "@/utils/flash";
 
 const Form = ({
 	url,
@@ -21,6 +22,7 @@ const Form = ({
 	children: ReactNode;
 }) => {
 	const router = useRouter();
+	const { showFlashMessage } = useFlashMessage();
 
 	async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
@@ -36,15 +38,12 @@ const Form = ({
 			if (redirectUrl) router.push(redirectUrl);
 			onRes && onRes(res);
 		} else {
-			// TODO: implement flash message
+			showFlashMessage("error", res.message);
 		}
 	}
 
 	return (
-		<form
-			onSubmit={onSubmit}
-			className={styles.container}
-		>
+		<form onSubmit={onSubmit} className={styles.container}>
 			{children}
 		</form>
 	);

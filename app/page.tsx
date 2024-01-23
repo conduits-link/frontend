@@ -69,79 +69,114 @@ export default function Landing() {
 					And that&apos;s just the beginning! Check out everything
 					that&apos;s to come:
 				</p>
-				<ol>
+				<ol id="features">
 					<li>
-						<strong>File upload</strong>
-						<ul>
-							<li>Copy file content</li>
-							<li>Summarise file content</li>
-							<li>Consolidate content from multiple files</li>
-						</ul>
+						We're open-source, which means no propriety formats!
+						(Noteworthy is built on markdown for storing and editing
+						text).
 					</li>
 					<li>
-						<strong>Text highlighting</strong>
+						A completely customisable and modular system to configure
+						generative AI agents for different media.
+					</li>
+					<li>
+						Run pre-engineered prompts (on a per-document, per-node, or
+						per-selection basis) in rich text files, such as:
 						<ul>
-							<li>Re-write (in the style of X)</li>
 							<li>Summarise</li>
 							<li>Expand</li>
+							<li>Rewrite (in style of...)</li>
 							<li>Create examples</li>
-							<li>Draw diagram</li>
-							<li>Generate code</li>
-							<li>AI-generated custom suggestions, based on context</li>
+							<li>Create practice questions/answers</li>
+							<li>Write code</li>
 							<li>Translate</li>
+							<li>Create todos (steps for accomplishing something)</li>
+							<li>Implement received feedback</li>
+							<li>Create/customise your own!</li>
+						</ul>
+					</li>
+					<li>
+						Interaction modes:
+						<ul>
 							<li>
-								Generate todo list (steps required to complete
-								something)
+								<strong>Edit:</strong> Add, update, and remove content
+								with LLM-based text completion.
 							</li>
 							<li>
-								Implement feedback (paste in the written feedback
-								someone has given you)
+								<strong>Review:</strong> Interact and ask questions
+								about content (to strengthen your understanding, or test
+								your knowledge), alongside a spelling and grammar
+								checker.
+							</li>
+							<li>
+								<strong>Present:</strong> View an uneditable version of
+								the content you have produced, without an interface
+								getting in the way.
 							</li>
 						</ul>
 					</li>
 					<li>
-						<strong>Multimedia</strong>
+						Intuitive interface that provides smooth user experience:
 						<ul>
-							<li>Summarise audio (from links)</li>
-							<li>Create images/diagrams of content</li>
-							<li>LaTeX support via KaTeX or MathJax</li>
+							<li>Movable, collapsible generated material.</li>
+							<li>Drag and drop to reorder and organise content.</li>
 						</ul>
 					</li>
 					<li>
-						<strong>UI</strong>
+						File upload:
 						<ul>
-							<li>Movable, collapsible generated material</li>
-							<li>Code syntax highlighting</li>
-							<li>Search bar</li>
 							<li>
-								Drag and drop with option buttons to the side of nodes
+								Run prompts and ask questions about any (part of a)
+								file.
 							</li>
-							<li>Add page columns to support different page layouts</li>
-							<li>
-								/create page where template document prompts can be
-								selected, or multiple files uploaded to be
-								summarised/based-from/etc
-							</li>
-							<li>Side panel for &quot;Research this content&quot;</li>
+							<li>Consolidate or summarise multiple files.</li>
 						</ul>
 					</li>
 					<li>
-						<strong>Spell/grammar checker</strong>
+						Automatically generate notes from, or summarise a conversation
+						had with an LLM.
 					</li>
 					<li>
-						<strong>Customisation</strong>
+						Collaboration with other users, such as:
 						<ul>
+							<li>Edit the same content.</li>
 							<li>
-								Allow people to write their own prompts (in development,
-								just use CSV/JSON)
+								Use someone else's document as a base for your new
+								document.
 							</li>
 						</ul>
 					</li>
 					<li>
-						<strong>Social media features</strong>
+						Create automations and "work forces" to automate content
+						production through the use of LLMs interacting with each
+						other, such as:
 						<ul>
-							<li>Profile pictures, friends, etc.</li>
-							<li>Shareable, user-created prompt libraries.</li>
+							<li>
+								Create different agents for different tasks, for
+								example:
+							</li>
+							<ul>
+								<li>A GPT 'researcher'</li>
+								<li>A Claude 'content writer'</li>
+								<li>An in-context-trained LLaMA as a 'reviewer'</li>
+							</ul>
+						</ul>
+					</li>
+					<li>
+						Run pre-engineered prompts on multimedia, such as:
+						<ul>
+							<li>Summarise or transcribe audio.</li>
+							<li>Describe what happens in a video.</li>
+							<li>Create a diagram of what is written in text.</li>
+							<li>Create a picture.</li>
+							<li>Do Math with LaTeX.</li>
+							<li>Run code and call APIs.</li>
+							<li>
+								<em>
+									Multimedia functionality will grow alongside the
+									research and industry.
+								</em>
+							</li>
 						</ul>
 					</li>
 				</ol>

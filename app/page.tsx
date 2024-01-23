@@ -71,7 +71,7 @@ export default function Landing() {
 				</p>
 				<ol id="features">
 					<li>
-						We're open-source, which means no propriety formats!
+						We&apos;re open-source, which means no propriety formats!
 						(Noteworthy is built on markdown for storing and editing
 						text).
 					</li>
@@ -141,24 +141,26 @@ export default function Landing() {
 						<ul>
 							<li>Edit the same content.</li>
 							<li>
-								Use someone else's document as a base for your new
+								Use someone else&apos;s document as a base for your new
 								document.
 							</li>
 						</ul>
 					</li>
 					<li>
-						Create automations and "work forces" to automate content
-						production through the use of LLMs interacting with each
-						other, such as:
+						Create automations and &apos;work forces&apos; to automate
+						content production through the use of LLMs interacting with
+						each other, such as:
 						<ul>
 							<li>
 								Create different agents for different tasks, for
 								example:
 							</li>
 							<ul>
-								<li>A GPT 'researcher'</li>
-								<li>A Claude 'content writer'</li>
-								<li>An in-context-trained LLaMA as a 'reviewer'</li>
+								<li>A GPT &apos;researcher&apos;</li>
+								<li>A Claude &apos;content writer&apos;</li>
+								<li>
+									An in-context-trained LLaMA as a &apos;reviewer&apos;
+								</li>
 							</ul>
 						</ul>
 					</li>

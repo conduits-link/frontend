@@ -113,19 +113,25 @@ const renderElement = (
 };
 
 const renderLeaf = (props: any, editor: Editor, mode: string) => {
-	return (
-		<span
-			{...props.attributes}
-			style={{
-				fontWeight: props.leaf.bold ? "bold" : "normal",
-				fontStyle: props.leaf.italic ? "italic" : "normal",
-				textDecoration: props.leaf.strikethrough ? "line-through" : "none",
-				backgroundColor: props.leaf.code ? "grey" : "transparent",
-			}}
-		>
-			{props.children}
-		</span>
-	);
+	const markStyles = {
+		fontWeight: props.leaf.bold ? "bold" : "normal",
+		fontStyle: props.leaf.italic ? "italic" : "normal",
+		textDecoration: props.leaf.strikethrough ? "line-through" : "none",
+		backgroundColor: props.leaf.code ? "grey" : "transparent",
+	};
+
+	if (props.leaf.link) {
+		return (
+			<a {...props.attributes} style={markStyles} href={props.leaf.link.url}>
+				{props.children}
+			</a>
+		);
+	} else
+		return (
+			<span {...props.attributes} style={markStyles}>
+				{props.children}
+			</span>
+		);
 };
 
 const onType = (e: React.KeyboardEvent, editor: Editor) => {
@@ -438,7 +444,6 @@ const CustomEditor = {
 			selection.anchor.path[0] > beforeListIndex
 		) {
 			selectIndex = newList.children.length - 1;
-			console.log(selectIndex);
 		} else if (pathExists && selection) {
 			selectIndex = selection.anchor.path[1];
 		}
@@ -461,10 +466,12 @@ const CustomEditor = {
 		// TODO: make mark type more robust
 		return marks ? (marks as any)[markType] === true : false;
 	},
-	toggleMark(editor: Editor, markType: string) {
+	toggleMark(editor: Editor, markType: string, options: any) {
 		const newBlockIsSame = CustomEditor.isMarkActive(editor, markType);
 		if (newBlockIsSame) {
 			Editor.removeMark(editor, markType);
+		} else if (options) {
+			Editor.addMark(editor, markType, options);
 		} else {
 			Editor.addMark(editor, markType, true);
 		}

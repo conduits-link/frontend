@@ -7,6 +7,7 @@ import {
 	LuHeading2,
 	LuHeading3,
 	LuItalic,
+	LuLink,
 	LuList,
 	LuListOrdered,
 	LuStrikethrough,
@@ -67,6 +68,14 @@ export default function FixedMenu({ editor }: { editor: Editor }) {
 				</FormatButton>
 				<FormatButton editor={editor} isNode={false} type={"italic"}>
 					<LuItalic />
+				</FormatButton>
+				<FormatButton
+					editor={editor}
+					isNode={false}
+					promptOption={"url"}
+					type={"link"}
+				>
+					<LuLink />
 				</FormatButton>
 				<FormatButton editor={editor} isNode={false} type={"strikethrough"}>
 					<LuStrikethrough />

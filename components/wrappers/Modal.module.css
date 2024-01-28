@@ -1,0 +1,29 @@
+.container {
+	position: fixed;
+	inset: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 999;
+}
+
+.container::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background-color: var(--color-primary-400);
+	opacity: 0.65;
+}
+
+.element {
+	padding: var(--spacing-small);
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-small);
+	border-radius: var(--border-radius-large);
+	border: var(--border-container);
+	background-color: var(--color-primary-100);
+	backdrop-filter: blur(6px);
+	box-sizing: border-box;
+	position: relative;
+}

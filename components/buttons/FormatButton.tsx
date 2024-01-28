@@ -1,16 +1,18 @@
-import { EventHandler, ReactNode } from "react";
+import { EventHandler, ReactNode, useEffect, useState } from "react";
 
-import { Editor, Node, Transforms, select } from "slate";
+import { Editor, Node, Transforms, select, string } from "slate";
 
 import { CustomEditor } from "@/utils/editor";
 
 import Button from "./Button";
+import { useModal } from "@/contexts/modal";
 
 export default function FormatButton({
 	editor,
 	isNode,
 	type,
 	options,
+	promptOption,
 	className,
 	onClick,
 	onMouseEnter,
@@ -26,6 +28,7 @@ export default function FormatButton({
 	isNode: Boolean;
 	type: string;
 	options?: any;
+	promptOption?: "url";
 	className?: string;
 	onClick?: React.MouseEventHandler;
 	onMouseEnter?: React.MouseEventHandler;
@@ -37,6 +40,37 @@ export default function FormatButton({
 	onBlur?: React.FocusEventHandler;
 	children: ReactNode;
 }) {
+	const { showModal } = useModal();
+
+	const [url, setUrl] = useState<string>("");
+
+	const getUrlFromModal = () => {
+		showModal("url", "Enter a URL", "Enter a URL to link to.", setUrl);
+	};
+
+	const updateNode = (e: React.MouseEvent | null) => {
+		let newOptions = options || {};
+
+		switch (promptOption) {
+			case "url":
+				newOptions = {
+					...newOptions,
+					url,
+				};
+
+				break;
+		}
+
+		if (isNode) CustomEditor.toggleBlock(type, editor, undefined, newOptions);
+		else CustomEditor.toggleMark(editor, type, newOptions);
+
+		if (e && onMouseDown) onMouseDown(e);
+	};
+
+	useEffect(() => {
+		if (promptOption) updateNode(null);
+	}, [url]);
+
 	return (
 		<Button
 			className={className}
@@ -46,11 +80,13 @@ export default function FormatButton({
 			onMouseDown={(e) => {
 				e.preventDefault();
 
-				if (isNode)
-					CustomEditor.toggleBlock(type, editor, undefined, options);
-				else CustomEditor.toggleMark(editor, type);
-
-				if (onMouseDown) onMouseDown(e);
+				if (promptOption) {
+					switch (promptOption) {
+						case "url":
+							getUrlFromModal();
+							break;
+					}
+				} else updateNode(e);
 			}}
 			onMouseUp={onMouseUp}
 			onMouseLeave={onMouseLeave}

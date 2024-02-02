@@ -139,9 +139,20 @@ Retrieves all docs for the authenticated user.
 }
 ```
 
-### `/store/docs/:uid` : `GET`
+### `/store/docs` : `POST`
 
-Retrieves a specific doc for the authenticated user.
+Creates a new doc for the authenticated user.
+
+#### Request
+
+```json
+{
+	"file": {
+		"title": "string",
+		"body": "Object[]"
+	}
+}
+```
 
 #### Response
 
@@ -161,20 +172,9 @@ Retrieves a specific doc for the authenticated user.
 }
 ```
 
-### `/store/docs` : `POST`
+### `/store/docs/:uid` : `GET`
 
-Creates a new doc for the authenticated user.
-
-#### Request
-
-```json
-{
-	"file": {
-		"title": "string",
-		"body": "Object[]"
-	}
-}
-```
+Retrieves a specific doc for the authenticated user.
 
 #### Response
 

@@ -56,7 +56,7 @@ This is the easiest way to run Noteworthy, as it uses the local API built into t
 2. Install dependencies:
 
    ```bash
-   npm install
+   npm i
    ```
 
    -  If you are pulling after recent commits (and dependencies have changed/updated), reinstall dependencies:
@@ -67,13 +67,13 @@ This is the easiest way to run Noteworthy, as it uses the local API built into t
 
 3. Run in _either_:
 
-   -  Development mode:
+   -  Development mode (auto-reload without pre-rendering):
 
       ```bash
       npm run dev
       ```
 
-   -  Production mode:
+   -  Production mode (pre-rendering without auto-reload):
 
       ```bash
       npm run start
@@ -85,14 +85,14 @@ This is how Noteworthy works in production: a separate backend handles authentic
 
 1. Add the following environment variables to a `.env.local` file in the root directory of this project:
 
-   | Variable              | Value                                                                            |
-   | --------------------- | -------------------------------------------------------------------------------- |
-   | `NEXT_PUBLIC_API_URL` | The URL of the backend that hosts hosts [these endpoints](/docs/api.md#backend). |
+   | Variable              | Value                                                                                                                 |
+   | --------------------- | --------------------------------------------------------------------------------------------------------------------- |
+   | `NEXT_PUBLIC_API_URL` | The root URL of the backend that hosts [these endpoints](/docs/api.md#backend). For example, `http://127.0.0.1:8000`. |
 
 2. Install dependencies:
 
    ```bash
-   npm install
+   npm i
    ```
 
    -  If you are pulling after recent commits (and dependencies have changed/updated), reinstall dependencies:
@@ -103,13 +103,13 @@ This is how Noteworthy works in production: a separate backend handles authentic
 
 3. Run in _either_:
 
-   -  Development mode:
+   -  Development mode (auto-reload without pre-rendering):
 
       ```bash
       npm run dev
       ```
 
-   -  Production mode:
+   -  Production mode (pre-rendering without auto-reload):
 
       ```bash
       npm run start

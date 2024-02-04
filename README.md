@@ -85,9 +85,9 @@ This is how Noteworthy works in production: a separate backend handles authentic
 
 1. Add the following environment variables to a `.env.local` file in the root directory of this project:
 
-   | Variable              | Value                                                                                                                 |
-   | --------------------- | --------------------------------------------------------------------------------------------------------------------- |
-   | `NEXT_PUBLIC_API_URL` | The root URL of the backend that hosts [these endpoints](/docs/api.md#backend). For example, `http://127.0.0.1:8000`. |
+   | Variable              | Value                                                                                                          |
+   | --------------------- | -------------------------------------------------------------------------------------------------------------- |
+   | `NEXT_PUBLIC_API_URL` | The root URL of the backend that hosts [these endpoints](/docs/api.md#backend) (e.g.,`http://127.0.0.1:8000`). |
 
 2. Install dependencies:
 

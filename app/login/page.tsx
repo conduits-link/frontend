@@ -8,10 +8,10 @@ import Input from "@/components/form/Input";
 import Form from "@/components/form/Form";
 
 const LoginPage = () => {
-	const [email, setEmail] = useState("");
+	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [validationErrors, setValidationErrors] = useState({
-		email: true,
+		username: true,
 		password: true,
 	});
 
@@ -33,24 +33,24 @@ const LoginPage = () => {
 		<FillPageComponent>
 			<Form
 				url="/auth/login"
-				data={{ email, password }}
+				data={{ username, password }}
 				redirectUrl="/store"
 			>
 				<h1>Login</h1>
 				<Input
-					name="email"
-					label="Email"
+					name="username"
+					label="Username"
 					type="text"
-					placeholder="Enter your email"
-					onChange={(e) => setEmail(e.target.value)}
+					placeholder="Enter your username"
+					onChange={(e) => setUsername(e.target.value)}
 					validations={[
 						{
 							type: "required",
-							errorMessage: "Please enter your email address.",
+							errorMessage: "Please enter your username address.",
 						},
 					]}
-					onValidationError={() => handleValidationError("email")}
-					onValidationSuccess={() => handleValidationSuccess("email")}
+					onValidationError={() => handleValidationError("username")}
+					onValidationSuccess={() => handleValidationSuccess("username")}
 				/>
 				<Input
 					name="password"

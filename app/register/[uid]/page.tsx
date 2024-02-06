@@ -8,7 +8,7 @@ import Input from "@/components/form/Input";
 import Form from "@/components/form/Form";
 
 const RegisterPage = ({ params }: { params: any }) => {
-	const [email, setEmail] = useState("");
+	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [validationErrors, setValidationErrors] = useState({
 		name: true,
@@ -34,7 +34,7 @@ const RegisterPage = ({ params }: { params: any }) => {
 		<FillPageComponent>
 			<Form
 				url={`/auth/register/${params.uid}`}
-				data={{ email, password }}
+				data={{ username, password }}
 				redirectUrl={"/store"}
 			>
 				<h1>Register</h1>
@@ -43,7 +43,7 @@ const RegisterPage = ({ params }: { params: any }) => {
 					label="Name"
 					type="text"
 					placeholder="Enter your name"
-					onChange={(e) => setEmail(e.target.value)}
+					onChange={(e) => setUsername(e.target.value)}
 					validations={[
 						{ type: "required", errorMessage: "Please enter your name." },
 					]}

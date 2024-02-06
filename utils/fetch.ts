@@ -18,7 +18,7 @@ export default function sendFetch(
 			cache: "no-store", // disable cache
 		})
 			.then((res) => {
-				return res.json();
+				return res;
 			})
 			.then((data) => {
 				resolve(data);

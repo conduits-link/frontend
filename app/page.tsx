@@ -8,7 +8,7 @@ export default function Landing() {
 			<div className={styles.page}>
 				<div className={styles.splash}>
 					<h1>
-						<em className={styles.name}>Noteworthy.</em> The generative AI
+						<em className={styles.name}>Conduit.</em> The generative AI
 						revolution brought to an interface.
 					</h1>
 				</div>
@@ -72,8 +72,7 @@ export default function Landing() {
 				<ol id="features">
 					<li>
 						We&apos;re open-source, which means no propriety formats!
-						(Noteworthy is built on markdown for storing and editing
-						text).
+						(conduit is built on markdown for storing and editing text).
 					</li>
 					<li>
 						A completely customisable and modular system to configure

@@ -6,7 +6,7 @@ import FlashMessageContainer from "@/components/wrappers/FlashMessageContainer";
 import "./globals.css";
 
 export const metadata = {
-	title: "Noteworthy",
+	title: "Conduit",
 	description: "The power of LLMs brought to an interface.",
 };
 

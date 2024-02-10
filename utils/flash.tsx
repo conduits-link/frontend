@@ -1,6 +1,14 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import {
+	createContext,
+	ReactNode,
+	useContext,
+	useEffect,
+	useState,
+} from "react";
 
-import FlashMessage from "@/components/wrappers/FlashMessage";
+import { ErrorMessage } from "@/utils/errors";
+
+import FlashMessageComponent from "@/components/wrappers/FlashMessage";
 
 interface FlashMessageContextProps {
 	children: ReactNode;
@@ -31,6 +39,19 @@ export const FlashMessageProvider: React.FC<FlashMessageContextProps> = ({
 		}, 5500); // 5050 is the length of time the flash message displays for (inside FlashMessage.tsx) plus the animation duration (inside FlashMessage.module.css) plus a buffer
 	};
 
+	useEffect(() => {
+		const params = new URLSearchParams(window.location.search);
+		if (params.get("flashMessage")) {
+			let flashMessageValue = params.get("flashMessage")!;
+			let flashMessageKey = Object.keys(ErrorMessage).find(
+				(key) =>
+					ErrorMessage[key as keyof typeof ErrorMessage] ===
+					flashMessageValue
+			);
+			if (flashMessageKey) showFlashMessage("error", flashMessageValue);
+		}
+	}, []);
+
 	return (
 		<FlashMessageContext.Provider value={{ showFlashMessage }}>
 			{flashMessage && (
@@ -41,7 +62,7 @@ export const FlashMessageProvider: React.FC<FlashMessageContextProps> = ({
 						justifyContent: "center",
 					}}
 				>
-					<FlashMessage
+					<FlashMessageComponent
 						type={flashMessage!.type}
 						message={flashMessage!.text}
 					/>

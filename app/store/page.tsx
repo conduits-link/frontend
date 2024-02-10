@@ -1,5 +1,7 @@
+import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 
+import { ErrorMessage } from "@/utils/errors";
 import sendFetch from "@/utils/fetch";
 
 import StoreComponent from "@/components/wrappers/Store";
@@ -7,13 +9,28 @@ import StoreComponent from "@/components/wrappers/Store";
 const StorePage = async (params: any) => {
 	const cookieStore = cookies();
 
-	const res = (await sendFetch(
+	const res: apiResponse = await sendFetch(
 		`${process.env.NEXT_PUBLIC_API_URL}/store/docs`,
 		"GET",
-		cookieStore.get("JWT") ? `JWT=${cookieStore.get("JWT")?.value}` : ""
-	)) as apiResponse;
+		cookieStore.get("jwt") ? `jwt=${cookieStore.get("jwt")?.value}` : ""
+	);
 
-	return <StoreComponent initialFiles={res.data.files} />;
+	if (!res.response.ok) {
+		switch (res.response.status) {
+			case 401:
+				return redirect(
+					`/login?flashMessage=${ErrorMessage.AUTHENTICATION}`
+				);
+			case 403:
+				return redirect(
+					`/login?flashMessage=${ErrorMessage.AUTHENTICATION}`
+				);
+			default:
+				return redirect(`/login?flashMessage=${ErrorMessage.SERVER}`);
+		}
+	}
+
+	return <StoreComponent initialFiles={res.body.data.files} />;
 };
 
 export default StorePage;

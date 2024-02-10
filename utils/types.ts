@@ -1,9 +1,8 @@
 // API
 
 type apiResponse = {
-	status: number;
-	message: string;
-	data: any;
+	response: Response;
+	body: any; // TODO: change to OR types for every possible response
 };
 
 type apiPrompt = {

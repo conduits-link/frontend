@@ -45,7 +45,7 @@ const StoreComponent = ({ initialFiles }: { initialFiles: any }) => {
 			}
 		)) as apiResponse;
 
-		router.push(`/edit/${res.data.file._id}`);
+		router.push(`/edit/${res.body.data.file._id}`);
 	}
 
 	async function deleteDoc(id: string) {
@@ -55,7 +55,7 @@ const StoreComponent = ({ initialFiles }: { initialFiles: any }) => {
 			""
 		)) as apiResponse;
 
-		if (res.status === 200) {
+		if (res.response.status === 200) {
 			setFiles(files.filter((file: doc) => file._id !== id));
 			setFilteredFiles(filteredFiles.filter((file: doc) => file._id !== id));
 		}

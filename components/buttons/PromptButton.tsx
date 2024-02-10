@@ -39,14 +39,11 @@ export default function PromptButton({
 			}
 		)) as apiResponse;
 
-		handleResponse(res.data as apiPrompt);
+		handleResponse(res.body.data as apiPrompt);
 	}
 
 	return (
-		<Button
-			className={styles.element}
-			onClick={infer}
-		>
+		<Button className={styles.element} onClick={infer}>
 			{children}
 		</Button>
 	);

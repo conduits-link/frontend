@@ -54,7 +54,7 @@ const Idea = (props: any) => {
 			}
 		)) as apiResponse;
 
-		const body = (res.data as apiPrompt).messages[0].content;
+		const body = (res.body.data as apiPrompt).messages[0].content;
 		Transforms.insertText(editor, body, { at: path });
 	};
 
@@ -132,10 +132,7 @@ const Idea = (props: any) => {
 
 	return (
 		<div className={styles.container}>
-			<div
-				className={styles.containerButtons}
-				contentEditable={false}
-			>
+			<div className={styles.containerButtons} contentEditable={false}>
 				<button
 					className={styles.buttonAction}
 					onClick={retryWithNodeContent}
@@ -148,47 +145,26 @@ const Idea = (props: any) => {
 				>
 					<TbRotateClockwise2 />
 				</button>
-				<button
-					className={styles.buttonAction}
-					onClick={replace}
-				>
+				<button className={styles.buttonAction} onClick={replace}>
 					<TbReplace />
 				</button>
-				<button
-					className={styles.buttonAction}
-					onClick={prependNode}
-				>
+				<button className={styles.buttonAction} onClick={prependNode}>
 					<TbRowInsertTop />
 				</button>
-				<button
-					className={styles.buttonAction}
-					onClick={prependText}
-				>
+				<button className={styles.buttonAction} onClick={prependText}>
 					<TbColumnInsertLeft />
 				</button>
-				<button
-					className={styles.buttonAction}
-					onClick={appendText}
-				>
+				<button className={styles.buttonAction} onClick={appendText}>
 					<TbColumnInsertRight />
 				</button>
-				<button
-					className={styles.buttonAction}
-					onClick={appendNode}
-				>
+				<button className={styles.buttonAction} onClick={appendNode}>
 					<TbRowInsertBottom />
 				</button>
-				<button
-					className={styles.buttonAction}
-					onClick={removeThisNode}
-				>
+				<button className={styles.buttonAction} onClick={removeThisNode}>
 					<TbTrashX />
 				</button>
 			</div>
-			<div
-				className={styles.element}
-				key={props.key}
-			>
+			<div className={styles.element} key={props.key}>
 				{props.children}
 			</div>
 		</div>

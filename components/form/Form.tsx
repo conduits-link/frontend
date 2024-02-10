@@ -34,11 +34,11 @@ const Form = ({
 			data
 		)) as apiResponse;
 
-		if (res.status === 200) {
+		if (res.response.status === 200) {
 			if (redirectUrl) router.push(redirectUrl);
 			onRes && onRes(res);
 		} else {
-			showFlashMessage("error", res.message);
+			showFlashMessage("error", res.body.message);
 		}
 	}
 

@@ -47,8 +47,8 @@ export default function NavigationMenu({
 			}
 		)) as apiResponse;
 
-		if (res.data.file._id !== uid) {
-			router.push(`/edit/${res.data.file._id}`);
+		if (res.body.data.file._id !== uid) {
+			router.push(`/edit/${res.body.data.file._id}`);
 		}
 	}
 
@@ -85,9 +85,7 @@ export default function NavigationMenu({
 					<button
 						className={
 							styles.modeButton +
-							(mode === "edit"
-								? " " + styles.modeButtonActive
-								: "")
+							(mode === "edit" ? " " + styles.modeButtonActive : "")
 						}
 						onClick={() => switchMode("edit")}
 					>
@@ -97,9 +95,7 @@ export default function NavigationMenu({
 					<button
 						className={
 							styles.modeButton +
-							(mode === "preview"
-								? " " + styles.modeButtonActive
-								: "")
+							(mode === "preview" ? " " + styles.modeButtonActive : "")
 						}
 						onClick={() => switchMode("preview")}
 					>

@@ -1,14 +1,14 @@
-name: Deploy Production Environment
+name: Deploy Staging Environment
 
 on:
    pull_request:
       branches:
-         - main
+         - staging
 
 jobs:
    deployment:
       runs-on: ubuntu-latest
-      environment: production
+      environment: staging
       steps:
          - name: Checkout code
            uses: actions/checkout@v2

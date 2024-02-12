@@ -1,14 +1,14 @@
-name: Deploy Production Environment
+name: Deploy Development Environment
 
 on:
    pull_request:
       branches:
-         - main
+         - dev
 
 jobs:
    deployment:
       runs-on: ubuntu-latest
-      environment: production
+      environment: development
       steps:
          - name: Checkout code
            uses: actions/checkout@v2

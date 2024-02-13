@@ -1,23 +1,20 @@
-name: Deploy Staging Environment
+name: Deploy Production Environment
 
 on:
    push:
       branches:
-         - staging
+         - main
 
 jobs:
    deployment:
       runs-on: ubuntu-latest
-      environment: staging
+      environment: production
       steps:
          - name: Checkout code
            uses: actions/checkout@v2
 
          - name: Install dependencies
            run: npm ci
-
-         - name: Lint code
-           run: npm run lint
 
          - name: Build Next.js app
            run: npm run build

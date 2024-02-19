@@ -5,7 +5,7 @@ on:
       branches:
          - production
          - staging
-         - development
+         - dev
 
 jobs:
    deployment:

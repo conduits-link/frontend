@@ -8,6 +8,17 @@ import "./globals.css";
 export const metadata = {
 	title: "Conduit",
 	description: "The power of LLMs brought to an interface.",
+	openGraph: {
+		title: "Conduit",
+		description: "The power of LLMs brought to an interface.",
+		images: [
+			{
+				url: "https://www.conduits.link/opengraph.png",
+				width: 1200,
+				height: 630,
+			},
+		],
+	},
 };
 
 const font = Lato({

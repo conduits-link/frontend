@@ -9,5 +9,5 @@ updates:
      reviewers:
         - "dan-smith-tech"
      schedule:
-        interval: "weekly"
+        interval: "monthly"
      open-pull-requests-limit: 10

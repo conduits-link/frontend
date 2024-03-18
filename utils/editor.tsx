@@ -2,11 +2,12 @@ import Heading from "@/components/nodes/Heading";
 import Idea from "@/components/nodes/Idea";
 import IdeaContainer from "@/components/nodes/IdeaContainer";
 import Paragraph from "@/components/nodes/Paragraph";
-import { Editor, Node, Range, Transforms, Descendant, select } from "slate";
+import { Editor, Node, Range, Transforms, Descendant } from "slate";
 import { areEquivalent } from "./helpers";
 import ListItem from "@/components/nodes/ListItem";
 import ListOrdered from "@/components/nodes/ListOrdered";
 import ListUnordered from "@/components/nodes/ListUnordered";
+import Blockquote from "@/components/nodes/Blockquote";
 
 export const LIST_TYPES = ["list-ordered", "list-unordered"];
 export const LIST_ITEMS = ["list-ordered-item", "list-unordered-item"];
@@ -106,6 +107,17 @@ const renderElement = (
 				>
 					{children}
 				</ListUnordered>
+			);
+		case "blockquote":
+			return (
+				<Blockquote
+					{...attributes}
+					editor={editor}
+					node={element}
+					mode={mode}
+				>
+					{children}
+				</Blockquote>
 			);
 		default:
 			return null;

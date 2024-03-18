@@ -45,6 +45,13 @@
 	font-weight: 900;
 }
 
+.page blockquote {
+	margin: 0;
+	padding-left: var(--spacing-small);
+	border-left: 0.25em solid var(--color-secondary-100);
+	opacity: 0.35;
+}
+
 .page img {
 	max-width: 100%;
 	max-height: 50em;

@@ -1,4 +1,4 @@
-import { Editor, Node } from "slate";
+import { Editor } from "slate";
 
 import {
 	LuBold,
@@ -10,6 +10,7 @@ import {
 	LuLink,
 	LuList,
 	LuListOrdered,
+	LuQuote,
 	LuStrikethrough,
 } from "react-icons/lu";
 
@@ -60,6 +61,14 @@ export default function FixedMenu({ editor }: { editor: Editor }) {
 					options={{}}
 				>
 					<LuList />
+				</FormatButton>
+				<FormatButton
+					editor={editor}
+					isNode={true}
+					type={"blockquote"}
+					options={{}}
+				>
+					<LuQuote />
 				</FormatButton>
 			</div>
 			<div className={styles.element}>

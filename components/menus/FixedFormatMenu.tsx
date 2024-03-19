@@ -3,6 +3,7 @@ import { Editor } from "slate";
 import {
 	LuBold,
 	LuCode,
+	LuCode2,
 	LuHeading1,
 	LuHeading2,
 	LuHeading3,
@@ -69,6 +70,14 @@ export default function FixedMenu({ editor }: { editor: Editor }) {
 					options={{}}
 				>
 					<LuQuote />
+				</FormatButton>
+				<FormatButton
+					editor={editor}
+					isNode={true}
+					type={"codeblock"}
+					options={{}}
+				>
+					<LuCode2 />
 				</FormatButton>
 			</div>
 			<div className={styles.element}>

@@ -8,6 +8,7 @@ import ListItem from "@/components/nodes/ListItem";
 import ListOrdered from "@/components/nodes/ListOrdered";
 import ListUnordered from "@/components/nodes/ListUnordered";
 import Blockquote from "@/components/nodes/Blockquote";
+import Codeblock from "@/components/nodes/Codeblock";
 
 export const LIST_TYPES = ["list-ordered", "list-unordered"];
 export const LIST_ITEMS = ["list-ordered-item", "list-unordered-item"];
@@ -119,6 +120,17 @@ const renderElement = (
 					{children}
 				</Blockquote>
 			);
+		case "codeblock":
+			return (
+				<Codeblock
+					{...attributes}
+					editor={editor}
+					node={element}
+					mode={mode}
+				>
+					{children}
+				</Codeblock>
+			);
 		default:
 			return null;
 	}
@@ -158,6 +170,12 @@ const onType = (e: React.KeyboardEvent, editor: Editor) => {
 				const deepestNodeIndex = nodePath[nodePath.length - 1];
 				const rootNodePath = nodePath[0];
 				const rootNode = Editor.node(editor, [rootNodePath])[0];
+
+				// if inside a codeblock, insert a new line inside the block
+				if (CustomEditor.isBlockACodeblock(editor, nodePath)) {
+					Transforms.insertText(editor, "\n");
+					return;
+				}
 
 				// get index of cursor inside node
 				const offset = selection.anchor.offset;
@@ -260,6 +278,12 @@ const CustomEditor = {
 		const blockProperties = block[0];
 
 		return block && LIST_TYPES.includes(blockProperties.type as string);
+	},
+	isBlockACodeblock(editor: Editor, blockPath: number[]) {
+		const block = Editor.node(editor, blockPath);
+		const blockProperties = block[0];
+
+		return block && blockProperties.type === "codeblock";
 	},
 	newBlockIsSameAsCurrentBlock(node: Node, nodeType: string, options: any) {
 		const currNodeOptions: any = { ...node };

@@ -1,6 +1,6 @@
-import { EventHandler, ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 
-import { Editor, Node, Transforms, select, string } from "slate";
+import { Editor } from "slate";
 
 import { CustomEditor } from "@/utils/editor";
 
@@ -12,6 +12,7 @@ export default function FormatButton({
 	isNode,
 	type,
 	options,
+	appendNode,
 	promptOption,
 	className,
 	onClick,
@@ -28,6 +29,7 @@ export default function FormatButton({
 	isNode: Boolean;
 	type: string;
 	options?: any;
+	appendNode?: boolean;
 	promptOption?: "url";
 	className?: string;
 	onClick?: React.MouseEventHandler;
@@ -61,7 +63,18 @@ export default function FormatButton({
 				break;
 		}
 
-		if (isNode) CustomEditor.toggleBlock(type, editor, undefined, newOptions);
+		if (appendNode)
+			switch (type) {
+				case "image":
+					let newItem = {
+						type: "image",
+						...newOptions,
+					};
+					CustomEditor.appendBlock(newItem, editor, undefined, newOptions);
+					break;
+			}
+		else if (isNode)
+			CustomEditor.toggleBlock(type, editor, undefined, newOptions);
 		else CustomEditor.toggleMark(editor, type, newOptions);
 
 		if (e && onMouseDown) onMouseDown(e);

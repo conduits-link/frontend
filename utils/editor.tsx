@@ -9,6 +9,7 @@ import ListOrdered from "@/components/nodes/ListOrdered";
 import ListUnordered from "@/components/nodes/ListUnordered";
 import Blockquote from "@/components/nodes/Blockquote";
 import Codeblock from "@/components/nodes/Codeblock";
+import Image from "@/components/nodes/Image";
 
 export const LIST_TYPES = ["list-ordered", "list-unordered"];
 export const LIST_ITEMS = ["list-ordered-item", "list-unordered-item"];
@@ -109,6 +110,12 @@ const renderElement = (
 					{children}
 				</ListUnordered>
 			);
+		case "image":
+			return (
+				<Image {...attributes} editor={editor} node={element} mode={mode}>
+					{children}
+				</Image>
+			);
 		case "blockquote":
 			return (
 				<Blockquote
@@ -158,74 +165,107 @@ const renderLeaf = (props: any, editor: Editor, mode: string) => {
 		);
 };
 
+const getSelectedRootNode = (editor: Editor) => {
+	const selection = editor.selection;
+	if (selection) {
+		const nodePath = selection.anchor.path.slice(0, -2);
+		const rootNode = Editor.node(editor, nodePath)[0];
+		const rootNodePath = nodePath[0];
+
+		return {
+			node: rootNode,
+			index: rootNodePath,
+			path: nodePath,
+		};
+	}
+	return null;
+};
+
+const getCursorPosition = (editor: Editor) => {
+	const selection = editor.selection;
+	if (selection) {
+		return { index: selection.anchor.offset, path: selection.anchor.path };
+	}
+	return {
+		index: -1,
+		path: [],
+	};
+};
+
+const generateNewNode = (content: string) => {
+	return {
+		type: "paragraph",
+		children: [
+			{
+				type: "text",
+				children: [
+					{
+						text: content,
+					},
+				],
+			},
+		],
+	};
+};
+
 const onType = (e: React.KeyboardEvent, editor: Editor) => {
 	switch (e.key) {
 		case "Enter": {
 			e.preventDefault();
 
-			const selection = editor.selection;
-			if (selection) {
-				const nodePath = selection.anchor.path.slice(0, -2);
-				const node = Editor.node(editor, nodePath)[0];
-				const deepestNodeIndex = nodePath[nodePath.length - 1];
-				const rootNodePath = nodePath[0];
-				const rootNode = Editor.node(editor, [rootNodePath])[0];
+			// get the outer parent node of the current selection
+			const containerNode = getSelectedRootNode(editor);
+			if (!containerNode) break;
+			const {
+				node: rootNode,
+				index: rootNodeIndex,
+				path: rootNodePath,
+			} = containerNode;
 
-				// if inside a codeblock, insert a new line inside the block
-				if (CustomEditor.isBlockACodeblock(editor, nodePath)) {
-					Transforms.insertText(editor, "\n");
-					return;
-				}
-
-				// get index of cursor inside node
-				const offset = selection.anchor.offset;
-				const nodeContent = Node.string(node);
-
-				let newItem = {
-					type: "paragraph",
-					children: [
-						{
-							type: "text",
-							children: [
-								{
-									text: nodeContent.substring(
-										offset,
-										nodeContent.length
-									),
-								},
-							],
-						},
-					],
-				};
-				let insertPath = [rootNodePath + 1];
-
-				Transforms.insertText(editor, nodeContent.slice(0, offset), {
-					at: selection.anchor.path,
-				});
-
-				if (
-					LIST_TYPES.includes(rootNode.type) &&
-					node.children[0].children[0].text
-				) {
-					insertPath = [rootNodePath, deepestNodeIndex + 1];
-					newItem.type = node.type;
-				} else if (
-					!node.children[0].children[0].text &&
-					rootNode.children.length - 1 &&
-					deepestNodeIndex
-				) {
-					CustomEditor.splitList(editor, rootNodePath, deepestNodeIndex);
-				}
-
-				// Insert the new sub-item node at the end of the container's children
-				// TODO: make type more robust
-				Transforms.insertNodes(editor, newItem as unknown as Node, {
-					at: insertPath,
-				});
-
-				Transforms.select(editor, insertPath);
-				Transforms.collapse(editor, { edge: "start" });
+			// if inside a codeblock, insert a new line within the block
+			if (CustomEditor.isBlockACodeblock(editor, rootNodePath)) {
+				Transforms.insertText(editor, "\n");
+				return;
 			}
+
+			// get index of cursor inside node
+			const { index: cursorOffset, path: cursorPath } =
+				getCursorPosition(editor);
+			const nodeContent = Node.string(rootNode);
+			let newItem = generateNewNode(
+				nodeContent.substring(cursorOffset, nodeContent.length)
+			);
+			let insertPath = [rootNodeIndex + 1];
+
+			Transforms.insertText(editor, nodeContent.slice(0, cursorOffset), {
+				at: cursorPath,
+			});
+
+			// get the path of the deepest child in the selection
+			const deepestNodeIndex = rootNodePath[rootNodePath.length - 1];
+
+			if (
+				LIST_TYPES.includes(rootNode.type) &&
+				rootNode.children[0].children[0].text
+			) {
+				insertPath = [rootNodeIndex, deepestNodeIndex + 1];
+				newItem.type = rootNode.type;
+			} else if (
+				!rootNode.children[0].children[0].text &&
+				rootNode.children.length - 1 &&
+				deepestNodeIndex
+			) {
+				CustomEditor.splitList(editor, rootNodeIndex, deepestNodeIndex);
+			}
+
+			// Insert the new sub-item node at the end of the container's children
+			// TODO: make type more robust
+			Transforms.insertNodes(editor, newItem as unknown as Node, {
+				at: insertPath,
+			});
+
+			Transforms.select(editor, insertPath);
+			Transforms.collapse(editor, { edge: "start" });
 
 			break;
 		}
@@ -350,6 +390,23 @@ const CustomEditor = {
 				this.splitList(editor, actualPath[0], actualPath[1], nodeType);
 			}
 		}
+	},
+	appendBlock(node: Object, editor: Editor, path?: number[], options?: any) {
+		var actualPath: number[] = [];
+		if (typeof path !== "undefined") actualPath = path;
+		else {
+			const selection = editor.selection;
+			if (!selection) return;
+			const nodePath = selection.anchor.path.slice(0, -2);
+			const rootNodePath = nodePath[0];
+			actualPath = [rootNodePath];
+		}
+
+		console.log(actualPath, node);
+
+		Transforms.insertNodes(editor, node as unknown as Node, {
+			at: actualPath,
+		});
 	},
 	splitList(
 		editor: Editor,

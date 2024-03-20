@@ -7,6 +7,7 @@ import {
 	LuHeading1,
 	LuHeading2,
 	LuHeading3,
+	LuImage,
 	LuItalic,
 	LuLink,
 	LuList,
@@ -62,6 +63,16 @@ export default function FixedMenu({ editor }: { editor: Editor }) {
 					options={{}}
 				>
 					<LuList />
+				</FormatButton>
+				<FormatButton
+					editor={editor}
+					isNode={true}
+					type={"image"}
+					options={{}}
+					promptOption={"url"}
+					appendNode={true}
+				>
+					<LuImage />
 				</FormatButton>
 				<FormatButton
 					editor={editor}

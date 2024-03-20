@@ -25,28 +25,29 @@ export const LIST_TYPES = ["list-ordered", "list-unordered"];
 
 // TODO: make sure options are removed from a node if not applicable to that node type
 
+// TODO: add types for both Elements and Element types everywhere in this file
+
 export const EditorInterface = {
-	getSelectedRootNode(editor: Editor) {
-		const selection = editor.selection;
+	getSelectedRootNode(editorState: Editor) {
+		const selection = editorState.selection;
 		if (selection) {
 			const nodeIndex = selection.anchor.path[0];
-			const node = Editor.node(editor, [nodeIndex])[0];
+			const node = Editor.node(editorState, [nodeIndex])[0];
 
 			return {
 				node: node,
 				index: nodeIndex,
-				path: [nodeIndex],
 			};
 		}
 		return null;
 	},
 
-	getNodeAtPosition(editor: Editor, path: number[]): Node {
-		return Editor.node(editor, path)[0];
+	getNodeAtPosition(editorState: Editor, path: number[]): Node {
+		return Editor.node(editorState, path)[0];
 	},
 
-	getCursorPosition(editor: Editor) {
-		const selection = editor.selection;
+	getCursorPosition(editorState: Editor) {
+		const selection = editorState.selection;
 		if (selection) {
 			return { index: selection.anchor.offset, path: selection.anchor.path };
 		}
@@ -83,34 +84,34 @@ export const EditorInterface = {
 		return node;
 	},
 
-	insertNode(editor: Editor, node: Node, path: number[]) {
+	insertNode(editorState: Editor, node: Node, path: number[]) {
 		// Insert the new sub-item node at the end of the container's children
 		// TODO: make type more robust
-		Transforms.insertNodes(editor, node, {
+		Transforms.insertNodes(editorState, node, {
 			at: path,
 		});
 	},
 
-	insertText(editor: Editor, content: string, path: number[]) {
-		Transforms.insertText(editor, content, {
+	insertText(editorState: Editor, content: string, path: number[]) {
+		Transforms.insertText(editorState, content, {
 			at: path,
 		});
 	},
 
-	setCursor(editor: Editor, path: number[]) {
-		Transforms.select(editor, path);
-		Transforms.collapse(editor, { edge: "start" });
+	setCursor(editorState: Editor, path: number[]) {
+		Transforms.select(editorState, path);
+		Transforms.collapse(editorState, { edge: "start" });
 	},
 
-	isBlockAList(editor: Editor, blockPath: number[]) {
-		const block = Editor.node(editor, blockPath);
+	isBlockAList(editorState: Editor, blockPath: number[]) {
+		const block = Editor.node(editorState, blockPath);
 		const blockProperties = block[0];
 
 		return block && LIST_TYPES.includes(blockProperties.type as string);
 	},
 
-	isBlockACodeblock(editor: Editor, blockPath: number[]) {
-		const block = Editor.node(editor, blockPath);
+	isBlockACodeblock(editorState: Editor, blockPath: number[]) {
+		const block = Editor.node(editorState, blockPath);
 		const blockProperties = block[0];
 
 		return block && blockProperties.type === "codeblock";
@@ -125,14 +126,14 @@ export const EditorInterface = {
 
 	toggleBlock(
 		nodeType: string,
-		editor: Editor,
+		editorState: Editor,
 		path?: number[],
 		options?: any
 	) {
 		var actualPath: number[] = [];
 		if (typeof path !== "undefined") actualPath = path;
 		else {
-			const currentSelection = editor.selection;
+			const currentSelection = editorState.selection;
 			if (currentSelection) {
 				const [start] = Range.edges(currentSelection);
 
@@ -141,7 +142,7 @@ export const EditorInterface = {
 			}
 		}
 
-		const node = Editor.node(editor, actualPath)[0];
+		const node = Editor.node(editorState, actualPath)[0];
 		const newBlockIsSame = EditorInterface.newBlockIsSameAsCurrentBlock(
 			node,
 			nodeType,
@@ -149,12 +150,16 @@ export const EditorInterface = {
 		);
 
 		if (newBlockIsSame) {
-			Transforms.setNodes(editor, Object.assign({ type: "paragraph" }), {
-				at: actualPath,
-			});
+			Transforms.setNodes(
+				editorState,
+				Object.assign({ type: "paragraph" }),
+				{
+					at: actualPath,
+				}
+			);
 		} else {
 			Transforms.setNodes(
-				editor,
+				editorState,
 				Object.assign({ type: nodeType }, options),
 				{ at: actualPath }
 			);
@@ -167,11 +172,11 @@ export const EditorInterface = {
 				nodeType.lastIndexOf("-item")
 			);
 
-			if (!this.isBlockAList(editor, [actualPath[0]])) {
+			if (!this.isBlockAList(editorState, [actualPath[0]])) {
 				// if there is not a 'list-ordered' or 'list-unordered' parent node, add one
 
 				Transforms.wrapNodes(
-					editor,
+					editorState,
 					{
 						type: LIST_WRAPPER_TYPE,
 						children: [],
@@ -179,23 +184,28 @@ export const EditorInterface = {
 					{ at: actualPath }
 				);
 			} else {
-				this.splitList(editor, actualPath[0], actualPath[1], nodeType);
+				this.splitList(editorState, actualPath[0], actualPath[1], nodeType);
 			}
 		}
 	},
 
-	appendBlock(node: Object, editor: Editor, path?: number[], options?: any) {
+	appendBlock(
+		node: Object,
+		editorState: Editor,
+		path?: number[],
+		options?: any
+	) {
 		var actualPath: number[] = [];
 		if (typeof path !== "undefined") actualPath = path;
 		else {
-			const selection = editor.selection;
+			const selection = editorState.selection;
 			if (!selection) return;
 			const nodePath = selection.anchor.path.slice(0, -2);
 			const rootNodePath = nodePath[0];
 			actualPath = [rootNodePath];
 		}
 
-		Transforms.insertNodes(editor, node as unknown as Node, {
+		Transforms.insertNodes(editorState, node as unknown as Node, {
 			at: actualPath,
 		});
 	},
@@ -210,25 +220,29 @@ export const EditorInterface = {
 		return "paragraph";
 	},
 
+	nodeIsList(node: Node) {
+		return LIST_TYPES.includes(EditorInterface.getNodeType(node));
+	},
+
 	getNumberOfListItems(node: Node) {
 		// TODO: change to custom type for lists
 		return node.children.length;
 	},
 
-	getIndexOfCurrentListItem(editor: Editor) {
+	getIndexOfCurrentListItem(editorState: Editor) {
 		// TODO: make sure inside a list
-		const selection = editor.selection;
+		const selection = editorState.selection;
 		if (!selection) return -1;
 		return selection.anchor.path[1];
 	},
 
 	splitList(
-		editor: Editor,
+		editorState: Editor,
 		rootNodeIndex: number,
 		listItemIndex: number,
 		newNodeType?: string
 	) {
-		const beforeListNode = Editor.node(editor, [rootNodeIndex])[0];
+		const beforeListNode = Editor.node(editorState, [rootNodeIndex])[0];
 
 		const beforeList = {
 			type: beforeListNode.type,
@@ -236,7 +250,7 @@ export const EditorInterface = {
 		};
 
 		for (let i = 0; i < listItemIndex; i++) {
-			const listItem = Editor.node(editor, [rootNodeIndex, i])[0];
+			const listItem = Editor.node(editorState, [rootNodeIndex, i])[0];
 			beforeList.children.push(listItem);
 		}
 
@@ -247,14 +261,14 @@ export const EditorInterface = {
 
 		for (
 			let i = listItemIndex + 1;
-			i < Editor.node(editor, [rootNodeIndex])[0].children.length;
+			i < Editor.node(editorState, [rootNodeIndex])[0].children.length;
 			i++
 		) {
-			const listItem = Editor.node(editor, [rootNodeIndex, i])[0];
+			const listItem = Editor.node(editorState, [rootNodeIndex, i])[0];
 			afterList.children.push(listItem);
 		}
 
-		const listItemNode = Editor.node(editor, [
+		const listItemNode = Editor.node(editorState, [
 			rootNodeIndex,
 			listItemIndex,
 		])[0];
@@ -292,39 +306,39 @@ export const EditorInterface = {
 			};
 		}
 
-		Transforms.delete(editor, { at: [rootNodeIndex] });
+		Transforms.delete(editorState, { at: [rootNodeIndex] });
 
 		let insertIndex = rootNodeIndex;
 		let selectIndex = rootNodeIndex;
 
 		if (beforeList.children.length > 0) {
 			// TODO: make type more robust
-			Transforms.insertNodes(editor, beforeList as unknown as Node, {
+			Transforms.insertNodes(editorState, beforeList as unknown as Node, {
 				at: [insertIndex++],
 			});
 			selectIndex++;
 		}
 
 		if (Node.string(listItemNode) !== "") {
-			Transforms.insertNodes(editor, newNode as unknown as Node, {
+			Transforms.insertNodes(editorState, newNode as unknown as Node, {
 				at: [insertIndex++],
 			});
 		}
 
 		if (afterList.children.length > 0) {
 			// TODO: make type more robust
-			Transforms.insertNodes(editor, afterList as unknown as Node, {
+			Transforms.insertNodes(editorState, afterList as unknown as Node, {
 				at: [insertIndex],
 			});
 		}
 
-		Transforms.select(editor, [selectIndex]);
-		Transforms.collapse(editor, { edge: "end" });
+		Transforms.select(editorState, [selectIndex]);
+		Transforms.collapse(editorState, { edge: "end" });
 	},
 
-	mergeLists(editor: Editor, beforeListIndex: number) {
-		const beforeList = Editor.node(editor, [beforeListIndex])[0];
-		const afterList = Editor.node(editor, [beforeListIndex + 1])[0];
+	mergeLists(editorState: Editor, beforeListIndex: number) {
+		const beforeList = Editor.node(editorState, [beforeListIndex])[0];
+		const afterList = Editor.node(editorState, [beforeListIndex + 1])[0];
 
 		const newList = {
 			type: beforeList.type,
@@ -332,16 +346,16 @@ export const EditorInterface = {
 		};
 
 		for (let i = 0; i < beforeList.children.length; i++) {
-			const listItem = Editor.node(editor, [beforeListIndex, i])[0];
+			const listItem = Editor.node(editorState, [beforeListIndex, i])[0];
 			newList.children.push(listItem);
 		}
 
 		for (let i = 0; i < afterList.children.length; i++) {
-			const listItem = Editor.node(editor, [beforeListIndex + 1, i])[0];
+			const listItem = Editor.node(editorState, [beforeListIndex + 1, i])[0];
 			newList.children.push(listItem);
 		}
 
-		const selection = editor.selection;
+		const selection = editorState.selection;
 		const pathExists = Node.isNode(selection?.anchor.path);
 
 		// if selection is above list, set selection to the first element of the list
@@ -356,34 +370,37 @@ export const EditorInterface = {
 			selectIndex = selection.anchor.path[1];
 		}
 
-		Transforms.delete(editor, { at: [beforeListIndex] });
-		Transforms.delete(editor, { at: [beforeListIndex] });
+		Transforms.delete(editorState, { at: [beforeListIndex] });
+		Transforms.delete(editorState, { at: [beforeListIndex] });
 
 		if (newList.children.length > 0) {
 			// TODO: make type more robust
-			Transforms.insertNodes(editor, newList as unknown as Node, {
+			Transforms.insertNodes(editorState, newList as unknown as Node, {
 				at: [beforeListIndex],
 			});
 		}
 
-		Transforms.select(editor, [beforeListIndex, selectIndex]);
-		Transforms.collapse(editor, { edge: "end" });
+		Transforms.select(editorState, [beforeListIndex, selectIndex]);
+		Transforms.collapse(editorState, { edge: "end" });
 	},
 
-	isMarkActive(editor: Editor, markType: string) {
-		const marks = Editor.marks(editor);
+	isMarkActive(editorState: Editor, markType: string) {
+		const marks = Editor.marks(editorState);
 		// TODO: make mark type more robust
 		return marks ? (marks as any)[markType] === true : false;
 	},
 
-	toggleMark(editor: Editor, markType: string, options?: any) {
-		const newBlockIsSame = EditorInterface.isMarkActive(editor, markType);
+	toggleMark(editorState: Editor, markType: string, options?: any) {
+		const newBlockIsSame = EditorInterface.isMarkActive(
+			editorState,
+			markType
+		);
 		if (newBlockIsSame) {
-			Editor.removeMark(editor, markType);
+			Editor.removeMark(editorState, markType);
 		} else if (options) {
-			Editor.addMark(editor, markType, options);
+			Editor.addMark(editorState, markType, options);
 		} else {
-			Editor.addMark(editor, markType, true);
+			Editor.addMark(editorState, markType, true);
 		}
 	},
 };

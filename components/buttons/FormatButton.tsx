@@ -2,10 +2,9 @@ import { ReactNode, useEffect, useState } from "react";
 
 import { Editor } from "slate";
 
-import { CustomEditor } from "@/utils/editor";
-
 import Button from "./Button";
 import { useModal } from "@/contexts/modal";
+import { EditorInterface } from "@/utils/editor/slate";
 
 export default function FormatButton({
 	editor,
@@ -70,12 +69,17 @@ export default function FormatButton({
 						type: "image",
 						...newOptions,
 					};
-					CustomEditor.appendBlock(newItem, editor, undefined, newOptions);
+					EditorInterface.appendBlock(
+						newItem,
+						editor,
+						undefined,
+						newOptions
+					);
 					break;
 			}
 		else if (isNode)
-			CustomEditor.toggleBlock(type, editor, undefined, newOptions);
-		else CustomEditor.toggleMark(editor, type, newOptions);
+			EditorInterface.toggleBlock(type, editor, undefined, newOptions);
+		else EditorInterface.toggleMark(editor, type, newOptions);
 
 		if (e && onMouseDown) onMouseDown(e);
 	};

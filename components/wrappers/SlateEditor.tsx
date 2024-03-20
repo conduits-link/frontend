@@ -1,39 +1,11 @@
-import React, { ChangeEventHandler, useState } from "react";
-import {
-	Node,
-	createEditor,
-	Transforms,
-	select,
-	Editor,
-	Descendant,
-} from "slate";
-import { Slate, Editable, withReact } from "slate-react";
+import { Slate, Editable } from "slate-react";
+import { Editor, Descendant } from "slate";
+import React from "react";
 
-// TypeScript users only add this code
-import { BaseEditor } from "slate";
-import { ReactEditor } from "slate-react";
+import { renderElement, renderLeaf } from "@/utils/editor/render";
+
 import NoSSR from "./NoSSR";
-import {
-	CustomEditor,
-	onChange,
-	onType,
-	renderElement,
-	renderLeaf,
-} from "@/utils/editor";
-
-// TODO: Slate.js types - I THINK THESE SHOULD BE USED TO REDUCE ERRORS
-type CustomElement = {
-	type: "paragraph" | "container" | "sub-item";
-	children: CustomText[];
-};
-type CustomText = { text: string };
-declare module "slate" {
-	interface CustomTypes {
-		Editor: BaseEditor & ReactEditor;
-		Element: CustomElement;
-		Text: CustomText;
-	}
-}
+import { EditorUpdate } from "@/utils/editor/update";
 
 const SlateEditor = ({
 	editor,
@@ -53,7 +25,9 @@ const SlateEditor = ({
 			<Slate
 				editor={editor}
 				initialValue={file.body}
-				onChange={(value: Descendant[]) => onChange(value, editor)}
+				onChange={(value: Descendant[]) =>
+					EditorUpdate.onChange(value, editor)
+				}
 			>
 				<Editable
 					className={className}
@@ -61,7 +35,9 @@ const SlateEditor = ({
 						renderElement({ ...props }, editor, mode) || <></>
 					}
 					renderLeaf={(props) => renderLeaf({ ...props }, editor, mode)}
-					onKeyDown={(e: React.KeyboardEvent) => onType(e, editor)}
+					onKeyDown={(e: React.KeyboardEvent) =>
+						EditorUpdate.onType(e, editor)
+					}
 					readOnly={readOnly}
 				/>
 			</Slate>

@@ -2,7 +2,7 @@ import React from "react";
 
 import { Node } from "slate";
 
-import { LIST_ITEMS } from "@/utils/editor";
+import { LIST_ITEMS } from "@/utils/editor/slate";
 
 import RootNode from "./Root";
 

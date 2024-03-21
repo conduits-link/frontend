@@ -1,9 +1,9 @@
 import { Descendant, Editor } from "slate";
-//                ^^^ remove non-Editor imports
 
 import { EditorInterface, LIST_TYPES } from "./slate";
 
 export const EditorUpdate = {
+	// when a user presses a key, while the editor is focused
 	onType(e: React.KeyboardEvent, editorState: Editor) {
 		switch (e.key) {
 			case "Enter": {
@@ -103,15 +103,17 @@ export const EditorUpdate = {
 			}
 		}
 	},
-	onChange(value: Descendant[], editorState: Editor) {
+	// when the state of the editor changes, for any reason
+	onChange(nodes: Descendant[], editorState: Editor) {
 		// check if there are adjacent lists and merge them
-		for (let i = 0; i < value.length; i++) {
-			const node = value[i];
-			const nextNode = value[i + 1];
-			const nodeType = EditorInterface.getNodeType(node);
-			const nextNodeType = EditorInterface.getNodeType(nextNode);
+		for (let i = 0; i < nodes.length; i++) {
+			const currentNodeType = EditorInterface.getNodeType(nodes[i]);
+			const nextNodeType = EditorInterface.getNodeType(nodes[i + 1]);
 
-			if (LIST_TYPES.includes(nodeType) && nodeType === nextNodeType) {
+			if (
+				LIST_TYPES.includes(currentNodeType) &&
+				currentNodeType === nextNodeType
+			) {
 				EditorInterface.mergeLists(editorState, i);
 				return;
 			}

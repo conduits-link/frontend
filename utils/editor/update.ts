@@ -42,6 +42,7 @@ export const EditorUpdate = {
 				let insertPath = [rootNodeIndex + 1];
 				let newItem = EditorInterface.generateNewNode(
 					"paragraph",
+					"text",
 					nodeContent.substring(cursorOffset, nodeContent.length)
 				);
 
@@ -57,6 +58,7 @@ export const EditorUpdate = {
 					];
 					newItem = EditorInterface.generateNewNode(
 						EditorInterface.getListItemType(rootNode),
+						"text",
 						nodeContent.substring(cursorOffset, nodeContent.length)
 					);
 				}

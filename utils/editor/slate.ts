@@ -1,4 +1,4 @@
-import { Editor, Range, Transforms, Node } from "slate";
+import { Editor, Range, Transforms, Node, Element } from "slate";
 import { ReactEditor } from "slate-react";
 import { BaseEditor } from "slate";
 
@@ -6,7 +6,7 @@ import { areEquivalent } from "../helpers";
 
 type CustomElement = {
 	type: string;
-	children: CustomElement[] | CustomText[];
+	children: Node[] | CustomElement[] | CustomText[];
 };
 
 type CustomText = { text: string };
@@ -28,6 +28,7 @@ export const LIST_TYPES = ["list-ordered", "list-unordered"];
 // TODO: add types for both Elements and Element types everywhere in this file
 
 export const EditorInterface = {
+	// Core interface
 	getSelectedRootNode(editorState: Editor) {
 		const selection = editorState.selection;
 		if (selection) {
@@ -45,11 +46,11 @@ export const EditorInterface = {
 		return Editor.node(editorState, path)[0];
 	},
 	getNodeType(node: Node) {
-		if (!node) return undefined;
+		if (!node || !Element.isElement(node)) return "undefined";
 		return node.type;
 	},
 	getNodeChildren(node: Node) {
-		return node.children;
+		return [...Node.children(node, [])];
 	},
 	getNodeContent(node: Node) {
 		// TODO: make issues with if has multiple children more robust
@@ -60,9 +61,6 @@ export const EditorInterface = {
 		Transforms.insertNodes(editorState, node, {
 			at: path,
 		});
-	},
-	insertNodeChild(parentNode: Node, childNode: Node) {
-		parentNode.children.push(childNode);
 	},
 	insertText(editorState: Editor, content: string, path: number[]) {
 		Transforms.insertText(editorState, content, {
@@ -88,6 +86,8 @@ export const EditorInterface = {
 	isNodeAList(node: Node) {
 		return LIST_TYPES.includes(EditorInterface.getNodeType(node));
 	},
+
+	// Cursor and selection interface
 	getCursorPosition(editorState: Editor) {
 		const selection = editorState.selection;
 		if (selection) {
@@ -103,6 +103,7 @@ export const EditorInterface = {
 		Transforms.collapse(editorState, { edge: "start" });
 	},
 
+	// List interface
 	isBlockAList(editorState: Editor, blockPath: number[]) {
 		const block = Editor.node(editorState, blockPath);
 		const blockProperties = block[0];
@@ -248,33 +249,29 @@ export const EditorInterface = {
 	) {
 		const beforeListNode = Editor.node(editorState, [rootNodeIndex])[0];
 
-		const beforeList = {
+		const beforeList: Node = {
 			type: EditorInterface.getNodeType(beforeListNode),
-			children: [],
-		};
-
-		for (let i = 0; i < listItemIndex; i++) {
-			const listItem = Editor.node(editorState, [rootNodeIndex, i])[0];
-			EditorInterface.insertNodeChild(beforeList, listItem);
-		}
-
-		const afterList = {
-			type: EditorInterface.getNodeType(beforeListNode),
-			children: [],
+			children: Array.from(
+				{ length: listItemIndex },
+				(_, i) => Editor.node(editorState, [rootNodeIndex, i])[0]
+			),
 		};
 
 		const newList = EditorInterface.getNodeAtPosition(editorState, [
 			rootNodeIndex,
 		]);
-		const newListChildren = EditorInterface.getNodeChildren(newList);
 
-		for (let i = listItemIndex + 1; i < newListChildren.length; i++) {
-			const listItem = EditorInterface.getNodeAtPosition(editorState, [
-				rootNodeIndex,
-				i,
-			]);
-			EditorInterface.insertNodeChild(afterList, listItem);
-		}
+		const afterList = {
+			type: EditorInterface.getNodeType(beforeListNode),
+			children: EditorInterface.getNodeChildren(newList)
+				.slice(listItemIndex + 1)
+				.map((_, i) =>
+					EditorInterface.getNodeAtPosition(editorState, [
+						rootNodeIndex,
+						i + listItemIndex + 1,
+					])
+				),
+		};
 
 		const listItemNode: Node = Editor.node(editorState, [
 			rootNodeIndex,
@@ -330,22 +327,20 @@ export const EditorInterface = {
 		const beforeList = Editor.node(editorState, [beforeListIndex])[0];
 		const afterList = Editor.node(editorState, [beforeListIndex + 1])[0];
 
+		const beforeListChildren = EditorInterface.getNodeChildren(beforeList);
+		const afterListChildren = EditorInterface.getNodeChildren(afterList);
+
 		const newList = {
 			type: EditorInterface.getNodeType(beforeList),
-			children: [],
+			children: beforeListChildren
+				.map((_, i) => Editor.node(editorState, [beforeListIndex, i])[0])
+				.concat(
+					afterListChildren.map(
+						(_, i) =>
+							Editor.node(editorState, [beforeListIndex + 1, i])[0]
+					)
+				),
 		};
-
-		const beforeListChildren = EditorInterface.getNodeChildren(beforeList);
-		for (let i = 0; i < beforeListChildren.length; i++) {
-			const listItem = Editor.node(editorState, [beforeListIndex, i])[0];
-			EditorInterface.insertNodeChild(newList, listItem);
-		}
-
-		const afterListChildren = EditorInterface.getNodeChildren(afterList);
-		for (let i = 0; i < afterListChildren.length; i++) {
-			const listItem = Editor.node(editorState, [beforeListIndex + 1, i])[0];
-			EditorInterface.insertNodeChild(newList, listItem);
-		}
 
 		const selection = editorState.selection;
 		const pathExists = Node.isNode(selection?.anchor.path);

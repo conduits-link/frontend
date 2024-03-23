@@ -4,6 +4,7 @@ import { Editor } from "slate";
 
 import Button from "./Button";
 import { useModal } from "@/contexts/modal";
+import { EditorOperate } from "@/utils/editor/operate";
 import { EditorInterface } from "@/utils/editor/slate";
 
 export default function FormatButton({
@@ -62,24 +63,33 @@ export default function FormatButton({
 				break;
 		}
 
-		if (appendNode)
-			switch (type) {
-				case "image":
-					let newItem = {
-						type: "image",
-						...newOptions,
-					};
-					EditorInterface.appendBlock(
-						newItem,
-						editor,
-						undefined,
-						newOptions
-					);
-					break;
+		// if (appendNode)
+		// 	switch (type) {
+		// 		case "image":
+		// 			let newItem = {
+		// 				type: "image",
+		// 				...newOptions,
+		// 			};
+		// 			EditorOperate.appendBlock(
+		// 				newItem,
+		// 				editor,
+		// 				undefined,
+		// 				newOptions
+		// 			);
+		// 			break;
+		// 	}
+		// else
+		if (isNode) {
+			// EditorOperate.toggleBlock(editor, type, undefined, newOptions);
+
+			const rootNode = EditorInterface.getSelectedRootNode(editor);
+
+			if (rootNode && rootNode.node) {
+				if (EditorInterface.isNodeAList(rootNode.node))
+					console.log(EditorInterface.getIndexOfCurrentListItem(editor));
+				EditorOperate.toggleNode(editor, rootNode.node, type, newOptions);
 			}
-		else if (isNode)
-			EditorInterface.toggleBlock(type, editor, undefined, newOptions);
-		else EditorInterface.toggleMark(editor, type, newOptions);
+		} else EditorOperate.toggleMark(editor, type, newOptions);
 
 		if (e && onMouseDown) onMouseDown(e);
 	};

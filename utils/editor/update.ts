@@ -1,6 +1,7 @@
 import { Descendant, Editor } from "slate";
 
-import { EditorInterface, LIST_TYPES } from "./slate";
+import { EditorInterface } from "./slate";
+import { EditorOperate } from "./operate";
 
 export const EditorUpdate = {
 	// when a user presses a key, while the editor is focused
@@ -21,7 +22,7 @@ export const EditorUpdate = {
 
 				// get the (text) content of the current selected node
 				let nodeContent = EditorInterface.getNodeContent(rootNode);
-				if (EditorInterface.nodeIsList(rootNode)) {
+				if (EditorInterface.isNodeAList(rootNode)) {
 					const indexOfSelectedListItem =
 						EditorInterface.getIndexOfCurrentListItem(editorState);
 					const selectedListItem = EditorInterface.getNodeAtPosition(
@@ -49,7 +50,7 @@ export const EditorUpdate = {
 				// if a list item with content before the cursor is selected,
 				// update the new node to be a new list item
 				if (
-					EditorInterface.nodeIsList(rootNode) &&
+					EditorInterface.isNodeAList(rootNode) &&
 					!!nodeContent.substring(0, cursorOffset)
 				) {
 					insertPath = [
@@ -57,17 +58,19 @@ export const EditorUpdate = {
 						EditorInterface.getIndexOfCurrentListItem(editorState) + 1,
 					];
 					newItem = EditorInterface.generateNewNode(
-						EditorInterface.getListItemType(rootNode),
+						EditorInterface.getCorrespondingListItemType(rootNode),
 						"text",
 						nodeContent.substring(cursorOffset, nodeContent.length)
 					);
 				}
 				// if a list item without content is selected, split the list
-				else if (EditorInterface.nodeIsList(rootNode) && !nodeContent) {
-					EditorInterface.splitList(
+				else if (EditorInterface.isNodeAList(rootNode) && !nodeContent) {
+					EditorOperate.splitList(
 						editorState,
-						rootNodeIndex,
-						EditorInterface.getIndexOfCurrentListItem(editorState),
+						EditorInterface.getNodeAtPosition(editorState, [
+							rootNodeIndex,
+							EditorInterface.getIndexOfCurrentListItem(editorState),
+						]),
 						"paragraph"
 					);
 				}
@@ -84,22 +87,22 @@ export const EditorUpdate = {
 			switch (e.key) {
 				case "b": {
 					e.preventDefault();
-					EditorInterface.toggleMark(editorState, "bold");
+					EditorOperate.toggleMark(editorState, "bold");
 					break;
 				}
 				case "i": {
 					e.preventDefault();
-					EditorInterface.toggleMark(editorState, "italic");
+					EditorOperate.toggleMark(editorState, "italic");
 					break;
 				}
 				case "~": {
 					e.preventDefault();
-					EditorInterface.toggleMark(editorState, "strikethrough");
+					EditorOperate.toggleMark(editorState, "strikethrough");
 					break;
 				}
 				case "`": {
 					e.preventDefault();
-					EditorInterface.toggleMark(editorState, "code");
+					EditorOperate.toggleMark(editorState, "code");
 					break;
 				}
 			}
@@ -113,10 +116,10 @@ export const EditorUpdate = {
 			const nextNodeType = EditorInterface.getNodeType(nodes[i + 1]);
 
 			if (
-				LIST_TYPES.includes(currentNodeType) &&
+				EditorInterface.isNodeAList(currentNodeType) &&
 				currentNodeType === nextNodeType
 			) {
-				EditorInterface.mergeLists(editorState, i);
+				EditorOperate.mergeLists(editorState, i);
 				return;
 			}
 		}

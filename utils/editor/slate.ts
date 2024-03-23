@@ -62,8 +62,8 @@ export const EditorInterface = {
 		const path = ReactEditor.findPath(editorState, node);
 		return Editor.node(editorState, path.slice(0, -1))[0];
 	},
-	getNodeChildren(node: Node) {
-		return [...Node.children(node, [])];
+	getNodeChildren(node: Node): Node[] {
+		return Array.from(Node.children(node, [])).map(([node]) => node);
 	},
 	getNodeContent(node: Node) {
 		// TODO: make issues with if has multiple children more robust
@@ -86,6 +86,11 @@ export const EditorInterface = {
 	insertText(editorState: Editor, content: string, path: number[]) {
 		Transforms.insertText(editorState, content, {
 			at: path,
+		});
+	},
+	deleteNode(editorState: Editor, node: Node) {
+		Transforms.removeNodes(editorState, {
+			at: ReactEditor.findPath(editorState, node),
 		});
 	},
 	generateNewNode(parentType: string, childType: string, content: string) {

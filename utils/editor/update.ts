@@ -70,8 +70,7 @@ export const EditorUpdate = {
 						EditorInterface.getNodeAtPosition(editorState, [
 							rootNodeIndex,
 							EditorInterface.getIndexOfCurrentListItem(editorState),
-						]),
-						"paragraph"
+						])
 					);
 				}
 
@@ -119,7 +118,10 @@ export const EditorUpdate = {
 				EditorInterface.isNodeAList(currentNodeType) &&
 				currentNodeType === nextNodeType
 			) {
-				EditorOperate.mergeLists(editorState, i);
+				EditorOperate.mergeLists(
+					editorState,
+					EditorInterface.getNodeAtPosition(editorState, [i])
+				);
 				return;
 			}
 		}

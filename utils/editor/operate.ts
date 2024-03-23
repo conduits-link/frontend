@@ -1,4 +1,4 @@
-import { Editor, Transforms, Node } from "slate";
+import { Editor, Node } from "slate";
 
 import { EditorInterface } from "./slate";
 
@@ -110,7 +110,7 @@ export const EditorOperate = {
 		}
 		// if node is a list item, and has a list wrapper, split the list
 		else if (EditorInterface.isNodeAListItem(newNodeType)) {
-			EditorOperate.splitList(editorState, node, newNodeType);
+			EditorOperate.splitList(editorState, node);
 		}
 	},
 	toggleMark(editorState: Editor, markType: string, options?: any) {
@@ -129,7 +129,7 @@ export const EditorOperate = {
 	//#endregion
 
 	//#region List operations
-	splitList(editorState: Editor, listItemNode: Node, newNodeType: string) {
+	splitList(editorState: Editor, listItemNode: Node) {
 		// NOTE: this function splits a list into two lists right next to each other, it does not
 		// 'leave space for' or interact with the new node that goes between the lists.
 
@@ -169,7 +169,7 @@ export const EditorOperate = {
 		const parentListType = EditorInterface.getNodeType(parent);
 
 		// delete the current list
-		Transforms.delete(editorState, { at: parentPath });
+		EditorInterface.deleteNode(editorState, parent);
 
 		// add the before and after list items to new lists, and insert them into the editor
 		// NOTE: after list items are inserted first to ensure the list items are added in
@@ -189,51 +189,54 @@ export const EditorOperate = {
 			EditorInterface.insertNode(editorState, beforeList, parentPath);
 		}
 	},
-	mergeLists(editorState: Editor, beforeListIndex: number) {
-		const beforeList = Editor.node(editorState, [beforeListIndex])[0];
-		const afterList = Editor.node(editorState, [beforeListIndex + 1])[0];
+	mergeLists(editorState: Editor, beforeListNode: Node) {
+		// check if beforeListNode is a list
+		if (!EditorInterface.isNodeAList(beforeListNode)) return;
 
-		const beforeListChildren = EditorInterface.getNodeChildren(beforeList);
-		const afterListChildren = EditorInterface.getNodeChildren(afterList);
+		// get path of beforeListNode
+		const beforeListNodePath = EditorInterface.getNodePath(
+			editorState,
+			beforeListNode
+		);
 
-		const newList = {
-			type: EditorInterface.getNodeType(beforeList),
-			children: beforeListChildren
-				.map((_, i) => Editor.node(editorState, [beforeListIndex, i])[0])
-				.concat(
-					afterListChildren.map(
-						(_, i) =>
-							Editor.node(editorState, [beforeListIndex + 1, i])[0]
-					)
-				),
+		// as it is a root node (verified with the above if),
+		// we can get the first index in the path
+		const beforeListNodeIndex = beforeListNodePath[0];
+
+		// get node after beforeListNode
+		const afterListNode = EditorInterface.getNodeAtPosition(editorState, [
+			beforeListNodeIndex + 1,
+		]);
+		console.log(afterListNode);
+		// check if afterListNode exists, and is a list
+		if (!afterListNode || !EditorInterface.isNodeAList(afterListNode)) return;
+
+		// get the path of beforeListNode
+		const parentPath = EditorInterface.getNodePath(
+			editorState,
+			beforeListNode
+		);
+
+		// get the type of beforeListNode
+		const beforeListNodeType = EditorInterface.getNodeType(beforeListNode);
+
+		// get the children of the lists
+		const beforeListItems = EditorInterface.getNodeChildren(beforeListNode);
+		const afterListItems = EditorInterface.getNodeChildren(afterListNode);
+
+		// delete the two lists
+		// NOTE: the same is being deleted twice because the editorState is
+		// not updated after the first
+		// TODO: improve robustness here
+		EditorInterface.deleteNode(editorState, beforeListNode);
+		EditorInterface.deleteNode(editorState, beforeListNode);
+
+		// merge the two lists into one
+		const mergedList = {
+			type: beforeListNodeType,
+			children: beforeListItems.concat(afterListItems),
 		};
-
-		const selection = editorState.selection;
-		const pathExists = Node.isNode(selection?.anchor.path);
-
-		// if selection is above list, set selection to the first element of the list
-		let selectIndex = 0;
-		if (
-			!pathExists &&
-			selection &&
-			selection.anchor.path[0] > beforeListIndex
-		) {
-			selectIndex = newList.children.length - 1;
-		} else if (pathExists && selection) {
-			selectIndex = selection.anchor.path[1];
-		}
-
-		Transforms.delete(editorState, { at: [beforeListIndex] });
-		Transforms.delete(editorState, { at: [beforeListIndex] });
-
-		if (newList.children.length > 0) {
-			Transforms.insertNodes(editorState, newList, {
-				at: [beforeListIndex],
-			});
-		}
-
-		Transforms.select(editorState, [beforeListIndex, selectIndex]);
-		Transforms.collapse(editorState, { edge: "end" });
+		EditorInterface.insertNode(editorState, mergedList, parentPath);
 	},
 	//#endregion
 };

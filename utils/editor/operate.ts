@@ -46,6 +46,9 @@ export const EditorOperate = {
 
 			EditorOperate.splitList(editorState, node);
 
+			const insertPosition =
+				node[node.length - 1] === 0 ? [node[0]] : [node[0] + 1];
+
 			EditorInterface.insertNode(
 				editorState,
 				EditorInterface.generateNewNode(
@@ -54,21 +57,22 @@ export const EditorOperate = {
 					listItemContent,
 					options
 				),
-				[node[0]]
+				insertPosition
 			);
 
 			if (EditorInterface.isNodeAListItem(editorState, newNodeType)) {
 				EditorInterface.insertListWrapper(
 					editorState,
-					[node[0]],
+					insertPosition,
 					EditorInterface.getCorrespondingListType(
 						editorState,
 						newNodeType
 					)
 				);
+				EditorInterface.setCursor(editorState, insertPosition.concat(0));
+			} else {
+				EditorInterface.setCursor(editorState, insertPosition);
 			}
-
-			EditorInterface.setCursor(editorState, [node[0]]);
 		}
 	},
 	toggleMark(editorState: Editor, markType: string, options?: any) {
@@ -87,17 +91,17 @@ export const EditorOperate = {
 	//#endregion
 
 	//#region List operations
-	splitList(editorState: Editor, listItemNode: number[]) {
-		// NOTE: this function splits a list into two lists right next to each other, it does not
-		// 'leave space for' or interact with the new node that goes between the lists.
+	/**
+	 * Split a list into two new consecutive lists.
+	 * @param editorState The current editor state.
+	 * @param listItemNode The path of the list item to split.
+	 * @returns void
+	 */
+	splitList(editorState: Editor, listItemNode: number[]): void {
+		const listNode = [listItemNode[0]];
 
-		// // check this node is a list item and is wrapped in a list - actually it sometimes won't be a list if we are trying to rectify
-		// if (!EditorInterface.isNodeAListItem(editorState, listItemNode)) return;
-		const parent = EditorInterface.getNodeParent(editorState, listItemNode);
-
-		if (!parent.node) return;
-
-		if (!EditorInterface.isNodeAList(editorState, parent.path)) return;
+		// check if the item has a list wrapper
+		if (!EditorInterface.isNodeAList(editorState, listNode)) return;
 
 		// get the index of the list item within the list
 		const listItemIndex =
@@ -107,7 +111,7 @@ export const EditorOperate = {
 		let beforeListItems: Node[] = [];
 		for (let i = 0; i < listItemIndex; i++) {
 			beforeListItems.push(
-				EditorInterface.getNode(editorState, parent.path.concat(i))
+				EditorInterface.getNode(editorState, listNode.concat(i))
 			);
 		}
 
@@ -115,22 +119,19 @@ export const EditorOperate = {
 		let afterListItems: Node[] = [];
 		for (
 			let i = listItemIndex + 1;
-			i < EditorInterface.getNodeChildren(editorState, parent.path).length;
+			i < EditorInterface.getNodeChildren(editorState, listNode).length;
 			i++
 		) {
 			afterListItems.push(
-				EditorInterface.getNode(editorState, parent.path.concat(i))
+				EditorInterface.getNode(editorState, listNode.concat(i))
 			);
 		}
 
 		// get the type of the parent list
-		const parentListType = EditorInterface.getNodeType(
-			editorState,
-			parent.path
-		);
+		const parentListType = EditorInterface.getNodeType(editorState, listNode);
 
 		// delete the current list
-		EditorInterface.deleteNode(editorState, parent.path);
+		EditorInterface.deleteNode(editorState, listNode);
 
 		// add the before and after list items to new lists, and insert them into the editor
 		// NOTE: after list items are inserted first to ensure the list items are added in
@@ -140,38 +141,29 @@ export const EditorOperate = {
 				type: parentListType,
 				children: afterListItems,
 			};
-			EditorInterface.insertNode(editorState, afterList, parent.path);
+			EditorInterface.insertNode(editorState, afterList, listNode);
 		}
 		if (beforeListItems.length > 0) {
 			const beforeList = {
 				type: parentListType,
 				children: beforeListItems,
 			};
-			EditorInterface.insertNode(editorState, beforeList, parent.path);
+			EditorInterface.insertNode(editorState, beforeList, listNode);
 		}
 	},
 	mergeLists(editorState: Editor, beforeListNode: number[]) {
 		// check if beforeListNode is a list
 		if (!EditorInterface.isNodeAList(editorState, beforeListNode)) return;
 
-		// as it is a root node (verified with the above if),
-		// we can get the first index in the path
-		const beforeListNodeIndex = beforeListNode[0];
+		// get the path of the other list to merge with
+		const afterListNode = [beforeListNode[0] + 1];
 
-		const afterNodePath = [beforeListNodeIndex + 1];
-
-		// get node after beforeListNode
-		const afterListNode = EditorInterface.getNode(editorState, afterNodePath);
 		// check if afterListNode exists, and is a list
 		if (
-			!afterListNode ||
-			!EditorInterface.isNodeAList(editorState, afterNodePath)
+			!EditorInterface.getNode(editorState, afterListNode) ||
+			!EditorInterface.isNodeAList(editorState, afterListNode)
 		)
 			return;
-
-		// get the path of beforeListNode
-		const parent = EditorInterface.getNodeParent(editorState, beforeListNode);
-		if (!parent.node) return;
 
 		// get the type of beforeListNode
 		const beforeListNodeType = EditorInterface.getNodeType(
@@ -186,22 +178,21 @@ export const EditorOperate = {
 		);
 		const afterListItems = EditorInterface.getNodeChildren(
 			editorState,
-			afterNodePath
+			afterListNode
 		);
-
-		// delete the two lists
-		// NOTE: the same is being deleted twice because the editorState is
-		// not updated after the first
-		// TODO: improve robustness here
-		EditorInterface.deleteNode(editorState, afterNodePath);
-		EditorInterface.deleteNode(editorState, beforeListNode);
 
 		// merge the two lists into one
 		const mergedList = {
 			type: beforeListNodeType,
 			children: beforeListItems.concat(afterListItems),
 		};
-		EditorInterface.insertNode(editorState, mergedList, parent.path);
+
+		// delete the two original lists
+		EditorInterface.deleteNode(editorState, afterListNode);
+		EditorInterface.deleteNode(editorState, beforeListNode);
+
+		// insert the merged list into the editor
+		EditorInterface.insertNode(editorState, mergedList, [beforeListNode[0]]);
 	},
 	//#endregion
 };

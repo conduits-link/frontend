@@ -124,7 +124,12 @@ export const EditorUpdate = {
 				EditorInterface.isNodeAList(editorState, currentNodeType) &&
 				currentNodeType === nextNodeType
 			) {
+				const beforeListLength = EditorInterface.getNodeChildren(
+					editorState,
+					[i]
+				).length;
 				EditorOperate.mergeLists(editorState, [i]);
+				EditorInterface.setCursor(editorState, [i, beforeListLength - 1]);
 				return;
 			}
 		}

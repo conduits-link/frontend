@@ -212,7 +212,7 @@ export namespace EditorInterface {
 
 	export function setCursor(editorState: Editor, path: number[]): void {
 		Transforms.select(editorState, path);
-		Transforms.collapse(editorState, { edge: "start" });
+		Transforms.collapse(editorState, { edge: "end" });
 	}
 	//#endregion
 

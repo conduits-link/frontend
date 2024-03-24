@@ -19,17 +19,20 @@ export const EditorUpdate = {
 				// get index of the cursor within the node
 				const { index: cursorOffset, path: cursorPath } =
 					EditorInterface.getCursorPosition(editorState);
+				const rootNodePath = [rootNodeIndex];
 
 				// get the (text) content of the current selected node
-				let nodeContent = EditorInterface.getNodeContent(rootNode);
-				if (EditorInterface.isNodeAList(rootNode)) {
+				let nodeContent = EditorInterface.getNodeContent(
+					editorState,
+					rootNodePath
+				);
+				if (EditorInterface.isNodeAList(editorState, rootNodePath)) {
 					const indexOfSelectedListItem =
 						EditorInterface.getIndexOfCurrentListItem(editorState);
-					const selectedListItem = EditorInterface.getNodeAtPosition(
-						editorState,
-						[rootNodeIndex, indexOfSelectedListItem]
-					);
-					nodeContent = EditorInterface.getNodeContent(selectedListItem);
+					nodeContent = EditorInterface.getNodeContent(editorState, [
+						rootNodeIndex,
+						indexOfSelectedListItem,
+					]);
 				}
 
 				// replace the current node with the content before the cursor
@@ -50,7 +53,7 @@ export const EditorUpdate = {
 				// if a list item with content before the cursor is selected,
 				// update the new node to be a new list item
 				if (
-					EditorInterface.isNodeAList(rootNode) &&
+					EditorInterface.isNodeAList(editorState, rootNodePath) &&
 					!!nodeContent.substring(0, cursorOffset)
 				) {
 					insertPath = [
@@ -58,20 +61,23 @@ export const EditorUpdate = {
 						EditorInterface.getIndexOfCurrentListItem(editorState) + 1,
 					];
 					newItem = EditorInterface.generateNewNode(
-						EditorInterface.getCorrespondingListItemType(rootNode),
+						EditorInterface.getCorrespondingListItemType(
+							editorState,
+							rootNodePath
+						),
 						"text",
 						nodeContent.substring(cursorOffset, nodeContent.length)
 					);
 				}
 				// if a list item without content is selected, split the list
-				else if (EditorInterface.isNodeAList(rootNode) && !nodeContent) {
-					EditorOperate.splitList(
-						editorState,
-						EditorInterface.getNodeAtPosition(editorState, [
-							rootNodeIndex,
-							EditorInterface.getIndexOfCurrentListItem(editorState),
-						])
-					);
+				else if (
+					EditorInterface.isNodeAList(editorState, rootNodePath) &&
+					!nodeContent
+				) {
+					EditorOperate.splitList(editorState, [
+						rootNodeIndex,
+						EditorInterface.getIndexOfCurrentListItem(editorState),
+					]);
 				}
 
 				// insert the new node and set the cursor to it
@@ -110,18 +116,15 @@ export const EditorUpdate = {
 	// when the state of the editor changes, for any reason
 	onChange(nodes: Descendant[], editorState: Editor) {
 		// check if there are adjacent lists and merge them
-		for (let i = 0; i < nodes.length; i++) {
+		for (let i = 0; i < nodes.length - 1; i++) {
 			const currentNodeType = EditorInterface.getNodeType(nodes[i]);
 			const nextNodeType = EditorInterface.getNodeType(nodes[i + 1]);
 
 			if (
-				EditorInterface.isNodeAList(currentNodeType) &&
+				EditorInterface.isNodeAList(editorState, currentNodeType) &&
 				currentNodeType === nextNodeType
 			) {
-				EditorOperate.mergeLists(
-					editorState,
-					EditorInterface.getNodeAtPosition(editorState, [i])
-				);
+				EditorOperate.mergeLists(editorState, [i]);
 				return;
 			}
 		}

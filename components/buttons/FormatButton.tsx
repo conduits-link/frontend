@@ -85,9 +85,23 @@ export default function FormatButton({
 			const rootNode = EditorInterface.getSelectedRootNode(editor);
 
 			if (rootNode && rootNode.node) {
-				if (EditorInterface.isNodeAList(rootNode.node))
-					console.log(EditorInterface.getIndexOfCurrentListItem(editor));
-				EditorOperate.toggleNode(editor, rootNode.node, type, newOptions);
+				if (EditorInterface.isNodeAList(editor, [rootNode.index]))
+					EditorOperate.toggleNode(
+						editor,
+						[
+							rootNode.index,
+							EditorInterface.getIndexOfCurrentListItem(editor),
+						],
+						type,
+						newOptions
+					);
+				else
+					EditorOperate.toggleNode(
+						editor,
+						[rootNode.index],
+						type,
+						newOptions
+					);
 			}
 		} else EditorOperate.toggleMark(editor, type, newOptions);
 

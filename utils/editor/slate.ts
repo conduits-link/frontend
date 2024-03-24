@@ -31,12 +31,30 @@ const LIST_TYPES = ["list-ordered", "list-unordered"];
 
 // TODO: make node options more robust
 
-// TODO: set return types for all functions
+// TODO: vals that can be node path or string should be overloaded as don't need editorState if just string
 
-export const EditorInterface = {
+export namespace EditorInterface {
 	//#region Core interfaces
-	getSelectedRootNode(editorState: Editor) {
+
+	export function getNode(editorState: Editor, path: number[]): Node;
+	export function getNode(editorState: Editor, node: Node): number[];
+	export function getNode(
+		editorState: Editor,
+		pathOrNode: number[] | Node
+	): Node | number[] {
+		if (Array.isArray(pathOrNode)) {
+			return Editor.node(editorState, pathOrNode)[0];
+		} else {
+			return ReactEditor.findPath(editorState, pathOrNode);
+		}
+	}
+
+	export function getSelectedRootNode(editorState: Editor): {
+		node: Node | null;
+		index: number;
+	} {
 		const selection = editorState.selection;
+
 		if (selection) {
 			const nodeIndex = selection.anchor.path[0];
 			const node = Editor.node(editorState, [nodeIndex])[0];
@@ -46,55 +64,107 @@ export const EditorInterface = {
 				index: nodeIndex,
 			};
 		}
-		return null;
-	},
-	getNodeAtPosition(editorState: Editor, path: number[]): Node {
-		return Editor.node(editorState, path)[0];
-	},
-	getNodePath(editorState: Editor, node: Node) {
-		return ReactEditor.findPath(editorState, node);
-	},
-	getNodeType(node: Node) {
-		if (!node || !Element.isElement(node)) return "undefined";
+
+		return {
+			node: null,
+			index: -1,
+		};
+	}
+
+	function isEditor(arg: any): arg is Editor {
+		return arg && typeof arg === "object" && "apply" in arg;
+	}
+
+	export function getNodeType(editorState: Editor, path: number[]): string;
+	export function getNodeType(node: Node): string;
+	export function getNodeType(arg1: Editor | Node, path?: number[]): string {
+		let node: Node;
+
+		if (isEditor(arg1)) {
+			if (path === undefined) {
+				throw new Error(
+					"Path must be provided when the first argument is an Editor"
+				);
+			}
+			node = EditorInterface.getNode(arg1, path);
+		} else {
+			node = arg1;
+		}
+
+		if (!node || !Element.isElement(node)) return "";
 		return node.type;
-	},
-	getNodeParent(editorState: Editor, node: Node) {
-		const path = ReactEditor.findPath(editorState, node);
-		return Editor.node(editorState, path.slice(0, -1))[0];
-	},
-	getNodeChildren(node: Node): Node[] {
+	}
+
+	export function getNodeParent(
+		editorState: Editor,
+		path: number[]
+	): Node | null {
+		const parentPath = path.slice(0, -1);
+		return EditorInterface.getNode(editorState, parentPath);
+	}
+
+	export function getNodeChildren(
+		editorState: Editor,
+		path: number[]
+	): Node[] {
+		const node = EditorInterface.getNode(editorState, path);
 		return Array.from(Node.children(node, [])).map(([node]) => node);
-	},
-	getNodeContent(node: Node) {
+	}
+
+	export function getNodeContent(editorState: Editor, path: number[]): string {
 		// TODO: make issues with if has multiple children more robust
+		const node = EditorInterface.getNode(editorState, path);
 		return Node.string(node);
-	},
-	setNodeType(editorState: Editor, node: Node, type: string, options?: any) {
+	}
+
+	export function setNodeType(
+		editorState: Editor,
+		path: number[],
+		type: string,
+		options?: any
+	): void {
 		// TODO: need to remove options if not applicable to the new node type
+		const node = EditorInterface.getNode(editorState, path);
 		Transforms.setNodes(
 			editorState,
 			{ type: type, ...options },
 			{ at: ReactEditor.findPath(editorState, node) }
 		);
-	},
-	insertNode(editorState: Editor, node: Node, path: number[]) {
+	}
+
+	export function insertNode(
+		editorState: Editor,
+		node: Node,
+		path: number[]
+	): void {
 		// Insert the new sub-item node at the end of the container's children
 		Transforms.insertNodes(editorState, node, {
 			at: path,
 		});
-	},
-	insertText(editorState: Editor, content: string, path: number[]) {
+	}
+
+	export function insertText(
+		editorState: Editor,
+		content: string,
+		path: number[]
+	): void {
 		Transforms.insertText(editorState, content, {
 			at: path,
 		});
-	},
-	deleteNode(editorState: Editor, node: Node) {
+	}
+
+	export function deleteNode(editorState: Editor, node: number[]): void {
 		Transforms.removeNodes(editorState, {
-			at: ReactEditor.findPath(editorState, node),
+			at: node,
 		});
-	},
-	generateNewNode(parentType: string, childType: string, content: string) {
-		const node: Node = {
+	}
+
+	export function generateNewNode(
+		parentType: string,
+		childType: string,
+		content: string
+	): Node {
+		return {
 			type: parentType,
 			children: [
 				{
@@ -107,17 +177,23 @@ export const EditorInterface = {
 				},
 			],
 		};
-		return node;
-	},
-	isMarkActive(editorState: Editor, markType: string) {
+	}
+
+	export function isMarkActive(
+		editorState: Editor,
+		markType: string
+	): boolean {
 		const marks = Editor.marks(editorState);
 		// TODO: make mark type more robust
 		return marks ? (marks as any)[markType] === true : false;
-	},
+	}
 	//#endregion
 
 	//#region Cursor and selection interfaces
-	getCursorPosition(editorState: Editor) {
+	export function getCursorPosition(editorState: Editor): {
+		index: number;
+		path: number[];
+	} {
 		const selection = editorState.selection;
 		if (selection) {
 			return { index: selection.anchor.offset, path: selection.anchor.path };
@@ -126,79 +202,104 @@ export const EditorInterface = {
 			index: -1,
 			path: [],
 		};
-	},
-	setCursor(editorState: Editor, path: number[]) {
+	}
+
+	export function setCursor(editorState: Editor, path: number[]): void {
 		Transforms.select(editorState, path);
 		Transforms.collapse(editorState, { edge: "start" });
-	},
+	}
 	//#endregion
 
 	//#region List interfaces
-	isNodeAList(node: Node | string) {
-		if (typeof node === "string") return LIST_TYPES.includes(node);
-		return LIST_TYPES.includes(EditorInterface.getNodeType(node));
-	},
-	getCorrespondingListType(node: Node | string) {
-		if (typeof node === "string") {
-			if (node === "list-ordered-item") return "list-ordered";
-			if (node === "list-unordered-item") return "list-unordered";
+	export function isNodeAList(
+		editorState: Editor,
+		val: number[] | string
+	): boolean {
+		if (typeof val === "string") return LIST_TYPES.includes(val);
+		return LIST_TYPES.includes(EditorInterface.getNodeType(editorState, val));
+	}
+
+	export function getCorrespondingListType(
+		editorState: Editor,
+		val: number[] | string
+	): string {
+		if (typeof val === "string") {
+			if (val === "list-ordered-item") return "list-ordered";
+			if (val === "list-unordered-item") return "list-unordered";
 		} else {
-			if (EditorInterface.getNodeType(node) === "list-ordered-item")
+			if (
+				EditorInterface.getNodeType(editorState, val) ===
+				"list-ordered-item"
+			)
 				return "list-ordered";
-			if (EditorInterface.getNodeType(node) === "list-unordered-item")
+			if (
+				EditorInterface.getNodeType(editorState, val) ===
+				"list-unordered-item"
+			)
 				return "list-unordered";
 		}
-		return "paragraph";
-	},
-	isNodeAListItem(node: Node | string) {
-		if (typeof node === "string") return LIST_ITEMS.includes(node);
-		return LIST_ITEMS.includes(EditorInterface.getNodeType(node));
-	},
-	getCorrespondingListItemType(node: Node | string) {
-		if (typeof node === "string") {
-			if (node === "list-ordered") return "list-ordered-item";
-			if (node === "list-unordered") return "list-unordered-item";
+		return "";
+	}
+
+	export function isNodeAListItem(
+		editorState: Editor,
+		val: number[] | string
+	): boolean {
+		if (typeof val === "string") return LIST_ITEMS.includes(val);
+		return LIST_ITEMS.includes(EditorInterface.getNodeType(editorState, val));
+	}
+
+	export function getCorrespondingListItemType(
+		editorState: Editor,
+		val: number[] | string
+	): string {
+		if (typeof val === "string") {
+			if (val === "list-ordered") return "list-ordered-item";
+			if (val === "list-unordered") return "list-unordered-item";
 		} else {
-			if (EditorInterface.getNodeType(node) === "list-ordered")
+			if (EditorInterface.getNodeType(editorState, val) === "list-ordered")
 				return "list-ordered-item";
-			if (EditorInterface.getNodeType(node) === "list-unordered")
+			if (EditorInterface.getNodeType(editorState, val) === "list-unordered")
 				return "list-unordered-item";
 		}
-		return "paragraph";
-	},
-	getIndexOfCurrentListItem(editorState: Editor) {
+		return "";
+	}
+
+	export function getIndexOfCurrentListItem(editorState: Editor): number {
 		// if root node is a list, return the index of the current list item
 		const rootNode = EditorInterface.getSelectedRootNode(editorState);
-		if (rootNode && EditorInterface.isNodeAList(rootNode.node)) {
+		if (
+			rootNode &&
+			EditorInterface.isNodeAList(editorState, [rootNode.index])
+		) {
 			const cursorPath = EditorInterface.getCursorPosition(editorState).path;
 			return cursorPath[1];
 		}
 		return -1;
-	},
-	isNodeWrappedInList(editorState: Editor, node: Node) {
-		const parent = EditorInterface.getNodeParent(editorState, node);
-		if (!parent) return false;
+	}
 
-		if (EditorInterface.isNodeAList(parent)) return true;
-		return false;
-	},
-	insertListWrapper(
+	export function isNodeWrappedInList(
 		editorState: Editor,
-		nodeToWrap: Node,
-		wrapperType: string
-	) {
+		path: number[]
+	): boolean {
+		const parent = EditorInterface.getNodeParent(editorState, path);
+		if (!parent) return false;
+		const parentPath = EditorInterface.getNode(editorState, parent);
+
+		if (EditorInterface.isNodeAList(editorState, parentPath)) return true;
+		return false;
+	}
+
+	export function insertListWrapper(
+		editorState: Editor,
+		node: number[],
+		type: string
+	): void {
 		Transforms.wrapNodes(
 			editorState,
-			{ type: wrapperType, children: [] },
-			{ at: ReactEditor.findPath(editorState, nodeToWrap) }
+			{ type: type, children: [] },
+			{ at: node }
 		);
-	},
+	}
 	//#endregion
-};
-
-// newBlockIsSameAsCurrentBlock(node: Node, nodeType: string, options: any) {
-// 	const currNodeOptions: any = { ...node };
-// 	delete currNodeOptions["children"];
-// 	const nodeToCompare = Object.assign(options, { type: nodeType });
-// 	return areEquivalent(currNodeOptions, nodeToCompare);
-// },
+}

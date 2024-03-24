@@ -4,74 +4,6 @@ import { EditorInterface } from "./slate";
 
 export const EditorOperate = {
 	//#region Core operations
-	// toggleBlock(
-	// 	editorState: Editor,
-	// 	nodeType: string,
-	// 	path?: number[],
-	// 	options?: any
-	// ) {
-	// 	var actualPath: number[] = [];
-	// 	if (typeof path !== "undefined") actualPath = path;
-	// 	else {
-	// 		const currentSelection = editorState.selection;
-	// 		if (currentSelection) {
-	// 			const [start] = Range.edges(currentSelection);
-
-	// 			// remove the two trailing 'text' nodes from the path
-	// 			actualPath = start.path.slice(0, -2);
-	// 		}
-	// 	}
-
-	// 	const node = Editor.node(editorState, actualPath)[0];
-	// 	const newBlockIsSame = EditorInterface.newBlockIsSameAsCurrentBlock(
-	// 		node,
-	// 		nodeType,
-	// 		options
-	// 	);
-
-	// 	if (newBlockIsSame) {
-	// 		Transforms.setNodes(
-	// 			editorState,
-	// 			Object.assign({ type: "paragraph" }),
-	// 			{
-	// 				at: actualPath,
-	// 			}
-	// 		);
-	// 	} else {
-	// 		Transforms.setNodes(
-	// 			editorState,
-	// 			Object.assign({ type: nodeType }, options),
-	// 			{ at: actualPath }
-	// 		);
-	// 	}
-
-	// 	// if we are toggling a list item
-	// 	if (
-	// 		EditorInterface.isNodeAListItem(nodeType) ||
-	// 		EditorInterface.isNodeAListItem(node)
-	// 	) {
-	// 		const LIST_WRAPPER_TYPE = nodeType.slice(
-	// 			0,
-	// 			nodeType.lastIndexOf("-item")
-	// 		);
-
-	// 		if (!EditorInterface.isNodeAList(editorState, [actualPath[0]])) {
-	// 			// if there is not a 'list-ordered' or 'list-unordered' parent node, add one
-
-	// 			Transforms.wrapNodes(
-	// 				editorState,
-	// 				{
-	// 					type: LIST_WRAPPER_TYPE,
-	// 					children: [],
-	// 				},
-	// 				{ at: actualPath }
-	// 			);
-	// 		} else {
-	// 			this.splitList(editorState, actualPath[0], actualPath[1], nodeType);
-	// 		}
-	// 	}
-	// },
-
 	toggleNode(
 		editorState: Editor,
 		node: number[],
@@ -82,12 +14,11 @@ export const EditorOperate = {
 			editorState,
 			node
 		);
-		const nodeParent = EditorInterface.getNodeParent(editorState, node);
-		if (!nodeParent) return;
-		const nodeParentPath = EditorInterface.getNode(editorState, nodeParent);
 
 		let newNodeType = type;
 		const currentNodeType = EditorInterface.getNodeType(editorState, node);
+
+		// TODO: check if options are different from current node options
 		if (currentNodeType !== type) {
 			EditorInterface.setNodeType(editorState, node, newNodeType, options);
 		} else {
@@ -106,25 +37,38 @@ export const EditorOperate = {
 				EditorInterface.getCorrespondingListType(editorState, newNodeType)
 			);
 		}
-		// if the new node is a list item, and has a list wrapper, split the list
-		else if (EditorInterface.isNodeAListItem(editorState, newNodeType)) {
-			EditorOperate.splitList(editorState, node);
-		}
 		// if the new node is not a list item, and has a list wrapper, remove the list wrapper
 		else if (nodeParentIsWrappedInList) {
-			// get content of list item
-			// const listItemContent = EditorInterface.getNodeContent(node);
-			// console.log(listItemContent);
-			// EditorOperate.splitList(editorState, node);
-			// add paragraph node to index after the current node
-			// const newParagraph = EditorInterface.generateNewNode(
-			// 	"paragraph",
-			// 	"text",
-			// 	listItemContent
-			// );
-			// EditorInterface.insertNode(editorState, newParagraph, nodeParentPath);
-			// EditorInterface.removeListWrapper(editorState, [nodeParentPath[0]]);
-			// console.log(editorState);
+			const listItemContent = EditorInterface.getNodeContent(
+				editorState,
+				node
+			);
+
+			EditorOperate.splitList(editorState, node);
+
+			EditorInterface.insertNode(
+				editorState,
+				EditorInterface.generateNewNode(
+					newNodeType,
+					"text",
+					listItemContent,
+					options
+				),
+				[node[0]]
+			);
+
+			if (EditorInterface.isNodeAListItem(editorState, newNodeType)) {
+				EditorInterface.insertListWrapper(
+					editorState,
+					[node[0]],
+					EditorInterface.getCorrespondingListType(
+						editorState,
+						newNodeType
+					)
+				);
+			}
+
+			EditorInterface.setCursor(editorState, [node[0]]);
 		}
 	},
 	toggleMark(editorState: Editor, markType: string, options?: any) {
@@ -147,15 +91,13 @@ export const EditorOperate = {
 		// NOTE: this function splits a list into two lists right next to each other, it does not
 		// 'leave space for' or interact with the new node that goes between the lists.
 
-		// check this node is a list item and is wrapped in a list
-		if (!EditorInterface.isNodeAListItem(editorState, listItemNode)) return;
+		// // check this node is a list item and is wrapped in a list - actually it sometimes won't be a list if we are trying to rectify
+		// if (!EditorInterface.isNodeAListItem(editorState, listItemNode)) return;
 		const parent = EditorInterface.getNodeParent(editorState, listItemNode);
 
-		if (!parent) return;
+		if (!parent.node) return;
 
-		const parentPath = EditorInterface.getNode(editorState, parent);
-
-		if (!EditorInterface.isNodeAList(editorState, parentPath)) return;
+		if (!EditorInterface.isNodeAList(editorState, parent.path)) return;
 
 		// get the index of the list item within the list
 		const listItemIndex =
@@ -165,7 +107,7 @@ export const EditorOperate = {
 		let beforeListItems: Node[] = [];
 		for (let i = 0; i < listItemIndex; i++) {
 			beforeListItems.push(
-				EditorInterface.getNode(editorState, parentPath.concat(i))
+				EditorInterface.getNode(editorState, parent.path.concat(i))
 			);
 		}
 
@@ -173,22 +115,22 @@ export const EditorOperate = {
 		let afterListItems: Node[] = [];
 		for (
 			let i = listItemIndex + 1;
-			i < EditorInterface.getNodeChildren(editorState, parentPath).length;
+			i < EditorInterface.getNodeChildren(editorState, parent.path).length;
 			i++
 		) {
 			afterListItems.push(
-				EditorInterface.getNode(editorState, parentPath.concat(i))
+				EditorInterface.getNode(editorState, parent.path.concat(i))
 			);
 		}
 
 		// get the type of the parent list
 		const parentListType = EditorInterface.getNodeType(
 			editorState,
-			parentPath
+			parent.path
 		);
 
 		// delete the current list
-		EditorInterface.deleteNode(editorState, parentPath);
+		EditorInterface.deleteNode(editorState, parent.path);
 
 		// add the before and after list items to new lists, and insert them into the editor
 		// NOTE: after list items are inserted first to ensure the list items are added in
@@ -198,14 +140,14 @@ export const EditorOperate = {
 				type: parentListType,
 				children: afterListItems,
 			};
-			EditorInterface.insertNode(editorState, afterList, parentPath);
+			EditorInterface.insertNode(editorState, afterList, parent.path);
 		}
 		if (beforeListItems.length > 0) {
 			const beforeList = {
 				type: parentListType,
 				children: beforeListItems,
 			};
-			EditorInterface.insertNode(editorState, beforeList, parentPath);
+			EditorInterface.insertNode(editorState, beforeList, parent.path);
 		}
 	},
 	mergeLists(editorState: Editor, beforeListNode: number[]) {
@@ -229,8 +171,7 @@ export const EditorOperate = {
 
 		// get the path of beforeListNode
 		const parent = EditorInterface.getNodeParent(editorState, beforeListNode);
-		if (!parent) return;
-		const parentPath = EditorInterface.getNode(editorState, parent);
+		if (!parent.node) return;
 
 		// get the type of beforeListNode
 		const beforeListNodeType = EditorInterface.getNodeType(
@@ -260,7 +201,7 @@ export const EditorOperate = {
 			type: beforeListNodeType,
 			children: beforeListItems.concat(afterListItems),
 		};
-		EditorInterface.insertNode(editorState, mergedList, parentPath);
+		EditorInterface.insertNode(editorState, mergedList, parent.path);
 	},
 	//#endregion
 };

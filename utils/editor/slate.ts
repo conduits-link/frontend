@@ -98,9 +98,13 @@ export namespace EditorInterface {
 	export function getNodeParent(
 		editorState: Editor,
 		path: number[]
-	): Node | null {
+	): {
+		node: Node;
+		path: number[];
+	} {
 		const parentPath = path.slice(0, -1);
-		return EditorInterface.getNode(editorState, parentPath);
+		const parent = EditorInterface.getNode(editorState, parentPath);
+		return { node: parent, path: parentPath };
 	}
 
 	export function getNodeChildren(
@@ -162,7 +166,8 @@ export namespace EditorInterface {
 	export function generateNewNode(
 		parentType: string,
 		childType: string,
-		content: string
+		content: string,
+		options?: any
 	): Node {
 		return {
 			type: parentType,
@@ -176,6 +181,7 @@ export namespace EditorInterface {
 					],
 				},
 			],
+			...options,
 		};
 	}
 
@@ -283,10 +289,9 @@ export namespace EditorInterface {
 		path: number[]
 	): boolean {
 		const parent = EditorInterface.getNodeParent(editorState, path);
-		if (!parent) return false;
-		const parentPath = EditorInterface.getNode(editorState, parent);
+		if (!parent.node) return false;
 
-		if (EditorInterface.isNodeAList(editorState, parentPath)) return true;
+		if (EditorInterface.isNodeAList(editorState, parent.path)) return true;
 		return false;
 	}
 

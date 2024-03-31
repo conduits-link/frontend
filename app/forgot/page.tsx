@@ -7,7 +7,7 @@ import Button from "@/components/buttons/Button";
 import Input from "@/components/form/Input";
 import Form from "@/components/form/Form";
 
-const forgotPage = () => {
+const ForgotPage = () => {
 	const [email, setEmail] = useState("");
 	const [validationErrors, setValidationErrors] = useState({
 		email: true,
@@ -57,4 +57,4 @@ const forgotPage = () => {
 	);
 };
 
-export default forgotPage;
+export default ForgotPage;

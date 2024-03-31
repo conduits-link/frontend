@@ -7,7 +7,7 @@ import Button from "@/components/buttons/Button";
 import Input from "@/components/form/Input";
 import Form from "@/components/form/Form";
 
-const forgotUidPage = ({ params }: { params: any }) => {
+const ForgotPage = ({ params }: { params: any }) => {
 	const [password, setPassword] = useState("");
 	const [passwordConfirm, setPasswordConfirm] = useState("");
 	const [validationErrors, setValidationErrors] = useState({
@@ -97,4 +97,4 @@ const forgotUidPage = ({ params }: { params: any }) => {
 	);
 };
 
-export default forgotUidPage;
+export default ForgotPage;

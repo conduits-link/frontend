@@ -8,9 +8,9 @@ import Input from "@/components/form/Input";
 import Form from "@/components/form/Form";
 
 const forgotPage = () => {
-	const [username, setUsername] = useState("");
+	const [email, setEmail] = useState("");
 	const [validationErrors, setValidationErrors] = useState({
-		username: true,
+		email: true,
 	});
 
 	const handleValidationError = (name: string) => {
@@ -29,22 +29,22 @@ const forgotPage = () => {
 
 	return (
 		<FillPageComponent>
-			<Form url="/auth/forgot" data={{ username }} redirectUrl="/store">
-				<h1>Forgot password</h1>
+			<Form url="/auth/forgot" data={{ email }}>
+				<h1>Forgot Password</h1>
 				<Input
-					name="username"
-					label="Username"
+					name="email"
+					label="Email"
 					type="text"
-					placeholder="Enter your username"
-					onChange={(e) => setUsername(e.target.value)}
+					placeholder="Enter your email"
+					onChange={(e) => setEmail(e.target.value)}
 					validations={[
 						{
 							type: "required",
-							errorMessage: "Please enter your username address.",
+							errorMessage: "Please enter your email address.",
 						},
 					]}
-					onValidationError={() => handleValidationError("username")}
-					onValidationSuccess={() => handleValidationSuccess("username")}
+					onValidationError={() => handleValidationError("email")}
+					onValidationSuccess={() => handleValidationSuccess("email")}
 				/>
 				<Button
 					primary={true}

@@ -7,7 +7,7 @@ import Button from "@/components/buttons/Button";
 import Input from "@/components/form/Input";
 import Form from "@/components/form/Form";
 
-const forgotUidPage = () => {
+const forgotUidPage = ({ params }: { params: any }) => {
 	const [password, setPassword] = useState("");
 	const [passwordConfirm, setPasswordConfirm] = useState("");
 	const [validationErrors, setValidationErrors] = useState({
@@ -31,8 +31,12 @@ const forgotUidPage = () => {
 
 	return (
 		<FillPageComponent>
-			<Form url="/auth/forgot" data={{ password }} redirectUrl="/store">
-				<h1>Reset password</h1>
+			<Form
+				url={`/auth/forgot/${params.uid}`}
+				data={{ password }}
+				redirectUrl="/store"
+			>
+				<h1>Reset Password</h1>
 				<Input
 					name="password"
 					label="New Password"

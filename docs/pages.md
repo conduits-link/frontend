@@ -24,6 +24,14 @@ Users can create an account with their email address and a password.
 
 Users can log into their account with their email address and password.
 
+### `/forgot`
+
+Users can submit their email address to receive a link to reset their password.
+
+### `/forgot/:uid`
+
+Users can reset their current password with a new password.
+
 ## Documents
 
 ### `/store`

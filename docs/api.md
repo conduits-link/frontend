@@ -115,6 +115,49 @@ Authenticates a user, and creates a JWT with the user's email address as the pay
 }
 ```
 
+### `/auth/logout` : `GET`
+
+Logs out the authenticated user, and removes the JWT cookie.
+
+#### Response
+
+```json
+{
+	"status": "number",
+	"message": "string",
+	"data": {
+		"user": {
+			"username": "string",
+			"email": "string"
+		}
+	}
+}
+```
+
+### `/auth/forgot` : `POST`
+
+Sends an email to the user, with a link to `/auth/forgot/:uid` (where `uid` is an encoded version of their email address) for them to reset their password.
+
+#### Request
+
+```json
+{
+	"email": "string"
+}
+```
+
+### `/auth/forgot/:uid` : `POST`
+
+Resets the user's password.
+
+#### Request
+
+```json
+{
+	"password": "string"
+}
+```
+
 ### `/store/docs` : `GET`
 
 Retrieves all docs for the authenticated user.

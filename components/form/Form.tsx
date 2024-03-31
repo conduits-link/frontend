@@ -3,10 +3,10 @@
 import { ReactNode } from "react";
 import { useRouter } from "next/navigation";
 
+import { useFlashMessage } from "@/utils/flash";
 import sendFetch from "@/utils/fetch";
 
 import styles from "./Form.module.css";
-import { useFlashMessage } from "@/utils/flash";
 
 const Form = ({
 	url,
@@ -38,7 +38,7 @@ const Form = ({
 			if (redirectUrl) router.push(redirectUrl);
 			onRes && onRes(res);
 		} else {
-			showFlashMessage("error", res.body.message);
+			showFlashMessage("error", res.response.statusText);
 		}
 	}
 

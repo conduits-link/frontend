@@ -1,25 +1,121 @@
-import { Editor, Transforms, Node, Element } from "slate";
+import { Editor, Transforms, Element } from "slate";
 import { ReactEditor } from "slate-react";
 import { BaseEditor } from "slate";
 
-type CustomElement = {
-	type: string;
-	children: Node[] | CustomElement[] | CustomText[];
+//#region Types and interfaces
+
+type FormattedText = {
+	bold?: boolean;
+	italic?: boolean;
+	underline?: boolean;
+	strikethrough?: boolean;
+	code?: boolean;
+	link?: string;
+	text: string;
 };
 
-type CustomText = { text: string };
+type CustomText = FormattedText;
+
+type Idea = {
+	text: string;
+};
+
+enum ListType {
+	Ordered = "list-ordered",
+	Unordered = "list-unordered",
+}
+
+enum ListItemType {
+	OrderedItem = `${ListType.Ordered}-item`,
+	UnorderedItem = `${ListType.Unordered}-item`,
+}
+
+enum ElementType {
+	Paragraph = "paragraph",
+	Heading = "heading",
+	ListOrdered = ListType.Ordered,
+	ListOrderedItem = ListItemType.OrderedItem,
+	ListUnordered = ListType.Unordered,
+	ListUnorderedItem = ListItemType.UnorderedItem,
+	Blockquote = "blockquote",
+	Code = "code",
+	Image = "image",
+}
+
+type ParagraphElement = {
+	type: ElementType.Paragraph;
+	children: CustomText[];
+	ideas: Idea[];
+};
+
+type HeadingElement = {
+	type: ElementType.Heading;
+	level: number;
+	children: CustomText[];
+	ideas: Idea[];
+};
+
+type ListOrderedItemElement = {
+	type: ListItemType.OrderedItem;
+	children: CustomText[];
+};
+
+type ListOrderedElement = {
+	type: ListType.Ordered;
+	children: ListOrderedItemElement[];
+	ideas: Idea[];
+};
+
+type ListUnorderedItemElement = {
+	type: ListItemType.UnorderedItem;
+	children: CustomText[];
+};
+
+type ListUnorderedElement = {
+	type: ListType.Unordered;
+	children: ListUnorderedItemElement[];
+	ideas: Idea[];
+};
+
+type BlockquoteElement = {
+	type: ElementType.Blockquote;
+	children: CustomText[];
+	ideas: Idea[];
+};
+
+type CodeblockElement = {
+	type: ElementType.Code;
+	children: CustomText[];
+	ideas: Idea[];
+};
+
+type ImageElement = {
+	type: ElementType.Image;
+	url: string;
+	alt: string;
+};
+
+type CustomElement =
+	| ParagraphElement
+	| HeadingElement
+	| ListOrderedElement
+	| ListOrderedItemElement
+	| ListUnorderedElement
+	| ListUnorderedItemElement
+	| BlockquoteElement
+	| CodeblockElement
+	| ImageElement;
 
 declare module "slate" {
 	interface CustomTypes {
 		Editor: BaseEditor & ReactEditor;
 		Element: CustomElement;
-		Node: CustomElement;
+		CustomElement: CustomElement;
 		Text: CustomText;
 	}
 }
 
-const LIST_ITEMS = ["list-ordered-item", "list-unordered-item"];
-const LIST_TYPES = ["list-ordered", "list-unordered"];
+//#endregion
 
 // TODO: make sure options are removed from a node if not applicable to that node type
 
@@ -36,28 +132,28 @@ const LIST_TYPES = ["list-ordered", "list-unordered"];
 export namespace EditorInterface {
 	//#region Core interfaces
 
-	export function getNode(editorState: Editor, path: number[]): Node;
-	export function getNode(editorState: Editor, node: Node): number[];
+	export function getNode(editorState: Editor, path: number[]): CustomElement;
+	export function getNode(editorState: Editor, node: CustomElement): number[];
 	export function getNode(
 		editorState: Editor,
-		pathOrNode: number[] | Node
-	): Node | number[] {
+		pathOrNode: number[] | CustomElement
+	): CustomElement | number[] {
 		if (Array.isArray(pathOrNode)) {
-			return Editor.node(editorState, pathOrNode)[0];
+			return Editor.node(editorState, pathOrNode)[0] as CustomElement;
 		} else {
 			return ReactEditor.findPath(editorState, pathOrNode);
 		}
 	}
 
 	export function getSelectedRootNode(editorState: Editor): {
-		node: Node | null;
+		node: CustomElement | null;
 		index: number;
 	} {
 		const selection = editorState.selection;
 
 		if (selection) {
 			const nodeIndex = selection.anchor.path[0];
-			const node = Editor.node(editorState, [nodeIndex])[0];
+			const node = Editor.node(editorState, [nodeIndex])[0] as CustomElement;
 
 			return {
 				node: node,
@@ -76,9 +172,12 @@ export namespace EditorInterface {
 	}
 
 	export function getNodeType(editorState: Editor, path: number[]): string;
-	export function getNodeType(node: Node): string;
-	export function getNodeType(arg1: Editor | Node, path?: number[]): string {
-		let node: Node;
+	export function getNodeType(node: CustomElement): string;
+	export function getNodeType(
+		arg1: Editor | CustomElement,
+		path?: number[]
+	): string {
+		let node: CustomElement;
 
 		if (isEditor(arg1)) {
 			if (path === undefined) {
@@ -99,7 +198,7 @@ export namespace EditorInterface {
 		editorState: Editor,
 		path: number[]
 	): {
-		node: Node;
+		node: CustomElement;
 		path: number[];
 	} {
 		const parentPath = path.slice(0, -1);
@@ -110,15 +209,24 @@ export namespace EditorInterface {
 	export function getNodeChildren(
 		editorState: Editor,
 		path: number[]
-	): Node[] {
-		const node = EditorInterface.getNode(editorState, path);
-		return Array.from(Node.children(node, [])).map(([node]) => node);
+	): CustomElement[] {
+		const node = EditorInterface.getNode(editorState, path) as CustomElement;
+
+		// if node is not an image or list item, return the children
+		if (node.type !== ElementType.Image ||
+			node.type !== ListItemType.OrderedItem ||
+			node.type !== ListItemType.UnorderedItem
+			) {
+			return node.children as CustomElement[];
+		} 
+
+		return [];
 	}
 
 	export function getNodeContent(editorState: Editor, path: number[]): string {
 		// TODO: make issues with if has multiple children more robust
 		const node = EditorInterface.getNode(editorState, path);
-		return Node.string(node);
+		return CustomElement.string(node);
 	}
 
 	export function setNodeType(
@@ -138,7 +246,7 @@ export namespace EditorInterface {
 
 	export function insertNode(
 		editorState: Editor,
-		node: Node,
+		node: CustomElement,
 		path: number[]
 	): void {
 		// Insert the new sub-item node at the end of the container's children
@@ -168,7 +276,7 @@ export namespace EditorInterface {
 		childType: string,
 		content: string,
 		options?: any
-	): Node {
+	): CustomElement {
 		return {
 			type: parentType,
 			children: [
@@ -221,8 +329,11 @@ export namespace EditorInterface {
 		editorState: Editor,
 		val: number[] | string
 	): boolean {
-		if (typeof val === "string") return LIST_TYPES.includes(val);
-		return LIST_TYPES.includes(EditorInterface.getNodeType(editorState, val));
+		if (typeof val === "string")
+			return Object.values(ListType).includes(val as ListType);
+		return Object.values(ListType).includes(
+			EditorInterface.getNodeType(editorState, val) as ListType
+		);
 	}
 
 	export function getCorrespondingListType(
@@ -251,8 +362,11 @@ export namespace EditorInterface {
 		editorState: Editor,
 		val: number[] | string
 	): boolean {
-		if (typeof val === "string") return LIST_ITEMS.includes(val);
-		return LIST_ITEMS.includes(EditorInterface.getNodeType(editorState, val));
+		if (typeof val === "string")
+			return Object.values(ListItemType).includes(val as ListItemType);
+		return Object.values(ListItemType).includes(
+			EditorInterface.getNodeType(editorState, val) as ListItemType
+		);
 	}
 
 	export function getCorrespondingListItemType(
@@ -298,11 +412,14 @@ export namespace EditorInterface {
 	export function insertListWrapper(
 		editorState: Editor,
 		node: number[],
-		type: string
+		type: ListType
 	): void {
+		// check that the node at node is a list item
+		if (!EditorInterface.isNodeAListItem(editorState, node)) return;
+
 		Transforms.wrapNodes(
 			editorState,
-			{ type: type, children: [] },
+			{ type: type, children: [], ideas: [] },
 			{ at: node }
 		);
 	}

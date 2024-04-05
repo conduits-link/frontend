@@ -1,13 +1,13 @@
 import { Editor, Node } from "slate";
 
-import { EditorInterface } from "./slate";
+import { EditorInterface, ElementType } from "./slate";
 
 export const EditorOperate = {
 	//#region Core operations
 	toggleNode(
 		editorState: Editor,
 		node: number[],
-		type: string,
+		type: ElementType,
 		options?: any
 	) {
 		const nodeParentIsWrappedInList = EditorInterface.isNodeWrappedInList(
@@ -22,7 +22,7 @@ export const EditorOperate = {
 		if (currentNodeType !== type) {
 			EditorInterface.setNodeType(editorState, node, newNodeType, options);
 		} else {
-			newNodeType = "paragraph";
+			newNodeType = ElementType.Paragraph;
 			EditorInterface.setNodeType(editorState, node, newNodeType);
 		}
 
@@ -34,7 +34,10 @@ export const EditorOperate = {
 			EditorInterface.insertListWrapper(
 				editorState,
 				node,
-				EditorInterface.getCorrespondingListType(editorState, newNodeType)
+				EditorInterface.getCorrespondingListType(
+					editorState,
+					newNodeType
+				) ?? ElementType.ListUnordered
 			);
 		}
 		// if the new node is not a list item, and has a list wrapper, remove the list wrapper
@@ -53,7 +56,6 @@ export const EditorOperate = {
 				editorState,
 				EditorInterface.generateNewNode(
 					newNodeType,
-					"text",
 					listItemContent,
 					options
 				),
@@ -67,7 +69,7 @@ export const EditorOperate = {
 					EditorInterface.getCorrespondingListType(
 						editorState,
 						newNodeType
-					)
+					) ?? ElementType.ListUnordered
 				);
 				EditorInterface.setCursor(editorState, insertPosition.concat(0));
 			} else {

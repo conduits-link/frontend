@@ -20,23 +20,13 @@ type Idea = {
 	text: string;
 };
 
-enum ListType {
-	Ordered = "list-ordered",
-	Unordered = "list-unordered",
-}
-
-enum ListItemType {
-	OrderedItem = `${ListType.Ordered}-item`,
-	UnorderedItem = `${ListType.Unordered}-item`,
-}
-
-enum ElementType {
+export enum ElementType {
 	Paragraph = "paragraph",
 	Heading = "heading",
-	ListOrdered = ListType.Ordered,
-	ListOrderedItem = ListItemType.OrderedItem,
-	ListUnordered = ListType.Unordered,
-	ListUnorderedItem = ListItemType.UnorderedItem,
+	ListOrdered = "list-ordered",
+	ListOrderedItem = "list-ordered-item",
+	ListUnordered = "list-unordered",
+	ListUnorderedItem = "list-unordered-item",
 	Blockquote = "blockquote",
 	Code = "code",
 	Image = "image",
@@ -56,23 +46,23 @@ type HeadingElement = {
 };
 
 type ListOrderedItemElement = {
-	type: ListItemType.OrderedItem;
+	type: ElementType.ListOrderedItem;
 	children: CustomText[];
 };
 
 type ListOrderedElement = {
-	type: ListType.Ordered;
+	type: ElementType.ListOrdered;
 	children: ListOrderedItemElement[];
 	ideas: Idea[];
 };
 
 type ListUnorderedItemElement = {
-	type: ListItemType.UnorderedItem;
+	type: ElementType.ListUnorderedItem;
 	children: CustomText[];
 };
 
 type ListUnorderedElement = {
-	type: ListType.Unordered;
+	type: ElementType.ListUnordered;
 	children: ListUnorderedItemElement[];
 	ideas: Idea[];
 };
@@ -95,7 +85,7 @@ type ImageElement = {
 	alt: string;
 };
 
-type CustomElement =
+export type CustomElement =
 	| ParagraphElement
 	| HeadingElement
 	| ListOrderedElement
@@ -171,12 +161,15 @@ export namespace EditorInterface {
 		return arg && typeof arg === "object" && "apply" in arg;
 	}
 
-	export function getNodeType(editorState: Editor, path: number[]): string;
-	export function getNodeType(node: CustomElement): string;
+	export function getNodeType(
+		editorState: Editor,
+		path: number[]
+	): ElementType | null;
+	export function getNodeType(node: CustomElement): ElementType | null;
 	export function getNodeType(
 		arg1: Editor | CustomElement,
 		path?: number[]
-	): string {
+	): ElementType | null {
 		let node: CustomElement;
 
 		if (isEditor(arg1)) {
@@ -190,7 +183,7 @@ export namespace EditorInterface {
 			node = arg1;
 		}
 
-		if (!node || !Element.isElement(node)) return "";
+		if (!node || !Element.isElement(node)) return null;
 		return node.type;
 	}
 
@@ -212,27 +205,35 @@ export namespace EditorInterface {
 	): CustomElement[] {
 		const node = EditorInterface.getNode(editorState, path) as CustomElement;
 
-		// if node is not an image or list item, return the children
-		if (node.type !== ElementType.Image ||
-			node.type !== ListItemType.OrderedItem ||
-			node.type !== ListItemType.UnorderedItem
-			) {
+		// if node is not an image, return the children
+		if (node.type !== ElementType.Image) {
 			return node.children as CustomElement[];
-		} 
+		}
 
 		return [];
 	}
 
 	export function getNodeContent(editorState: Editor, path: number[]): string {
-		// TODO: make issues with if has multiple children more robust
-		const node = EditorInterface.getNode(editorState, path);
-		return CustomElement.string(node);
+		const children = EditorInterface.getNodeChildren(editorState, path);
+		let content = "";
+		for (const child of children) {
+			if (typeof child === "object" && "text" in child) {
+				content += child.text;
+			} else {
+				content += EditorInterface.getNodeContent(
+					editorState,
+					path.concat(0)
+				);
+			}
+		}
+
+		return content;
 	}
 
 	export function setNodeType(
 		editorState: Editor,
 		path: number[],
-		type: string,
+		type: ElementType,
 		options?: any
 	): void {
 		// TODO: need to remove options if not applicable to the new node type
@@ -272,21 +273,37 @@ export namespace EditorInterface {
 	}
 
 	export function generateNewNode(
-		parentType: string,
-		childType: string,
+		type: ElementType,
 		content: string,
 		options?: any
 	): CustomElement {
+		if (
+			type === ElementType.ListOrdered ||
+			type === ElementType.ListUnordered
+		) {
+			return {
+				type: type,
+				children: [
+					{
+						type:
+							type === ElementType.ListOrdered
+								? ElementType.ListOrderedItem
+								: ElementType.ListUnorderedItem,
+						children: [
+							{
+								text: content,
+							},
+						],
+					},
+				],
+				...options,
+			};
+		}
 		return {
-			type: parentType,
+			type: type,
 			children: [
 				{
-					type: childType,
-					children: [
-						{
-							text: content,
-						},
-					],
+					text: content,
 				},
 			],
 			...options,
@@ -327,62 +344,82 @@ export namespace EditorInterface {
 	//#region List interfaces
 	export function isNodeAList(
 		editorState: Editor,
-		val: number[] | string
+		val: number[] | ElementType
 	): boolean {
 		if (typeof val === "string")
-			return Object.values(ListType).includes(val as ListType);
-		return Object.values(ListType).includes(
-			EditorInterface.getNodeType(editorState, val) as ListType
+			return (
+				val === ElementType.ListOrdered || val === ElementType.ListUnordered
+			);
+		return (
+			EditorInterface.getNodeType(editorState, val) ===
+				ElementType.ListOrdered ||
+			EditorInterface.getNodeType(editorState, val) ===
+				ElementType.ListUnordered
 		);
 	}
 
 	export function getCorrespondingListType(
 		editorState: Editor,
 		val: number[] | string
-	): string {
+	): ElementType.ListOrdered | ElementType.ListUnordered | null {
 		if (typeof val === "string") {
-			if (val === "list-ordered-item") return "list-ordered";
-			if (val === "list-unordered-item") return "list-unordered";
+			if (val === ElementType.ListOrdered) return ElementType.ListOrdered;
+			if (val === ElementType.ListUnordered)
+				return ElementType.ListUnordered;
 		} else {
 			if (
 				EditorInterface.getNodeType(editorState, val) ===
-				"list-ordered-item"
+				ElementType.ListOrdered
 			)
-				return "list-ordered";
+				return ElementType.ListOrdered;
 			if (
 				EditorInterface.getNodeType(editorState, val) ===
-				"list-unordered-item"
+				ElementType.ListUnordered
 			)
-				return "list-unordered";
+				return ElementType.ListUnordered;
 		}
-		return "";
+		return null;
 	}
 
 	export function isNodeAListItem(
 		editorState: Editor,
-		val: number[] | string
+		val: number[] | ElementType
 	): boolean {
 		if (typeof val === "string")
-			return Object.values(ListItemType).includes(val as ListItemType);
-		return Object.values(ListItemType).includes(
-			EditorInterface.getNodeType(editorState, val) as ListItemType
+			return (
+				val === ElementType.ListOrderedItem ||
+				val === ElementType.ListUnorderedItem
+			);
+		return (
+			EditorInterface.getNodeType(editorState, val) ===
+				ElementType.ListOrderedItem ||
+			EditorInterface.getNodeType(editorState, val) ===
+				ElementType.ListUnorderedItem
 		);
 	}
 
 	export function getCorrespondingListItemType(
 		editorState: Editor,
 		val: number[] | string
-	): string {
+	): ElementType.ListOrderedItem | ElementType.ListUnorderedItem | null {
 		if (typeof val === "string") {
-			if (val === "list-ordered") return "list-ordered-item";
-			if (val === "list-unordered") return "list-unordered-item";
+			if (val === ElementType.ListOrdered)
+				return ElementType.ListOrderedItem;
+			if (val === ElementType.ListUnordered)
+				return ElementType.ListUnorderedItem;
 		} else {
-			if (EditorInterface.getNodeType(editorState, val) === "list-ordered")
-				return "list-ordered-item";
-			if (EditorInterface.getNodeType(editorState, val) === "list-unordered")
-				return "list-unordered-item";
+			if (
+				EditorInterface.getNodeType(editorState, val) ===
+				ElementType.ListOrdered
+			)
+				return ElementType.ListOrderedItem;
+			if (
+				EditorInterface.getNodeType(editorState, val) ===
+				ElementType.ListUnordered
+			)
+				return ElementType.ListUnorderedItem;
 		}
-		return "";
+		return null;
 	}
 
 	export function getIndexOfCurrentListItem(editorState: Editor): number {
@@ -412,7 +449,7 @@ export namespace EditorInterface {
 	export function insertListWrapper(
 		editorState: Editor,
 		node: number[],
-		type: ListType
+		type: ElementType.ListOrdered | ElementType.ListUnordered
 	): void {
 		// check that the node at node is a list item
 		if (!EditorInterface.isNodeAListItem(editorState, node)) return;

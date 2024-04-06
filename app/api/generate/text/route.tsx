@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
 async function getAiResponse(messages: Object[]) {
 	const response = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -29,17 +29,17 @@ export async function POST(request: NextRequest) {
 
 	const answer = await getAiResponse(messages);
 
-	return NextResponse.json({
-		status: 200,
-		message: "Response generated.",
-		data: {
-			promptName,
-			messages: [
-				{
-					role: "user",
-					content: answer,
-				},
-			],
-		},
-	});
+	return new Response(
+		JSON.stringify({
+			prompt: {
+				name: promptName,
+				messages: [
+					{
+						role: "user",
+						content: answer,
+					},
+				],
+			},
+		})
+	);
 }

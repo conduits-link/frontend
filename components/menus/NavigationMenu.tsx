@@ -36,20 +36,16 @@ export default function NavigationMenu({
 
 	async function save() {
 		const res = (await sendFetch(
-			`${process.env.NEXT_PUBLIC_API_URL}/store/docs/${uid}`,
+			`${process.env.NEXT_PUBLIC_INTERNAL_API_URL}/store/docs/${uid}`,
 			"PUT",
 			"",
 			{
-				file: {
+				doc: {
 					title: title,
 					body: editor.children,
 				},
 			}
 		)) as apiResponse;
-
-		if (res.body.data.file._id !== uid) {
-			router.push(`/edit/${res.body.data.file._id}`);
-		}
 	}
 
 	useEffect(() => {

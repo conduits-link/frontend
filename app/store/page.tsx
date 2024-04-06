@@ -10,7 +10,7 @@ const StorePage = async (params: any) => {
 	const cookieStore = cookies();
 
 	const res: apiResponse = await sendFetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/store/docs`,
+		`${process.env.NEXT_PUBLIC_INTERNAL_API_URL}/store/docs`,
 		"GET",
 		cookieStore.get("jwt") ? `jwt=${cookieStore.get("jwt")?.value}` : ""
 	);
@@ -30,7 +30,7 @@ const StorePage = async (params: any) => {
 		}
 	}
 
-	return <StoreComponent initialFiles={res.body.files} />;
+	return <StoreComponent initialFiles={res.body.docs} />;
 };
 
 export default StorePage;

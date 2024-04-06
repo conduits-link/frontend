@@ -28,7 +28,7 @@ const Form = ({
 		e.preventDefault();
 
 		const res = (await sendFetch(
-			`${process.env.NEXT_PUBLIC_API_URL}${url}`,
+			`${process.env.NEXT_PUBLIC_INTERNAL_API_URL}${url}`,
 			"POST",
 			"",
 			data

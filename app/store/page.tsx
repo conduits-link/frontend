@@ -30,7 +30,7 @@ const StorePage = async (params: any) => {
 		}
 	}
 
-	return <StoreComponent initialFiles={res.body.data.files} />;
+	return <StoreComponent initialFiles={res.body.files} />;
 };
 
 export default StorePage;

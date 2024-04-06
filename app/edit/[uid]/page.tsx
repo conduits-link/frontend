@@ -10,7 +10,7 @@ const Page = async ({ params }: { params: any }) => {
 	const cookieStore = cookies();
 
 	const res: apiResponse = await sendFetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/store/docs/${params.uid}`,
+		`${process.env.NEXT_PUBLIC_INTERNAL_API_URL}/store/docs/${params.uid}`,
 		"GET",
 		cookieStore.get("jwt") ? `jwt=${cookieStore.get("jwt")?.value}` : ""
 	);
@@ -30,7 +30,7 @@ const Page = async ({ params }: { params: any }) => {
 		}
 	}
 
-	return <RootEditorComponent file={res.body.data.file} uid={params.uid} />;
+	return <RootEditorComponent file={res.body.doc} uid={params.uid} />;
 };
 
 export default Page;

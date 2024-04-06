@@ -47,11 +47,11 @@ This is the easiest way to run Conduit, as it uses the local API built into the 
 
 1. Add the following environment variables to a `.env.local` file in the root directory of this project:
 
-   | Variable              | Value                                                                                                                 |
-   | --------------------- | --------------------------------------------------------------------------------------------------------------------- |
-   | `NEXT_PUBLIC_API_URL` | `http://localhost:3000/api`                                                                                           |
-   | `STORE_LOCATION`      | The absolute location of the folder you want to read/write files to on your machine (e.g., `/home/<user>/Documents`). |
-   | `OPENAI_API_KEY`      | An OpenAI API key.                                                                                                    |
+   | Variable                       | Value                                                                                                                 |
+   | ------------------------------ | --------------------------------------------------------------------------------------------------------------------- |
+   | `NEXT_PUBLIC_INTERNAL_API_URL` | `http://localhost:3000/api`                                                                                           |
+   | `STORE_LOCATION`               | The absolute location of the folder you want to read/write files to on your machine (e.g., `/home/<user>/Documents`). |
+   | `OPENAI_API_KEY`               | An OpenAI API key.                                                                                                    |
 
 2. Install dependencies:
 
@@ -85,9 +85,9 @@ This is how Conduit works in production: a separate backend handles authenticati
 
 1. Add the following environment variables to a `.env.local` file in the root directory of this project:
 
-   | Variable              | Value                                                                                                          |
-   | --------------------- | -------------------------------------------------------------------------------------------------------------- |
-   | `NEXT_PUBLIC_API_URL` | The root URL of the backend that hosts [these endpoints](/docs/api.md#backend) (e.g.,`http://127.0.0.1:8000`). |
+   | Variable                       | Value                                                                                                          |
+   | ------------------------------ | -------------------------------------------------------------------------------------------------------------- |
+   | `NEXT_PUBLIC_INTERNAL_API_URL` | The root URL of the backend that hosts [these endpoints](/docs/api.md#backend) (e.g.,`http://127.0.0.1:8000`). |
 
 2. Install dependencies:
 

@@ -25,7 +25,7 @@ export default function PromptButton({
 		const content = constructPrompt(input, prompt);
 
 		const res = (await sendFetch(
-			`${process.env.NEXT_PUBLIC_API_URL}/generate/text`,
+			`${process.env.NEXT_PUBLIC_INTERNAL_API_URL}/generate/text`,
 			"POST",
 			"",
 			{
@@ -39,7 +39,7 @@ export default function PromptButton({
 			}
 		)) as apiResponse;
 
-		handleResponse(res.body.data as apiPrompt);
+		handleResponse(res.body.prompt as apiPrompt);
 	}
 
 	return (

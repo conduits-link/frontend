@@ -25,7 +25,7 @@ export async function GET(req: Request) {
 		);
 
 		docs.push({
-			_id: file,
+			uid: file,
 			title: parseFileName(file),
 			body,
 			created: birthtime,
@@ -35,11 +35,7 @@ export async function GET(req: Request) {
 
 	return new Response(
 		JSON.stringify({
-			status: 200,
-			message: "Files retrieved.",
-			data: {
-				files: docs,
-			},
+			docs,
 		})
 	);
 }
@@ -57,20 +53,12 @@ export async function POST(req: Request) {
 
 	const fileStats = fs.statSync(filePath);
 
-	const doc: doc = {
-		_id: `${file.title}.md`,
-		title: parseFileName(file.title),
-		body: file.body,
-		created: fileStats.birthtime,
-		modified: fileStats.mtime,
-	};
-
 	return new Response(
 		JSON.stringify({
-			status: 200,
-			message: "File created.",
-			data: {
-				file: doc,
+			doc: {
+				uid: `${file.title}.md`,
+				created: fileStats.birthtime,
+				modified: fileStats.mtime,
 			},
 		})
 	);

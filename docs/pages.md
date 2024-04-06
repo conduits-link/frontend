@@ -1,4 +1,4 @@
-# Pages
+# Conduit Frontend Pages
 
 This document details the web pages accessible when this project is run.
 

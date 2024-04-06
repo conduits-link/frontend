@@ -1,4 +1,4 @@
-# Internal API
+# Conduit Internal API
 
 This document details the endpoints that this app communicates with in order to handle authentication, storage of files, and machine learning model inferencing. The API is structured in a way that allows any server could be used, so long as it hosts these endpoints and provides the following interfaces.
 

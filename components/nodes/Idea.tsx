@@ -52,7 +52,7 @@ const Idea = (props: any) => {
 			}
 		)) as apiResponse;
 
-		const body = (res.body.data as apiPrompt).messages[0].content;
+		const body = (res.body.prompt as apiPrompt).messages[0].content;
 		Transforms.insertText(editor, body, { at: path });
 	};
 

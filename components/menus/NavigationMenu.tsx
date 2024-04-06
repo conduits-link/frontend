@@ -40,16 +40,12 @@ export default function NavigationMenu({
 			"PUT",
 			"",
 			{
-				file: {
+				doc: {
 					title: title,
 					body: editor.children,
 				},
 			}
 		)) as apiResponse;
-
-		if (res.body.data.file._id !== uid) {
-			router.push(`/edit/${res.body.data.file._id}`);
-		}
 	}
 
 	useEffect(() => {

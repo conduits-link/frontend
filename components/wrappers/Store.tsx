@@ -45,7 +45,7 @@ const StoreComponent = ({ initialFiles }: { initialFiles: any }) => {
 			}
 		)) as apiResponse;
 
-		router.push(`/edit/${res.body.data.file._id}`);
+		router.push(`/edit/${res.body.doc.uid}`);
 	}
 
 	async function deleteDoc(id: string) {
@@ -56,8 +56,8 @@ const StoreComponent = ({ initialFiles }: { initialFiles: any }) => {
 		)) as apiResponse;
 
 		if (res.response.status === 200) {
-			setFiles(files.filter((file: doc) => file._id !== id));
-			setFilteredFiles(filteredFiles.filter((file: doc) => file._id !== id));
+			setFiles(files.filter((file: doc) => file.uid !== id));
+			setFilteredFiles(filteredFiles.filter((file: doc) => file.uid !== id));
 		}
 	}
 
@@ -96,18 +96,18 @@ const StoreComponent = ({ initialFiles }: { initialFiles: any }) => {
 											</p>
 										</div>
 										<div className={styles.fileButtons}>
-											<Link href={`/edit/${file._id}`}>
+											<Link href={`/edit/${file.uid}`}>
 												<button className={styles.button}>
 													<FaPenFancy />
 												</button>
 											</Link>
-											<Link href={`/edit/${file._id}?mode=preview`}>
+											<Link href={`/edit/${file.uid}?mode=preview`}>
 												<button className={styles.button}>
 													<FaEye />
 												</button>
 											</Link>
 											<button
-												onClick={() => deleteDoc(file._id)}
+												onClick={() => deleteDoc(file.uid)}
 												className={styles.button}
 											>
 												<FaTrash />

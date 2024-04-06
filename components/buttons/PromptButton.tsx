@@ -39,7 +39,7 @@ export default function PromptButton({
 			}
 		)) as apiResponse;
 
-		handleResponse(res.body.data as apiPrompt);
+		handleResponse(res.body.prompt as apiPrompt);
 	}
 
 	return (

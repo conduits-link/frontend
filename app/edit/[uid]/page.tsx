@@ -30,7 +30,7 @@ const Page = async ({ params }: { params: any }) => {
 		}
 	}
 
-	return <RootEditorComponent file={res.body.data.file} uid={params.uid} />;
+	return <RootEditorComponent file={res.body.doc} uid={params.uid} />;
 };
 
 export default Page;

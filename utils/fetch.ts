@@ -17,7 +17,11 @@ export default async function sendFetch(
 		cache: "no-store",
 	})) as Response;
 
-	const body = (await response.json()) as any;
+	// TODO: improve robustness
+	let body = null;
+	try {
+		body = await response.json();
+	} catch (e) {}
 
 	return {
 		response,

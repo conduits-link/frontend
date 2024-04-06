@@ -10,7 +10,7 @@ const Page = async ({ params }: { params: any }) => {
 	const cookieStore = cookies();
 
 	const res: apiResponse = await sendFetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/store/docs/${params.uid}`,
+		`${process.env.NEXT_PUBLIC_INTERNAL_API_URL}/store/docs/${params.uid}`,
 		"GET",
 		cookieStore.get("jwt") ? `jwt=${cookieStore.get("jwt")?.value}` : ""
 	);

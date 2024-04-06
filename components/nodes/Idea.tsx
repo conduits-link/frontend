@@ -1,5 +1,3 @@
-import React from "react";
-
 import { Editor, Node, Transforms } from "slate";
 import { ReactEditor } from "slate-react";
 
@@ -40,7 +38,7 @@ const Idea = (props: any) => {
 		);
 
 		const res = (await sendFetch(
-			`${process.env.NEXT_PUBLIC_API_URL}/generate/text`,
+			`${process.env.NEXT_PUBLIC_INTERNAL_API_URL}/generate/text`,
 			"POST",
 			"",
 			{

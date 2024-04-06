@@ -29,7 +29,7 @@ const StoreComponent = ({ initialFiles }: { initialFiles: any }) => {
 
 	async function createDoc() {
 		const res = (await sendFetch(
-			`${process.env.NEXT_PUBLIC_API_URL}/store/docs`,
+			`${process.env.NEXT_PUBLIC_INTERNAL_API_URL}/store/docs`,
 			"POST",
 			"",
 			{
@@ -50,7 +50,7 @@ const StoreComponent = ({ initialFiles }: { initialFiles: any }) => {
 
 	async function deleteDoc(id: string) {
 		const res = (await sendFetch(
-			`${process.env.NEXT_PUBLIC_API_URL}/store/docs/${id}`,
+			`${process.env.NEXT_PUBLIC_INTERNAL_API_URL}/store/docs/${id}`,
 			"DELETE",
 			""
 		)) as apiResponse;

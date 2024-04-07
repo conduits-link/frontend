@@ -45,23 +45,23 @@ type HeadingElement = {
 	ideas: Idea[];
 };
 
-type ListOrderedItemElement = {
+export type ListOrderedItemElement = {
 	type: ElementType.ListOrderedItem;
 	children: CustomText[];
 };
 
-type ListOrderedElement = {
+export type ListOrderedElement = {
 	type: ElementType.ListOrdered;
 	children: ListOrderedItemElement[];
 	ideas: Idea[];
 };
 
-type ListUnorderedItemElement = {
+export type ListUnorderedItemElement = {
 	type: ElementType.ListUnorderedItem;
 	children: CustomText[];
 };
 
-type ListUnorderedElement = {
+export type ListUnorderedElement = {
 	type: ElementType.ListUnordered;
 	children: ListUnorderedItemElement[];
 	ideas: Idea[];

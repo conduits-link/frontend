@@ -1,6 +1,6 @@
 import { Descendant, Editor } from "slate";
 
-import { EditorInterface } from "./slate";
+import { CustomElement, EditorInterface, ElementType } from "./slate";
 import { EditorOperate } from "./operate";
 
 export const EditorUpdate = {
@@ -45,8 +45,7 @@ export const EditorUpdate = {
 				// create the default new node and insert it after the current node
 				let insertPath = [rootNodeIndex + 1];
 				let newItem = EditorInterface.generateNewNode(
-					"paragraph",
-					"text",
+					ElementType.Paragraph,
 					nodeContent.substring(cursorOffset, nodeContent.length)
 				);
 
@@ -64,8 +63,7 @@ export const EditorUpdate = {
 						EditorInterface.getCorrespondingListItemType(
 							editorState,
 							rootNodePath
-						),
-						"text",
+						) ?? ElementType.ListUnorderedItem,
 						nodeContent.substring(cursorOffset, nodeContent.length)
 					);
 				}
@@ -117,10 +115,15 @@ export const EditorUpdate = {
 	onChange(nodes: Descendant[], editorState: Editor) {
 		// check if there are adjacent lists and merge them
 		for (let i = 0; i < nodes.length - 1; i++) {
-			const currentNodeType = EditorInterface.getNodeType(nodes[i]);
-			const nextNodeType = EditorInterface.getNodeType(nodes[i + 1]);
+			const currentNodeType = EditorInterface.getNodeType(
+				nodes[i] as CustomElement
+			);
+			const nextNodeType = EditorInterface.getNodeType(
+				nodes[i + 1] as CustomElement
+			);
 
 			if (
+				currentNodeType &&
 				EditorInterface.isNodeAList(editorState, currentNodeType) &&
 				currentNodeType === nextNodeType
 			) {

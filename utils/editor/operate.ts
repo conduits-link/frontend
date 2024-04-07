@@ -1,6 +1,13 @@
-import { Editor, Node } from "slate";
+import { Editor } from "slate";
 
-import { EditorInterface, ElementType } from "./slate";
+import {
+	EditorInterface,
+	ElementType,
+	ListOrderedElement,
+	ListOrderedItemElement,
+	ListUnorderedElement,
+	ListUnorderedItemElement,
+} from "./slate";
 
 export const EditorOperate = {
 	//#region Core operations
@@ -110,23 +117,81 @@ export const EditorOperate = {
 			EditorInterface.getIndexOfCurrentListItem(editorState);
 
 		// collect all list items before the current list item, not including the current list item
-		let beforeListItems: Node[] = [];
-		for (let i = 0; i < listItemIndex; i++) {
-			beforeListItems.push(
-				EditorInterface.getNode(editorState, listNode.concat(i))
-			);
+		let beforeListItems:
+			| ListUnorderedItemElement[]
+			| ListOrderedItemElement[] = [];
+
+		if (
+			EditorInterface.getNodeType(editorState, listNode) ===
+			ElementType.ListOrdered
+		) {
+			let tmpBeforeListItems = [];
+			for (let i = 0; i < listItemIndex; i++) {
+				tmpBeforeListItems.push(
+					EditorInterface.getNode(
+						editorState,
+						listNode.concat(i)
+					) as ListUnorderedItemElement
+				);
+			}
+			beforeListItems = tmpBeforeListItems;
+		} else if (
+			EditorInterface.getNodeType(editorState, listNode) ===
+			ElementType.ListUnordered
+		) {
+			let tmpBeforeListItems = [];
+			for (let i = 0; i < listItemIndex; i++) {
+				tmpBeforeListItems.push(
+					EditorInterface.getNode(
+						editorState,
+						listNode.concat(i)
+					) as ListUnorderedItemElement
+				);
+			}
+			beforeListItems = tmpBeforeListItems;
 		}
 
 		// collect all list items after the current list item, not including the current list item
-		let afterListItems: Node[] = [];
-		for (
-			let i = listItemIndex + 1;
-			i < EditorInterface.getNodeChildren(editorState, listNode).length;
-			i++
+		let afterListItems:
+			| ListUnorderedItemElement[]
+			| ListOrderedItemElement[] = [];
+
+		if (
+			EditorInterface.getNodeType(editorState, listNode) ===
+			ElementType.ListOrdered
 		) {
-			afterListItems.push(
-				EditorInterface.getNode(editorState, listNode.concat(i))
-			);
+			let tmpAfterListItems = [];
+			for (
+				let i = listItemIndex + 1;
+				i < EditorInterface.getNodeChildren(editorState, listNode).length;
+				i++
+			) {
+				tmpAfterListItems.push(
+					EditorInterface.getNode(
+						editorState,
+						listNode.concat(i)
+					) as ListUnorderedItemElement
+				);
+			}
+			afterListItems = tmpAfterListItems;
+		} else if (
+			EditorInterface.getNodeType(editorState, listNode) ===
+			ElementType.ListUnordered
+		) {
+			let tmpAfterListItems = [];
+			for (
+				let i = listItemIndex + 1;
+				i < EditorInterface.getNodeChildren(editorState, listNode).length;
+				i++
+			) {
+				tmpAfterListItems.push(
+					EditorInterface.getNode(
+						editorState,
+						listNode.concat(i)
+					) as ListUnorderedItemElement
+				);
+			}
+			afterListItems = tmpAfterListItems;
 		}
 
 		// get the type of the parent list
@@ -139,17 +204,37 @@ export const EditorOperate = {
 		// NOTE: after list items are inserted first to ensure the list items are added in
 		// the correct order, without having to change the parent path indices
 		if (afterListItems.length > 0) {
-			const afterList = {
-				type: parentListType,
-				children: afterListItems,
-			};
+			let afterList: ListOrderedElement | ListUnorderedElement;
+
+			if (parentListType === ElementType.ListOrdered) {
+				afterList = {
+					type: parentListType,
+					children: afterListItems,
+				} as ListOrderedElement;
+			} else {
+				afterList = {
+					type: parentListType,
+					children: afterListItems,
+				} as ListUnorderedElement;
+			}
+
 			EditorInterface.insertNode(editorState, afterList, listNode);
 		}
 		if (beforeListItems.length > 0) {
-			const beforeList = {
-				type: parentListType,
-				children: beforeListItems,
-			};
+			let beforeList: ListOrderedElement | ListUnorderedElement;
+
+			if (parentListType === ElementType.ListOrdered) {
+				beforeList = {
+					type: parentListType,
+					children: beforeListItems,
+				} as ListOrderedElement;
+			} else {
+				beforeList = {
+					type: parentListType,
+					children: beforeListItems,
+				} as ListUnorderedElement;
+			}
+
 			EditorInterface.insertNode(editorState, beforeList, listNode);
 		}
 	},
@@ -187,7 +272,7 @@ export const EditorOperate = {
 		const mergedList = {
 			type: beforeListNodeType,
 			children: beforeListItems.concat(afterListItems),
-		};
+		} as ListOrderedElement | ListUnorderedElement;
 
 		// delete the two original lists
 		EditorInterface.deleteNode(editorState, afterListNode);

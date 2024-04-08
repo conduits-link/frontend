@@ -150,6 +150,10 @@ The user's password was reset.
 
 The client did not provide the correct data, and the user's password was not reset.
 
+#### 410
+
+The client provided the correct data, but the link had expired, so the user's password was not reset. 
+
 ## `/auth/logout` : `GET`
 
 De-authenticates a user, and removes the JWT cookie.

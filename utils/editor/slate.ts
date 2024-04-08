@@ -107,17 +107,7 @@ declare module "slate" {
 
 //#endregion
 
-// TODO: make sure options are removed from a node if not applicable to that node type
-
-// TODO: add types for both Elements and Element types everywhere in this file
-
-// TODO: make types available for node components
-
-// TODO: change string types to enums
-
-// TODO: make node options more robust
-
-// TODO: vals that can be node path or string should be overloaded as don't need editorState if just string
+// TODO: make sure options are removed from a node if not applicable to that node type (make node options more robust)
 
 export namespace EditorInterface {
 	//#region Core interfaces

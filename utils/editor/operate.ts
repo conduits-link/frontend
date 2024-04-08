@@ -16,7 +16,7 @@ export const EditorOperate = {
 		node: number[],
 		type: ElementType,
 		options?: any
-	) {
+	): void {
 		const nodeParentIsWrappedInList = EditorInterface.isNodeWrappedInList(
 			editorState,
 			node
@@ -82,7 +82,7 @@ export const EditorOperate = {
 			}
 		}
 	},
-	toggleMark(editorState: Editor, markType: string, options?: any) {
+	toggleMark(editorState: Editor, markType: string, options?: any): void {
 		const newBlockIsSame = EditorInterface.isMarkActive(
 			editorState,
 			markType
@@ -236,7 +236,7 @@ export const EditorOperate = {
 			EditorInterface.insertNode(editorState, beforeList, listNode);
 		}
 	},
-	mergeLists(editorState: Editor, beforeListNode: number[]) {
+	mergeLists(editorState: Editor, beforeListNode: number[]): void {
 		// check if beforeListNode is a list
 		if (!EditorInterface.isNodeAList(editorState, beforeListNode)) return;
 

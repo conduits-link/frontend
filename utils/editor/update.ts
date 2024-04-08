@@ -5,7 +5,7 @@ import { EditorOperate } from "./operate";
 
 export const EditorUpdate = {
 	// when a user presses a key, while the editor is focused
-	onType(e: React.KeyboardEvent, editorState: Editor) {
+	onType(e: React.KeyboardEvent, editorState: Editor): void {
 		switch (e.key) {
 			case "Enter": {
 				e.preventDefault();
@@ -114,7 +114,7 @@ export const EditorUpdate = {
 		}
 	},
 	// when the state of the editor changes, for any reason
-	onChange(nodes: Descendant[], editorState: Editor) {
+	onChange(nodes: Descendant[], editorState: Editor): void {
 		// check if there are adjacent lists and merge them
 		for (let i = 0; i < nodes.length - 1; i++) {
 			const currentNodeType = EditorInterface.getNodeType(

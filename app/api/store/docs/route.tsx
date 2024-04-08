@@ -10,23 +10,23 @@ import {
 export async function GET(req: Request) {
 	const files = fs
 		.readdirSync(process.env.STORE_LOCATION as string)
-		.filter((file) => path.extname(file) === ".md");
+		.filter((doc) => path.extname(doc) === ".md");
 
 	var docs: doc[] = [];
-	files.forEach((file) => {
+	files.forEach((doc) => {
 		const body = convertMarkdownToNestedDoc(
 			fs.readFileSync(
-				path.join(process.env.STORE_LOCATION as string, file),
+				path.join(process.env.STORE_LOCATION as string, doc),
 				"utf8"
 			)
 		);
 		let { birthtime, mtime } = fs.statSync(
-			path.join(process.env.STORE_LOCATION as string, file)
+			path.join(process.env.STORE_LOCATION as string, doc)
 		);
 
 		docs.push({
-			uid: file,
-			title: parseFileName(file),
+			uid: doc,
+			title: parseFileName(doc),
 			body,
 			created: birthtime,
 			modified: mtime,
@@ -41,13 +41,13 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
-	const { file } = await req.json();
+	const { doc } = await req.json();
 
 	const filePath = decodeURI(
-		path.join(process.env.STORE_LOCATION as string, `${file.title}.md`)
+		path.join(process.env.STORE_LOCATION as string, `${doc.title}.md`)
 	);
 
-	const fileContent = convertNestedDocToMarkdown(file.body);
+	const fileContent = convertNestedDocToMarkdown(doc.body);
 
 	fs.writeFileSync(filePath, fileContent);
 
@@ -56,7 +56,7 @@ export async function POST(req: Request) {
 	return new Response(
 		JSON.stringify({
 			doc: {
-				uid: `${file.title}.md`,
+				uid: `${doc.title}.md`,
 				created: fileStats.birthtime,
 				modified: fileStats.mtime,
 			},

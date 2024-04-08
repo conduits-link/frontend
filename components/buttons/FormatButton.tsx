@@ -5,7 +5,7 @@ import { Editor } from "slate";
 import Button from "./Button";
 import { useModal } from "@/contexts/modal";
 import { EditorOperate } from "@/utils/editor/operate";
-import { EditorInterface } from "@/utils/editor/slate";
+import { EditorInterface, ElementType } from "@/utils/editor/slate";
 
 export default function FormatButton({
 	editor,
@@ -27,7 +27,7 @@ export default function FormatButton({
 }: {
 	editor: Editor;
 	isNode: Boolean;
-	type: string;
+	type: ElementType;
 	options?: any;
 	appendNode?: boolean;
 	promptOption?: "url";

@@ -1,6 +1,7 @@
 import { Editor } from "slate";
 
-import IdeaContainer from "@/components/nodes/IdeaContainer";
+import { CustomElement, ElementType } from "./slate";
+
 import ListUnordered from "@/components/nodes/ListUnordered";
 import ListOrdered from "@/components/nodes/ListOrdered";
 import Blockquote from "@/components/nodes/Blockquote";
@@ -9,7 +10,6 @@ import Codeblock from "@/components/nodes/Codeblock";
 import ListItem from "@/components/nodes/ListItem";
 import Heading from "@/components/nodes/Heading";
 import Image from "@/components/nodes/Image";
-import Idea from "@/components/nodes/Idea";
 
 export const renderElement = (
 	{
@@ -19,32 +19,30 @@ export const renderElement = (
 	}: {
 		attributes: any;
 		children: any;
-		element: any;
+		element: CustomElement;
 	},
 	editor: Editor,
 	mode: string
 ) => {
 	switch (element.type) {
-		case "text":
-			return <span {...attributes}>{children}</span>;
-		case "idea-container":
-			return (
-				<IdeaContainer
-					{...attributes}
-					editor={editor}
-					node={element}
-					mode={mode}
-				>
-					{children}
-				</IdeaContainer>
-			);
-		case "idea":
-			return (
-				<Idea {...attributes} editor={editor} node={element} mode={mode}>
-					{children}
-				</Idea>
-			);
-		case "paragraph":
+		// case "idea-container":
+		// 	return (
+		// 		<IdeaContainer
+		// 			{...attributes}
+		// 			editor={editor}
+		// 			node={element}
+		// 			mode={mode}
+		// 		>
+		// 			{children}
+		// 		</IdeaContainer>
+		// 	);
+		// case "idea":
+		// 	return (
+		// 		<Idea {...attributes} editor={editor} node={element} mode={mode}>
+		// 			{children}
+		// 		</Idea>
+		// 	);
+		case ElementType.Paragraph:
 			return (
 				<Paragraph
 					{...attributes}
@@ -55,13 +53,13 @@ export const renderElement = (
 					{children}
 				</Paragraph>
 			);
-		case "heading":
+		case ElementType.Heading:
 			return (
 				<Heading {...attributes} editor={editor} node={element} mode={mode}>
 					{children}
 				</Heading>
 			);
-		case "list-ordered-item":
+		case ElementType.ListOrderedItem:
 			return (
 				<ListItem
 					{...attributes}
@@ -72,7 +70,7 @@ export const renderElement = (
 					{children}
 				</ListItem>
 			);
-		case "list-unordered-item":
+		case ElementType.ListUnorderedItem:
 			return (
 				<ListItem
 					{...attributes}
@@ -83,7 +81,7 @@ export const renderElement = (
 					{children}
 				</ListItem>
 			);
-		case "list-ordered":
+		case ElementType.ListOrdered:
 			return (
 				<ListOrdered
 					{...attributes}
@@ -94,7 +92,7 @@ export const renderElement = (
 					{children}
 				</ListOrdered>
 			);
-		case "list-unordered":
+		case ElementType.ListUnordered:
 			return (
 				<ListUnordered
 					{...attributes}
@@ -105,13 +103,13 @@ export const renderElement = (
 					{children}
 				</ListUnordered>
 			);
-		case "image":
+		case ElementType.Image:
 			return (
 				<Image {...attributes} editor={editor} node={element} mode={mode}>
 					{children}
 				</Image>
 			);
-		case "blockquote":
+		case ElementType.Blockquote:
 			return (
 				<Blockquote
 					{...attributes}
@@ -122,7 +120,7 @@ export const renderElement = (
 					{children}
 				</Blockquote>
 			);
-		case "codeblock":
+		case ElementType.Codeblock:
 			return (
 				<Codeblock
 					{...attributes}
@@ -134,7 +132,7 @@ export const renderElement = (
 				</Codeblock>
 			);
 		default:
-			return null;
+			return <span {...attributes}>{children}</span>;
 	}
 };
 

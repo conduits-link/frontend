@@ -59,11 +59,13 @@ export const EditorUpdate = {
 						rootNodeIndex,
 						EditorInterface.getIndexOfCurrentListItem(editorState) + 1,
 					];
+					const listItemType =
+						EditorInterface.getNodeType(editorState, rootNodePath) ===
+						ElementType.ListOrdered
+							? ElementType.ListOrderedItem
+							: ElementType.ListUnorderedItem;
 					newItem = EditorInterface.generateNewNode(
-						EditorInterface.getCorrespondingListItemType(
-							editorState,
-							rootNodePath
-						) ?? ElementType.ListUnorderedItem,
+						listItemType,
 						nodeContent.substring(cursorOffset, nodeContent.length)
 					);
 				}

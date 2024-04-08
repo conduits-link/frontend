@@ -28,7 +28,7 @@ export enum ElementType {
 	ListUnordered = "list-unordered",
 	ListUnorderedItem = "list-unordered-item",
 	Blockquote = "blockquote",
-	Code = "code",
+	Codeblock = "codeblock",
 	Image = "image",
 }
 
@@ -74,7 +74,7 @@ type BlockquoteElement = {
 };
 
 type CodeblockElement = {
-	type: ElementType.Code;
+	type: ElementType.Codeblock;
 	children: CustomText[];
 	ideas: Idea[];
 };
@@ -346,80 +346,51 @@ export namespace EditorInterface {
 		editorState: Editor,
 		val: number[] | ElementType
 	): boolean {
-		if (typeof val === "string")
-			return (
-				val === ElementType.ListOrdered || val === ElementType.ListUnordered
-			);
-		return (
-			EditorInterface.getNodeType(editorState, val) ===
-				ElementType.ListOrdered ||
-			EditorInterface.getNodeType(editorState, val) ===
-				ElementType.ListUnordered
-		);
-	}
-
-	export function getCorrespondingListType(
-		editorState: Editor,
-		val: number[] | string
-	): ElementType.ListOrdered | ElementType.ListUnordered | null {
-		if (typeof val === "string") {
-			if (val === ElementType.ListOrdered) return ElementType.ListOrdered;
-			if (val === ElementType.ListUnordered)
-				return ElementType.ListUnordered;
-		} else {
+		if (val === ElementType.ListOrdered || val === ElementType.ListUnordered)
+			return true;
+		else if (
+			Array.isArray(val) &&
+			val.every((item) => typeof item === "number")
+		) {
 			if (
 				EditorInterface.getNodeType(editorState, val) ===
 				ElementType.ListOrdered
 			)
-				return ElementType.ListOrdered;
+				return true;
 			if (
 				EditorInterface.getNodeType(editorState, val) ===
 				ElementType.ListUnordered
 			)
-				return ElementType.ListUnordered;
+				return true;
 		}
-		return null;
+		return false;
 	}
 
 	export function isNodeAListItem(
 		editorState: Editor,
 		val: number[] | ElementType
 	): boolean {
-		if (typeof val === "string")
-			return (
-				val === ElementType.ListOrderedItem ||
-				val === ElementType.ListUnorderedItem
-			);
-		return (
-			EditorInterface.getNodeType(editorState, val) ===
-				ElementType.ListOrderedItem ||
-			EditorInterface.getNodeType(editorState, val) ===
+		if (
+			val === ElementType.ListOrderedItem ||
+			val === ElementType.ListUnorderedItem
+		)
+			return true;
+		else if (
+			Array.isArray(val) &&
+			val.every((item) => typeof item === "number")
+		) {
+			if (
+				EditorInterface.getNodeType(editorState, val) ===
+				ElementType.ListOrderedItem
+			)
+				return true;
+			if (
+				EditorInterface.getNodeType(editorState, val) ===
 				ElementType.ListUnorderedItem
-		);
-	}
-
-	export function getCorrespondingListItemType(
-		editorState: Editor,
-		val: number[] | string
-	): ElementType.ListOrderedItem | ElementType.ListUnorderedItem | null {
-		if (typeof val === "string") {
-			if (val === ElementType.ListOrdered)
-				return ElementType.ListOrderedItem;
-			if (val === ElementType.ListUnordered)
-				return ElementType.ListUnorderedItem;
-		} else {
-			if (
-				EditorInterface.getNodeType(editorState, val) ===
-				ElementType.ListOrdered
 			)
-				return ElementType.ListOrderedItem;
-			if (
-				EditorInterface.getNodeType(editorState, val) ===
-				ElementType.ListUnordered
-			)
-				return ElementType.ListUnorderedItem;
+				return true;
 		}
-		return null;
+		return false;
 	}
 
 	export function getIndexOfCurrentListItem(editorState: Editor): number {

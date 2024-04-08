@@ -1,20 +1,17 @@
 import { Editor } from "slate";
 
 import {
-	LuBold,
-	LuCode,
 	LuCode2,
 	LuHeading1,
 	LuHeading2,
 	LuHeading3,
 	LuImage,
-	LuItalic,
-	LuLink,
 	LuList,
 	LuListOrdered,
 	LuQuote,
-	LuStrikethrough,
 } from "react-icons/lu";
+
+import { ElementType } from "@/utils/editor/slate";
 
 import FormatButton from "../buttons/FormatButton";
 
@@ -27,7 +24,7 @@ export default function FixedMenu({ editor }: { editor: Editor }) {
 				<FormatButton
 					editor={editor}
 					isNode={true}
-					type={"heading"}
+					type={ElementType.Heading}
 					options={{ level: 1 }}
 				>
 					<LuHeading1 />
@@ -35,7 +32,7 @@ export default function FixedMenu({ editor }: { editor: Editor }) {
 				<FormatButton
 					editor={editor}
 					isNode={true}
-					type={"heading"}
+					type={ElementType.Heading}
 					options={{ level: 2 }}
 				>
 					<LuHeading2 />
@@ -43,7 +40,7 @@ export default function FixedMenu({ editor }: { editor: Editor }) {
 				<FormatButton
 					editor={editor}
 					isNode={true}
-					type={"heading"}
+					type={ElementType.Heading}
 					options={{ level: 3 }}
 				>
 					<LuHeading3 />
@@ -51,7 +48,7 @@ export default function FixedMenu({ editor }: { editor: Editor }) {
 				<FormatButton
 					editor={editor}
 					isNode={true}
-					type={"list-ordered-item"}
+					type={ElementType.ListOrderedItem}
 					options={{}}
 				>
 					<LuListOrdered />
@@ -59,7 +56,7 @@ export default function FixedMenu({ editor }: { editor: Editor }) {
 				<FormatButton
 					editor={editor}
 					isNode={true}
-					type={"list-unordered-item"}
+					type={ElementType.ListUnorderedItem}
 					options={{}}
 				>
 					<LuList />
@@ -67,7 +64,7 @@ export default function FixedMenu({ editor }: { editor: Editor }) {
 				<FormatButton
 					editor={editor}
 					isNode={true}
-					type={"image"}
+					type={ElementType.Image}
 					options={{}}
 					promptOption={"url"}
 					appendNode={true}
@@ -77,7 +74,7 @@ export default function FixedMenu({ editor }: { editor: Editor }) {
 				<FormatButton
 					editor={editor}
 					isNode={true}
-					type={"blockquote"}
+					type={ElementType.Blockquote}
 					options={{}}
 				>
 					<LuQuote />
@@ -85,13 +82,13 @@ export default function FixedMenu({ editor }: { editor: Editor }) {
 				<FormatButton
 					editor={editor}
 					isNode={true}
-					type={"codeblock"}
+					type={ElementType.Codeblock}
 					options={{}}
 				>
 					<LuCode2 />
 				</FormatButton>
 			</div>
-			<div className={styles.element}>
+			{/* <div className={styles.element}>
 				<FormatButton editor={editor} isNode={false} type={"bold"}>
 					<LuBold />
 				</FormatButton>
@@ -112,7 +109,7 @@ export default function FixedMenu({ editor }: { editor: Editor }) {
 				<FormatButton editor={editor} isNode={false} type={"code"}>
 					<LuCode />
 				</FormatButton>
-			</div>
+			</div> */}
 		</div>
 	);
 }

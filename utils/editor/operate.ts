@@ -22,7 +22,7 @@ export const EditorOperate = {
 			node
 		);
 
-		let newNodeType = type;
+		let newNodeType: ElementType = type;
 		const currentNodeType = EditorInterface.getNodeType(editorState, node);
 
 		// TODO: check if options are different from current node options
@@ -41,10 +41,9 @@ export const EditorOperate = {
 			EditorInterface.insertListWrapper(
 				editorState,
 				node,
-				EditorInterface.getCorrespondingListType(
-					editorState,
-					newNodeType
-				) ?? ElementType.ListUnordered
+				newNodeType === ElementType.ListOrderedItem
+					? ElementType.ListOrdered
+					: ElementType.ListUnordered
 			);
 		}
 		// if the new node is not a list item, and has a list wrapper, remove the list wrapper
@@ -73,10 +72,9 @@ export const EditorOperate = {
 				EditorInterface.insertListWrapper(
 					editorState,
 					insertPosition,
-					EditorInterface.getCorrespondingListType(
-						editorState,
-						newNodeType
-					) ?? ElementType.ListUnordered
+					newNodeType === ElementType.ListOrderedItem
+						? ElementType.ListOrdered
+						: ElementType.ListUnordered
 				);
 				EditorInterface.setCursor(editorState, insertPosition.concat(0));
 			} else {

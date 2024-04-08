@@ -23,7 +23,7 @@ const StoreComponent = ({ initialFiles }: { initialFiles: any }) => {
 
 	function searchFiles(search: string) {
 		setFilteredFiles(
-			files.filter((file: doc) => file.title.toLowerCase().includes(search))
+			files.filter((doc: doc) => doc.title.toLowerCase().includes(search))
 		);
 	}
 
@@ -33,7 +33,7 @@ const StoreComponent = ({ initialFiles }: { initialFiles: any }) => {
 			"POST",
 			"",
 			{
-				file: {
+				doc: {
 					title: "Untitled",
 					body: [
 						{
@@ -56,8 +56,8 @@ const StoreComponent = ({ initialFiles }: { initialFiles: any }) => {
 		)) as apiResponse;
 
 		if (res.response.status === 200) {
-			setFiles(files.filter((file: doc) => file.uid !== id));
-			setFilteredFiles(filteredFiles.filter((file: doc) => file.uid !== id));
+			setFiles(files.filter((doc: doc) => doc.uid !== id));
+			setFilteredFiles(filteredFiles.filter((doc: doc) => doc.uid !== id));
 		}
 	}
 
@@ -79,13 +79,13 @@ const StoreComponent = ({ initialFiles }: { initialFiles: any }) => {
 					</div>
 					<div className={styles.containerFiles}>
 						<div className={styles.files}>
-							{filteredFiles.map((file: doc, i: number) => {
-								const words = countWordsInObject(file.body);
+							{filteredFiles.map((doc: doc, i: number) => {
+								const words = countWordsInObject(doc.body);
 
 								return (
-									<div className={styles.file} key={i}>
+									<div className={styles.doc} key={i}>
 										<div className={styles.fileInfo}>
-											<h3>{file.title}</h3>
+											<h3>{doc.title}</h3>
 											<p>
 												<span className={styles.fileInfoType}>
 													Document •{" "}
@@ -96,18 +96,18 @@ const StoreComponent = ({ initialFiles }: { initialFiles: any }) => {
 											</p>
 										</div>
 										<div className={styles.fileButtons}>
-											<Link href={`/edit/${file.uid}`}>
+											<Link href={`/edit/${doc.uid}`}>
 												<button className={styles.button}>
 													<FaPenFancy />
 												</button>
 											</Link>
-											<Link href={`/edit/${file.uid}?mode=preview`}>
+											<Link href={`/edit/${doc.uid}?mode=preview`}>
 												<button className={styles.button}>
 													<FaEye />
 												</button>
 											</Link>
 											<button
-												onClick={() => deleteDoc(file.uid)}
+												onClick={() => deleteDoc(doc.uid)}
 												className={styles.button}
 											>
 												<FaTrash />

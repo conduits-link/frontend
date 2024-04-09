@@ -16,8 +16,9 @@ type FormattedText = {
 
 type CustomText = FormattedText;
 
-type Idea = {
-	text: string;
+export type IdeaElement = {
+	promptName: string;
+	content: string;
 };
 
 export enum ElementType {
@@ -32,17 +33,17 @@ export enum ElementType {
 	Image = "image",
 }
 
-type ParagraphElement = {
+export type ParagraphElement = {
 	type: ElementType.Paragraph;
 	children: CustomText[];
-	ideas: Idea[];
+	ideas: IdeaElement[];
 };
 
-type HeadingElement = {
+export type HeadingElement = {
 	type: ElementType.Heading;
 	level: number;
 	children: CustomText[];
-	ideas: Idea[];
+	ideas: IdeaElement[];
 };
 
 export type ListOrderedItemElement = {
@@ -53,7 +54,7 @@ export type ListOrderedItemElement = {
 export type ListOrderedElement = {
 	type: ElementType.ListOrdered;
 	children: ListOrderedItemElement[];
-	ideas: Idea[];
+	ideas: IdeaElement[];
 };
 
 export type ListUnorderedItemElement = {
@@ -64,22 +65,22 @@ export type ListUnorderedItemElement = {
 export type ListUnorderedElement = {
 	type: ElementType.ListUnordered;
 	children: ListUnorderedItemElement[];
-	ideas: Idea[];
+	ideas: IdeaElement[];
 };
 
-type BlockquoteElement = {
+export type BlockquoteElement = {
 	type: ElementType.Blockquote;
 	children: CustomText[];
-	ideas: Idea[];
+	ideas: IdeaElement[];
 };
 
-type CodeblockElement = {
+export type CodeblockElement = {
 	type: ElementType.Codeblock;
 	children: CustomText[];
-	ideas: Idea[];
+	ideas: IdeaElement[];
 };
 
-type ImageElement = {
+export type ImageElement = {
 	type: ElementType.Image;
 	url: string;
 	alt: string;
@@ -286,6 +287,7 @@ export namespace EditorInterface {
 						],
 					},
 				],
+				ideas: [],
 				...options,
 			};
 		}
@@ -296,6 +298,7 @@ export namespace EditorInterface {
 					text: content,
 				},
 			],
+			ideas: [],
 			...options,
 		};
 	}
@@ -307,6 +310,29 @@ export namespace EditorInterface {
 		const marks = Editor.marks(editorState);
 		// TODO: make mark type more robust
 		return marks ? (marks as any)[markType] === true : false;
+	}
+	//#endregion
+
+	//#region Idea interfaces
+	export function addIdeaToNode(
+		editorState: Editor,
+		path: number[],
+		ideas: IdeaElement
+	): void {
+		const node = EditorInterface.getNode(editorState, path);
+
+		if (
+			node.type === ElementType.Image ||
+			node.type === ElementType.ListOrderedItem ||
+			node.type === ElementType.ListUnorderedItem
+		)
+			return;
+
+		Transforms.setNodes(
+			editorState,
+			{ ideas: [...node.ideas, ideas] },
+			{ at: path }
+		);
 	}
 	//#endregion
 

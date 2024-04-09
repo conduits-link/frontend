@@ -6,8 +6,9 @@ import Link from "next/link";
 
 import { FaEye, FaPenFancy, FaPlus, FaTrash } from "react-icons/fa6";
 
+import { wrapFetch } from "@/utils/fetch";
 import { countWordsInObject } from "@/utils/parse";
-import sendFetch from "@/utils/fetch";
+import { useFlashMessage } from "@/utils/flash";
 
 import Button from "@/components/buttons/Button";
 import Input from "../form/Input";
@@ -17,6 +18,7 @@ import styles from "./Store.module.css";
 
 const StoreComponent = ({ initialFiles }: { initialFiles: any }) => {
 	const router = useRouter();
+	const { showFlashMessage } = useFlashMessage();
 
 	const [files, setFiles] = useState(initialFiles);
 	const [filteredFiles, setFilteredFiles] = useState(files);
@@ -28,34 +30,40 @@ const StoreComponent = ({ initialFiles }: { initialFiles: any }) => {
 	}
 
 	async function createDoc() {
-		const res = (await sendFetch(
-			`${process.env.NEXT_PUBLIC_INTERNAL_API_URL}/store/docs`,
-			"POST",
-			"",
+		const { response, body } = (await wrapFetch(
 			{
-				doc: {
-					title: "Untitled",
-					body: [
-						{
-							type: "paragraph",
-							children: [{ type: "text", children: [{ text: "" }] }],
-						},
-					],
+				route: `${process.env.NEXT_PUBLIC_INTERNAL_API_URL}/store/docs`,
+				method: "POST",
+				cookie: "",
+				data: {
+					doc: {
+						title: "Untitled",
+						body: [
+							{
+								type: "paragraph",
+								children: [{ type: "text", children: [{ text: "" }] }],
+							},
+						],
+					},
 				},
-			}
+			},
+			showFlashMessage
 		)) as apiResponse;
 
-		router.push(`/edit/${res.body.doc.uid}`);
+		router.push(`/edit/${body.doc.uid}`);
 	}
 
 	async function deleteDoc(id: string) {
-		const res = (await sendFetch(
-			`${process.env.NEXT_PUBLIC_INTERNAL_API_URL}/store/docs/${id}`,
-			"DELETE",
-			""
+		const { response, body } = (await wrapFetch(
+			{
+				route: `${process.env.NEXT_PUBLIC_INTERNAL_API_URL}/store/docs/${id}`,
+				method: "DELETE",
+				cookie: "",
+			},
+			showFlashMessage
 		)) as apiResponse;
 
-		if (res.response.status === 200) {
+		if (response.ok) {
 			setFiles(files.filter((doc: doc) => doc.uid !== id));
 			setFilteredFiles(filteredFiles.filter((doc: doc) => doc.uid !== id));
 		}

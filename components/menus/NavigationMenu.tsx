@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -8,13 +10,14 @@ import {
 	FaPenFancy,
 } from "react-icons/fa6";
 
+import { useFlashMessage } from "@/utils/flash";
+import { wrapFetch } from "@/utils/fetch";
 import { timeAgo } from "@/utils/helpers";
 
 import Button from "../buttons/Button";
+import { Editor } from "slate";
 
 import styles from "./NavigationMenu.module.css";
-import sendFetch from "@/utils/fetch";
-import { Editor } from "slate";
 
 export default function NavigationMenu({
 	editor,
@@ -30,22 +33,26 @@ export default function NavigationMenu({
 	uid: string;
 }) {
 	const router = useRouter();
+	const { showFlashMessage } = useFlashMessage();
 
 	const [title, setTitle] = useState<string>(file.title);
 	const [lastModified, setLastModified] = useState<string>("");
 
 	async function save() {
-		const res = (await sendFetch(
-			`${process.env.NEXT_PUBLIC_INTERNAL_API_URL}/store/docs/${uid}`,
-			"PUT",
-			"",
+		await wrapFetch(
 			{
-				doc: {
-					title: title,
-					body: editor.children,
+				route: `${process.env.NEXT_PUBLIC_INTERNAL_API_URL}/store/docs/${uid}`,
+				method: "PUT",
+				cookie: "",
+				data: {
+					doc: {
+						title: title,
+						body: editor.children,
+					},
 				},
-			}
-		)) as apiResponse;
+			},
+			showFlashMessage
+		);
 	}
 
 	useEffect(() => {

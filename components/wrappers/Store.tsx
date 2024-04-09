@@ -83,7 +83,7 @@ const StoreComponent = ({ initialFiles }: { initialFiles: any }) => {
 								const words = countWordsInObject(doc.body);
 
 								return (
-									<div className={styles.doc} key={i}>
+									<div className={styles.file} key={i}>
 										<div className={styles.fileInfo}>
 											<h3>{doc.title}</h3>
 											<p>

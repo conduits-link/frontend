@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 
 import { ErrorMessage } from "@/utils/errors";
-import sendFetch from "@/utils/fetch";
+import { sendFetch } from "@/utils/fetch";
 
 import StoreComponent from "@/components/wrappers/Store";
 

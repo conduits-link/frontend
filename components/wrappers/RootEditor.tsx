@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 import NavigationMenu from "@/components/menus/NavigationMenu";
@@ -8,9 +8,8 @@ import FixedFormatMenu from "@/components/menus/FixedFormatMenu";
 import SlateEditor from "@/components/wrappers/SlateEditor";
 
 import styles from "./RootEditor.module.css";
-import { Editor, createEditor } from "slate";
+import { createEditor } from "slate";
 import { withReact } from "slate-react";
-import sendFetch from "@/utils/fetch";
 
 import NoSSR from "./NoSSR";
 

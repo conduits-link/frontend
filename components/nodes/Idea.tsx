@@ -12,11 +12,15 @@ import {
 	TbTrashX,
 } from "react-icons/tb";
 
-import styles from "./Idea.module.css";
-import sendFetch from "@/utils/fetch";
 import { constructPrompt, prompts } from "@/utils/prompts";
+import { useFlashMessage } from "@/utils/flash";
+import { wrapFetch } from "@/utils/fetch";
+
+import styles from "./Idea.module.css";
 
 const Idea = (props: any) => {
+	const { showFlashMessage } = useFlashMessage();
+
 	const { editor, node } = props;
 
 	const getParentIndex = () => ReactEditor.findPath(editor, node)[0];
@@ -37,25 +41,31 @@ const Idea = (props: any) => {
 			prompts.find((prompt) => prompt.name == promptName)!.prompt
 		);
 
-		const res = (await sendFetch(
-			`${process.env.NEXT_PUBLIC_INTERNAL_API_URL}/generate/text`,
-			"POST",
-			"",
+		const { response, body } = (await wrapFetch(
 			{
-				prompt: {
-					name: promptName,
-					messages: [
-						{
-							role: "user",
-							content,
-						},
-					],
+				route: `${process.env.NEXT_PUBLIC_INTERNAL_API_URL}/generate/text`,
+				method: "POST",
+				cookie: "",
+				data: {
+					prompt: {
+						name: promptName,
+						messages: [
+							{
+								role: "user",
+								content,
+							},
+						],
+					},
 				},
-			}
+			},
+			showFlashMessage
 		)) as apiResponse;
 
-		const body = (res.body.prompt as apiPrompt).messages[0].content;
-		Transforms.insertText(editor, body, { at: path });
+		Transforms.insertText(
+			editor,
+			(body.prompt as apiPrompt).messages[0].content,
+			{ at: path }
+		);
 	};
 
 	const setParentNodeText = (content: string) => {

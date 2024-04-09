@@ -29,7 +29,7 @@ const Form = ({
 
 		await wrapFetch(
 			{
-				route: `${process.env.NEXT_PUBLIC_INTERNAL_API_URL}/${url}`,
+				route: `${process.env.NEXT_PUBLIC_INTERNAL_API_URL}${url}`,
 				method: "POST",
 				cookie: "",
 				data,

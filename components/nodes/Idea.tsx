@@ -42,13 +42,15 @@ const Idea = (props: any) => {
 			"POST",
 			"",
 			{
-				promptName,
-				messages: [
-					{
-						role: "user",
-						content,
-					},
-				],
+				prompt: {
+					name: promptName,
+					messages: [
+						{
+							role: "user",
+							content,
+						},
+					],
+				},
 			}
 		)) as apiResponse;
 

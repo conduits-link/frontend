@@ -29,13 +29,15 @@ export default function PromptButton({
 			"POST",
 			"",
 			{
-				promptName: promptName,
-				messages: [
-					{
-						role: "user",
-						content,
-					},
-				],
+				prompt: {
+					name: promptName,
+					messages: [
+						{
+							role: "user",
+							content,
+						},
+					],
+				},
 			}
 		)) as apiResponse;
 

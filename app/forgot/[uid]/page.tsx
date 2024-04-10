@@ -9,7 +9,6 @@ import Form from "@/components/form/Form";
 
 const ForgotPage = ({ params }: { params: any }) => {
 	const [password, setPassword] = useState("");
-	const [passwordConfirm, setPasswordConfirm] = useState("");
 	const [validationErrors, setValidationErrors] = useState({
 		password: true,
 		passwordConfirm: true,

@@ -9,28 +9,24 @@ import RootEditorComponent from "@/components/wrappers/RootEditor";
 const Page = async ({ params }: { params: any }) => {
 	const cookieStore = cookies();
 
-	const res: apiResponse = await sendFetch(
+	const { response, body }: apiResponse = await sendFetch(
 		`${process.env.NEXT_PUBLIC_INTERNAL_API_URL}/store/docs/${params.uid}`,
 		"GET",
 		cookieStore.get("jwt") ? `jwt=${cookieStore.get("jwt")?.value}` : ""
 	);
 
-	if (!res.response.ok) {
-		switch (res.response.status) {
+	if (!response.ok) {
+		switch (response.status) {
 			case 401:
-				return redirect(
-					`/login?flashMessage=${ErrorMessage.AUTHENTICATION}`
-				);
-			case 403:
-				return redirect(
-					`/login?flashMessage=${ErrorMessage.AUTHENTICATION}`
-				);
+				return redirect(`/login?flashMessage=${ErrorMessage.STATUS_401}`);
+			case 404:
+				return redirect(`/store?flashMessage=${ErrorMessage.STATUS_404}`);
 			default:
-				return redirect(`/login?flashMessage=${ErrorMessage.SERVER}`);
+				return redirect(`/store?flashMessage=${ErrorMessage.STATUS_500}`);
 		}
 	}
 
-	return <RootEditorComponent file={res.body.doc} uid={params.uid} />;
+	return <RootEditorComponent file={body.doc} uid={params.uid} />;
 };
 
 export default Page;

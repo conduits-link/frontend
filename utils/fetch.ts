@@ -1,3 +1,5 @@
+import { ErrorMessage } from "./errors";
+
 export async function sendFetch(
 	route: string,
 	method: string,
@@ -53,14 +55,34 @@ export async function wrapFetch(
 		}
 	} else {
 		switch (response.status) {
+			case 400:
+				if (showFlashMessage)
+					showFlashMessage("error", ErrorMessage.STATUS_400);
+				break;
 			case 401:
-			case 403:
+				if (showFlashMessage)
+					showFlashMessage("error", ErrorMessage.STATUS_401);
 				if (successRedirect && successRedirect.router)
 					return successRedirect.router.push("/login");
+			case 403:
+				if (showFlashMessage)
+					showFlashMessage("error", ErrorMessage.STATUS_403);
+				break;
+			case 404:
+				if (showFlashMessage)
+					showFlashMessage("error", ErrorMessage.STATUS_404);
+				break;
+			case 410:
+				if (showFlashMessage)
+					showFlashMessage("error", ErrorMessage.STATUS_410);
+				break;
+			case 501:
+				if (showFlashMessage)
+					showFlashMessage("error", ErrorMessage.STATUS_501);
 				break;
 			default:
 				if (showFlashMessage)
-					showFlashMessage("error", response.statusText);
+					showFlashMessage("error", ErrorMessage.STATUS_500);
 				break;
 		}
 	}

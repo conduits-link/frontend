@@ -415,3 +415,69 @@ The client did not provide the correct data, and the text was not generated.
 #### 401
 
 There was no authenticated user to generate text for.
+
+## `/credits` : `GET`
+
+Retrieves the number of API credits for an authenticated user.
+
+### Request
+
+A JWT cookie must be set as an `http-only` cookie called `jwt`, as per the [register](#authregisteruid--post) and [login](#authlogin--post) endpoints.
+
+### Response
+
+#### 200
+
+The number of credits was returned.
+
+_Body:_
+
+```json
+{
+	"credits": "float"
+}
+```
+
+#### 401
+
+There was no authenticated user to return credits for.
+
+## `/credits` : `POST`
+
+Adds the given number of credits to the authenticated user's account.
+
+### Request
+
+A JWT cookie must be set as an `http-only` cookie called `jwt`, as per the [register](#authregisteruid--post) and [login](#authlogin--post) endpoints.
+
+The number of credits must be a positive integer or float.
+
+_Body:_
+
+```json
+{
+	"credits": "number"
+}
+```
+
+### Response
+
+#### 200
+
+The number of credits was returned.
+
+_Body:_
+
+```json
+{
+	"credits": "float"
+}
+```
+
+#### 400
+
+The client did not provide the correct data, and no credits were added.
+
+#### 401
+
+There was no authenticated user to add credits for.

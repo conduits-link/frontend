@@ -444,7 +444,7 @@ There was no authenticated user to return credits for.
 
 ## `/credits` : `POST`
 
-Adds the given number of credits to the authenticated user's account.
+Opens a Stripe payment window to be completed by the user. If successful, adds the given number of credits to the authenticated user's account.
 
 ### Request
 
@@ -476,8 +476,13 @@ _Body:_
 
 #### 400
 
-The client did not provide the correct data, and no credits were added.
+The client did not provide the correct request, and no credits were added.
 
 #### 401
 
 There was no authenticated user to add credits for.
+
+### 402
+
+Stripe payment was unsuccessful.
+

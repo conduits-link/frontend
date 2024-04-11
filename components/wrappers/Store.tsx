@@ -50,7 +50,7 @@ const StoreComponent = ({ initialFiles }: { initialFiles: any }) => {
 			showFlashMessage
 		)) as apiResponse;
 
-		router.push(`/edit/${body.doc.uid}`);
+		router.push(`/${body.doc.uid}`);
 	}
 
 	async function deleteDoc(id: string) {
@@ -104,12 +104,12 @@ const StoreComponent = ({ initialFiles }: { initialFiles: any }) => {
 											</p>
 										</div>
 										<div className={styles.fileButtons}>
-											<Link href={`/edit/${doc.uid}`}>
+											<Link href={`/${doc.uid}`}>
 												<button className={styles.button}>
 													<FaPenFancy />
 												</button>
 											</Link>
-											<Link href={`/edit/${doc.uid}?mode=preview`}>
+											<Link href={`/${doc.uid}?mode=preview`}>
 												<button className={styles.button}>
 													<FaEye />
 												</button>

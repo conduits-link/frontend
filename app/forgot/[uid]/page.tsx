@@ -33,7 +33,7 @@ const ForgotPage = ({ params }: { params: any }) => {
 			<Form
 				url={`/auth/forgot/${params.uid}`}
 				data={{ password }}
-				redirectUrl="/store"
+				redirectUrl="/"
 			>
 				<h1>Reset Password</h1>
 				<Input

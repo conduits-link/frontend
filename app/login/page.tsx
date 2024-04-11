@@ -31,11 +31,7 @@ const LoginPage = () => {
 
 	return (
 		<FillPageComponent>
-			<Form
-				url="/auth/login"
-				data={{ username, password }}
-				redirectUrl="/store"
-			>
+			<Form url="/auth/login" data={{ username, password }} redirectUrl="/">
 				<h1>Login</h1>
 				<Input
 					name="username"

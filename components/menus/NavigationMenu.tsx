@@ -66,7 +66,7 @@ export default function NavigationMenu({
 					<Button
 						className={styles.returnButton}
 						onClick={() => {
-							router.push("/store");
+							router.push("/");
 						}}
 					>
 						<FaChevronLeft />

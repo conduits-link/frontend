@@ -34,10 +34,10 @@ Users can reset their current password with a new password.
 
 ## Documents
 
-### `/store`
+### `/`
 
 Users can manage their documents.
 
-### `/edit/:uid`
+### `/:uid`
 
 Users can view and edit a specific document.

@@ -31,13 +31,6 @@ const font = Lato({
 const RootLayout = ({ children }: { children: ReactNode }) => {
 	return (
 		<html lang="en">
-			<head>
-				<script
-					defer
-					src={process.env.NEXT_PUBLIC_VISITOR_ANALYTICS_URL}
-					data-website-id={process.env.NEXT_PUBLIC_VISITOR_ANALYTICS_KEY}
-				/>
-			</head>
 			<body className={font.className}>
 				<FlashMessageContainer>{children}</FlashMessageContainer>
 			</body>

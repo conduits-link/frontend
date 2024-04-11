@@ -20,9 +20,9 @@ const Page = async ({ params }: { params: any }) => {
 			case 401:
 				return redirect(`/login?flashMessage=${ErrorMessage.STATUS_401}`);
 			case 404:
-				return redirect(`/store?flashMessage=${ErrorMessage.STATUS_404}`);
+				return redirect(`/?flashMessage=${ErrorMessage.STATUS_404}`);
 			default:
-				return redirect(`/store?flashMessage=${ErrorMessage.STATUS_500}`);
+				return redirect(`/?flashMessage=${ErrorMessage.STATUS_500}`);
 		}
 	}
 

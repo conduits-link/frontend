@@ -35,7 +35,7 @@ const RegisterPage = ({ params }: { params: any }) => {
 			<Form
 				url={`/auth/register/${params.uid}`}
 				data={{ username, password }}
-				redirectUrl={"/store"}
+				redirectUrl={"/"}
 			>
 				<h1>Register</h1>
 				<Input

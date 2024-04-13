@@ -115,8 +115,14 @@ export const EditorUpdate = {
 	},
 	// when the state of the editor changes, for any reason
 	onChange(nodes: Descendant[], editorState: Editor): void {
-		// check if there are adjacent lists and merge them
 		for (let i = 0; i < nodes.length - 1; i++) {
+			//#region If there is a node with only idea children, delete the node
+			const nodeChildren = EditorInterface.getNodeChildren(editorState, [i]);
+			if (EditorInterface.getNodeType(nodeChildren[0]) === ElementType.Idea)
+				EditorInterface.deleteNode(editorState, [i]);
+			//#endregion
+
+			// #region Check if there are adjacent lists and merge them
 			const currentNodeType = EditorInterface.getNodeType(
 				nodes[i] as CustomElement
 			);
@@ -137,6 +143,7 @@ export const EditorUpdate = {
 				EditorInterface.setCursor(editorState, [i, beforeListLength - 1]);
 				return;
 			}
+			//#endregion
 		}
 	},
 };

@@ -318,10 +318,10 @@ export namespace EditorInterface {
 	//#endregion
 
 	//#region Idea interfaces
-	export function addIdeaToNode(
+	export function addIdeasToNode(
 		editorState: Editor,
 		path: number[],
-		idea: IdeaElement
+		ideas: IdeaElement[]
 	): void {
 		const node = EditorInterface.getNode(editorState, path);
 
@@ -332,11 +332,37 @@ export namespace EditorInterface {
 		)
 			return;
 
-		EditorInterface.insertNode(
-			editorState,
-			idea,
-			path.concat(node.children.length)
-		);
+		ideas.forEach((idea) => {
+			EditorInterface.insertNode(
+				editorState,
+				idea,
+				path.concat(node.children.length)
+			);
+		});
+	}
+
+	export function getIdeas(
+		editorState: Editor,
+		path: number[]
+	): IdeaElement[] {
+		const node = EditorInterface.getNode(editorState, path);
+
+		if (node.type === ElementType.Image) return [];
+
+		return node.children.filter((child) =>
+			EditorInterface.isIdeaElement(child)
+		) as IdeaElement[];
+	}
+
+	export function clearIdeas(editorState: Editor, path: number[]): void {
+		const ideas = EditorInterface.getIdeas(editorState, path);
+
+		ideas.forEach((idea) => {
+			EditorInterface.deleteNode(
+				editorState,
+				ReactEditor.findPath(editorState, idea)
+			);
+		});
 	}
 
 	export function splitChildrenIntoElementsAndIdeas(

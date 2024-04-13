@@ -114,6 +114,8 @@ export const EditorOperate = {
 		const listItemIndex =
 			EditorInterface.getIndexOfCurrentListItem(editorState);
 
+		const ideas = EditorInterface.getIdeas(editorState, listNode);
+
 		// collect all list items before the current list item, not including the current list item
 		let beforeListItems:
 			| ListUnorderedItemElement[]
@@ -125,12 +127,16 @@ export const EditorOperate = {
 		) {
 			let tmpBeforeListItems = [];
 			for (let i = 0; i < listItemIndex; i++) {
-				tmpBeforeListItems.push(
-					EditorInterface.getNode(
-						editorState,
-						listNode.concat(i)
-					) as ListUnorderedItemElement
-				);
+				if (
+					EditorInterface.getNodeType(editorState, listNode.concat(i)) !==
+					ElementType.Idea
+				)
+					tmpBeforeListItems.push(
+						EditorInterface.getNode(
+							editorState,
+							listNode.concat(i)
+						) as ListUnorderedItemElement
+					);
 			}
 			beforeListItems = tmpBeforeListItems;
 		} else if (
@@ -139,12 +145,16 @@ export const EditorOperate = {
 		) {
 			let tmpBeforeListItems = [];
 			for (let i = 0; i < listItemIndex; i++) {
-				tmpBeforeListItems.push(
-					EditorInterface.getNode(
-						editorState,
-						listNode.concat(i)
-					) as ListUnorderedItemElement
-				);
+				if (
+					EditorInterface.getNodeType(editorState, listNode.concat(i)) !==
+					ElementType.Idea
+				)
+					tmpBeforeListItems.push(
+						EditorInterface.getNode(
+							editorState,
+							listNode.concat(i)
+						) as ListUnorderedItemElement
+					);
 			}
 			beforeListItems = tmpBeforeListItems;
 		}
@@ -164,12 +174,16 @@ export const EditorOperate = {
 				i < EditorInterface.getNodeChildren(editorState, listNode).length;
 				i++
 			) {
-				tmpAfterListItems.push(
-					EditorInterface.getNode(
-						editorState,
-						listNode.concat(i)
-					) as ListUnorderedItemElement
-				);
+				if (
+					EditorInterface.getNodeType(editorState, listNode.concat(i)) !==
+					ElementType.Idea
+				)
+					tmpAfterListItems.push(
+						EditorInterface.getNode(
+							editorState,
+							listNode.concat(i)
+						) as ListUnorderedItemElement
+					);
 			}
 			afterListItems = tmpAfterListItems;
 		} else if (
@@ -182,12 +196,16 @@ export const EditorOperate = {
 				i < EditorInterface.getNodeChildren(editorState, listNode).length;
 				i++
 			) {
-				tmpAfterListItems.push(
-					EditorInterface.getNode(
-						editorState,
-						listNode.concat(i)
-					) as ListUnorderedItemElement
-				);
+				if (
+					EditorInterface.getNodeType(editorState, listNode.concat(i)) !==
+					ElementType.Idea
+				)
+					tmpAfterListItems.push(
+						EditorInterface.getNode(
+							editorState,
+							listNode.concat(i)
+						) as ListUnorderedItemElement
+					);
 			}
 			afterListItems = tmpAfterListItems;
 		}
@@ -235,6 +253,8 @@ export const EditorOperate = {
 
 			EditorInterface.insertNode(editorState, beforeList, listNode);
 		}
+
+		EditorInterface.addIdeasToNode(editorState, listNode, ideas);
 	},
 	mergeLists(editorState: Editor, beforeListNode: number[]): void {
 		// check if beforeListNode is a list

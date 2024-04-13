@@ -49,7 +49,7 @@ const RootNode = ({
 			children: [{ text: res.messages[0].content }],
 		};
 
-		EditorInterface.addIdeaToNode(editor, [getPath()], idea);
+		EditorInterface.addIdeasToNode(editor, [getPath()], [idea]);
 	};
 
 	const handleRequest = () => {

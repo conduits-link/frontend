@@ -7,9 +7,12 @@ import { LuAtom } from "react-icons/lu";
 
 import styles from "./Root.module.css";
 import PromptMenu from "../menus/PromptMenu";
-import { EditorInterface, IdeaElement } from "@/utils/editor/slate";
+import {
+	EditorInterface,
+	ElementType,
+	IdeaElement,
+} from "@/utils/editor/slate";
 import IdeaContainer from "./IdeaContainer";
-import Idea from "./Idea";
 
 const RootNode = ({
 	children,
@@ -19,11 +22,13 @@ const RootNode = ({
 	mode,
 }: {
 	children: React.ReactNode;
-	ideas?: any;
+	ideas?: React.ReactNode;
 	editor: Editor;
 	node: Node;
 	mode: string;
 }) => {
+	const ideasExist = React.Children.count(ideas) > 0;
+
 	const [showLeftToolbar, setShowLeftToolbar] = React.useState<boolean>(false);
 	const [showPromptMenu, setShowPromptMenu] = React.useState<boolean>(false);
 
@@ -39,8 +44,9 @@ const RootNode = ({
 
 	const addIdea = (res: apiPrompt) => {
 		const idea: IdeaElement = {
+			type: ElementType.Idea,
 			promptName: res.promptName,
-			content: res.messages[0].content,
+			children: [{ text: res.messages[0].content }],
 		};
 
 		EditorInterface.addIdeaToNode(editor, [getPath()], idea);
@@ -56,7 +62,7 @@ const RootNode = ({
 	};
 
 	const getContainerStyles = () => {
-		if (mode == "edit" && ideas && ideas.length > 0)
+		if (mode == "edit" && ideasExist)
 			return styles.container + " " + styles.containerIdeas;
 		return styles.container;
 	};
@@ -96,19 +102,8 @@ const RootNode = ({
 					)}
 					{children}
 				</div>
-				{mode == "edit" && ideas && ideas.length > 0 && (
-					<IdeaContainer>
-						{ideas.map((idea: IdeaElement) => (
-							<Idea
-								key={idea.promptName}
-								editor={editor}
-								// node={idea}
-								// mode={mode}
-							>
-								{idea.content}
-							</Idea>
-						))}
-					</IdeaContainer>
+				{mode == "edit" && ideasExist && (
+					<IdeaContainer>{ideas}</IdeaContainer>
 				)}
 			</div>
 		</div>

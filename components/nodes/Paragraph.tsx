@@ -1,7 +1,7 @@
 import React from "react";
 import { Editor } from "slate";
 
-import { ParagraphElement } from "@/utils/editor/slate";
+import { EditorInterface, ParagraphElement } from "@/utils/editor/slate";
 
 import RootNode from "./Root";
 
@@ -16,11 +16,12 @@ const Paragraph = ({
 	children: React.ReactNode;
 	mode: string;
 }) => {
-	const childrenArray = React.Children.toArray(children);
+	const { elements, ideas } =
+		EditorInterface.splitChildrenIntoElementsAndIdeas(children, node);
 
 	return (
-		<RootNode ideas={node.ideas} editor={editor} node={node} mode={mode}>
-			<p>{childrenArray[0]}</p>
+		<RootNode ideas={ideas} editor={editor} node={node} mode={mode}>
+			<p>{elements}</p>
 		</RootNode>
 	);
 };

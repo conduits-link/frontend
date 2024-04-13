@@ -1,10 +1,11 @@
 import { Editor, Transforms, Element } from "slate";
 import { ReactEditor } from "slate-react";
 import { BaseEditor } from "slate";
+import React from "react";
 
 //#region Types and interfaces
 
-type FormattedText = {
+export type FormattedText = {
 	bold?: boolean;
 	italic?: boolean;
 	underline?: boolean;
@@ -16,11 +17,6 @@ type FormattedText = {
 
 type CustomText = FormattedText;
 
-export type IdeaElement = {
-	promptName: string;
-	content: string;
-};
-
 export enum ElementType {
 	Paragraph = "paragraph",
 	Heading = "heading",
@@ -31,53 +27,54 @@ export enum ElementType {
 	Blockquote = "blockquote",
 	Codeblock = "codeblock",
 	Image = "image",
+	Idea = "idea",
 }
+
+export type IdeaElement = {
+	type: ElementType.Idea;
+	promptName: string;
+	children: (CustomText | IdeaElement)[];
+};
 
 export type ParagraphElement = {
 	type: ElementType.Paragraph;
-	children: CustomText[];
-	ideas: IdeaElement[];
+	children: (CustomText | IdeaElement)[];
 };
 
 export type HeadingElement = {
 	type: ElementType.Heading;
 	level: number;
-	children: CustomText[];
-	ideas: IdeaElement[];
+	children: (CustomText | IdeaElement)[];
 };
 
 export type ListOrderedItemElement = {
 	type: ElementType.ListOrderedItem;
-	children: CustomText[];
+	children: (CustomText | IdeaElement)[];
 };
 
 export type ListOrderedElement = {
 	type: ElementType.ListOrdered;
-	children: ListOrderedItemElement[];
-	ideas: IdeaElement[];
+	children: (ListOrderedItemElement | IdeaElement)[];
 };
 
 export type ListUnorderedItemElement = {
 	type: ElementType.ListUnorderedItem;
-	children: CustomText[];
+	children: (CustomText | IdeaElement)[];
 };
 
 export type ListUnorderedElement = {
 	type: ElementType.ListUnordered;
-	children: ListUnorderedItemElement[];
-	ideas: IdeaElement[];
+	children: ListUnorderedItemElement[] | IdeaElement[];
 };
 
 export type BlockquoteElement = {
 	type: ElementType.Blockquote;
-	children: CustomText[];
-	ideas: IdeaElement[];
+	children: (CustomText | IdeaElement)[];
 };
 
 export type CodeblockElement = {
 	type: ElementType.Codeblock;
-	children: CustomText[];
-	ideas: IdeaElement[];
+	children: (CustomText | IdeaElement)[];
 };
 
 export type ImageElement = {
@@ -95,7 +92,8 @@ export type CustomElement =
 	| ListUnorderedItemElement
 	| BlockquoteElement
 	| CodeblockElement
-	| ImageElement;
+	| ImageElement
+	| IdeaElement;
 
 declare module "slate" {
 	interface CustomTypes {
@@ -176,6 +174,12 @@ export namespace EditorInterface {
 
 		if (!node || !Element.isElement(node)) return null;
 		return node.type;
+	}
+
+	export function isIdeaElement(
+		element: CustomElement | FormattedText
+	): element is IdeaElement {
+		return "type" in element && element.type === ElementType.Idea;
 	}
 
 	export function getNodeParent(
@@ -317,7 +321,7 @@ export namespace EditorInterface {
 	export function addIdeaToNode(
 		editorState: Editor,
 		path: number[],
-		ideas: IdeaElement
+		idea: IdeaElement
 	): void {
 		const node = EditorInterface.getNode(editorState, path);
 
@@ -328,11 +332,37 @@ export namespace EditorInterface {
 		)
 			return;
 
-		Transforms.setNodes(
+		EditorInterface.insertNode(
 			editorState,
-			{ ideas: [...node.ideas, ideas] },
-			{ at: path }
+			idea,
+			path.concat(node.children.length)
 		);
+	}
+
+	export function splitChildrenIntoElementsAndIdeas(
+		children: React.ReactNode,
+		node: CustomElement
+	): { elements: React.ReactNode; ideas: React.ReactNode } {
+		if (node.type === ElementType.Image)
+			return { elements: children, ideas: [] };
+
+		const childrenReactNodes = React.Children.toArray(children);
+
+		let elementIndices: number[] = [];
+		let ideaIndices: number[] = [];
+
+		node.children.map((child, index) => {
+			if (EditorInterface.isIdeaElement(child)) {
+				ideaIndices.push(index);
+			} else {
+				elementIndices.push(index);
+			}
+		});
+
+		const elements = elementIndices.map((index) => childrenReactNodes[index]);
+		const ideas = ideaIndices.map((index) => childrenReactNodes[index]);
+
+		return { elements, ideas };
 	}
 	//#endregion
 
@@ -443,7 +473,7 @@ export namespace EditorInterface {
 
 		Transforms.wrapNodes(
 			editorState,
-			{ type: type, children: [], ideas: [] },
+			{ type: type, children: [] },
 			{ at: node }
 		);
 	}

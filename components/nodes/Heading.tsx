@@ -1,30 +1,38 @@
 import React from "react";
 
 import RootNode from "./Root";
+import { Editor } from "slate";
+import { EditorInterface, HeadingElement } from "@/utils/editor/slate";
 
-const Heading = (props: any) => {
-	const childrenArray = React.Children.toArray(props.children);
+const Heading = ({
+	editor,
+	node,
+	children,
+	mode,
+}: {
+	editor: Editor;
+	node: HeadingElement;
+	children: React.ReactNode;
+	mode: string;
+}) => {
+	const { elements, ideas } =
+		EditorInterface.splitChildrenIntoElementsAndIdeas(children, node);
 
 	const getLevel = () => {
-		switch (props.node.level) {
+		switch (node.level) {
 			case 1:
-				return <h1 {...props.attributes}>{childrenArray[0]}</h1>;
+				return <h1>{elements}</h1>;
 			case 2:
-				return <h2 {...props.attributes}>{childrenArray[0]}</h2>;
+				return <h2>{elements}</h2>;
 			case 3:
-				return <h3 {...props.attributes}>{childrenArray[0]}</h3>;
+				return <h3>{elements}</h3>;
 			default:
-				return <h2 {...props.attributes}>{childrenArray[0]}</h2>;
+				return <h2>{elements}</h2>;
 		}
 	};
 
 	return (
-		<RootNode
-			ideas={childrenArray[1]}
-			editor={props.editor}
-			node={props.node}
-			mode={props.mode}
-		>
+		<RootNode ideas={ideas} editor={editor} node={node} mode={mode}>
 			{getLevel()}
 		</RootNode>
 	);

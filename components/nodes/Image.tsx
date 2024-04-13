@@ -1,23 +1,26 @@
 import React from "react";
 
 import RootNode from "./Root";
+import { Editor } from "slate";
+import { EditorInterface, ImageElement } from "@/utils/editor/slate";
 
-const Image = (props: any) => {
-	const childrenArray = React.Children.toArray(props.children);
+const Image = ({
+	editor,
+	node,
+	children,
+	mode,
+}: {
+	editor: Editor;
+	node: ImageElement;
+	children: React.ReactNode;
+	mode: string;
+}) => {
+	const { elements, ideas } =
+		EditorInterface.splitChildrenIntoElementsAndIdeas(children, node);
 
 	return (
-		<RootNode
-			ideas={childrenArray[1]}
-			editor={props.editor}
-			node={props.node}
-			mode={props.mode}
-		>
-			<img
-				{...props.attributes}
-				src={props.node.url}
-				alt={props.node.alt}
-				style={{ width: "100%" }}
-			/>
+		<RootNode ideas={ideas} editor={editor} node={node} mode={mode}>
+			<img src={node.url} alt={node.alt} style={{ width: "100%" }} />
 		</RootNode>
 	);
 };

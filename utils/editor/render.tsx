@@ -10,6 +10,7 @@ import Codeblock from "@/components/nodes/Codeblock";
 import ListItem from "@/components/nodes/ListItem";
 import Heading from "@/components/nodes/Heading";
 import Image from "@/components/nodes/Image";
+import Idea from "@/components/nodes/Idea";
 
 export const renderElement = (
 	{
@@ -36,12 +37,12 @@ export const renderElement = (
 		// 			{children}
 		// 		</IdeaContainer>
 		// 	);
-		// case "idea":
-		// 	return (
-		// 		<Idea {...attributes} editor={editor} node={element} mode={mode}>
-		// 			{children}
-		// 		</Idea>
-		// 	);
+		case ElementType.Idea:
+			return (
+				<Idea {...attributes} editor={editor} node={element} mode={mode}>
+					{children}
+				</Idea>
+			);
 		case ElementType.Paragraph:
 			return (
 				<Paragraph

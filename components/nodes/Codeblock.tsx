@@ -1,18 +1,26 @@
 import React from "react";
 
 import RootNode from "./Root";
+import { Editor } from "slate";
+import { CodeblockElement, EditorInterface } from "@/utils/editor/slate";
 
-const Codeblock = (props: any) => {
-	const childrenArray = React.Children.toArray(props.children);
+const Codeblock = ({
+	editor,
+	node,
+	children,
+	mode,
+}: {
+	editor: Editor;
+	node: CodeblockElement;
+	children: React.ReactNode;
+	mode: string;
+}) => {
+	const { elements, ideas } =
+		EditorInterface.splitChildrenIntoElementsAndIdeas(children, node);
 
 	return (
-		<RootNode
-			ideas={childrenArray[1]}
-			editor={props.editor}
-			node={props.node}
-			mode={props.mode}
-		>
-			<pre {...props.attributes}>{childrenArray[0]}</pre>
+		<RootNode ideas={ideas} editor={editor} node={node} mode={mode}>
+			<pre>{elements}</pre>
 		</RootNode>
 	);
 };

@@ -1,18 +1,27 @@
 import React from "react";
 
+import { EditorInterface, ListOrderedElement } from "@/utils/editor/slate";
+import { Editor } from "slate";
+
 import RootNode from "./Root";
 
-const ListOrdered = (props: any) => {
-	const childrenArray = React.Children.toArray(props.children);
+const ListOrdered = ({
+	editor,
+	node,
+	children,
+	mode,
+}: {
+	editor: Editor;
+	node: ListOrderedElement;
+	children: React.ReactNode;
+	mode: string;
+}) => {
+	const { elements, ideas } =
+		EditorInterface.splitChildrenIntoElementsAndIdeas(children, node);
 
 	return (
-		<RootNode
-			ideas={null}
-			editor={props.editor}
-			node={props.node}
-			mode={props.mode}
-		>
-			<ol {...props.attributes}>{childrenArray}</ol>
+		<RootNode ideas={ideas} editor={editor} node={node} mode={mode}>
+			<ol>{elements}</ol>
 		</RootNode>
 	);
 };

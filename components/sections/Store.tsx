@@ -12,7 +12,7 @@ import { useFlashMessage } from "@/utils/flash";
 
 import Button from "@/components/buttons/Button";
 import Input from "../form/Input";
-import NoSSR from "./NoSSR";
+import NoSSR from "../wrappers/NoSSR";
 
 import styles from "./Store.module.css";
 

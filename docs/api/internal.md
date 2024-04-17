@@ -452,6 +452,8 @@ A JWT cookie must be set as an `http-only` cookie called `jwt`, as per the [regi
 
 _Body:_
 
+An empty string, as required by Stripe:
+
 ```json
 { "" }
 ```

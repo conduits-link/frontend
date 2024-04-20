@@ -25,6 +25,8 @@ export const EditorOperate = {
 		let newNodeType: ElementType = type;
 		const currentNodeType = EditorInterface.getNodeType(editorState, node);
 
+		const nodeIdeas = EditorInterface.getIdeas(editorState, node);
+
 		// TODO: check if options are different from current node options
 		if (currentNodeType !== type) {
 			EditorInterface.setNodeType(editorState, node, newNodeType, options);
@@ -38,6 +40,7 @@ export const EditorOperate = {
 			EditorInterface.isNodeAListItem(editorState, newNodeType) &&
 			!nodeParentIsWrappedInList
 		) {
+			EditorInterface.clearIdeas(editorState, node);
 			EditorInterface.insertListWrapper(
 				editorState,
 				node,
@@ -45,9 +48,12 @@ export const EditorOperate = {
 					? ElementType.ListOrdered
 					: ElementType.ListUnordered
 			);
+			EditorInterface.addIdeasToNode(editorState, node, nodeIdeas);
 		}
 		// if the new node is not a list item, and has a list wrapper, remove the list wrapper
 		else if (nodeParentIsWrappedInList) {
+			EditorInterface.clearIdeas(editorState, node);
+
 			const listItemContent = EditorInterface.getNodeContent(
 				editorState,
 				node
@@ -80,6 +86,8 @@ export const EditorOperate = {
 			} else {
 				EditorInterface.setCursor(editorState, insertPosition);
 			}
+
+			// EditorInterface.addIdeasToNode(editorState, insertPosition, nodeIdeas);
 		}
 	},
 	toggleMark(editorState: Editor, markType: string, options?: any): void {

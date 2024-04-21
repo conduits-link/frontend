@@ -17,6 +17,7 @@ const Credits = ({ credits }: { credits: number }) => {
 
 	async function onLoad() {
 		if (!sessionId) return;
+
 		const { response, body } = await wrapFetch(
 			{
 				route: `${process.env.NEXT_PUBLIC_INTERNAL_API_URL}/credits/${sessionId}`,
@@ -53,9 +54,13 @@ const Credits = ({ credits }: { credits: number }) => {
 	}, []);
 
 	return (
-		<Button onClick={() => onSubmit()} primary={true}>
-			Add credits
-		</Button>
+		<div>
+			<h1>Credits</h1>
+			<p>You have {credits} credits</p>
+			<Button onClick={() => onSubmit()} primary={true}>
+				Add credits
+			</Button>
+		</div>
 	);
 };
 

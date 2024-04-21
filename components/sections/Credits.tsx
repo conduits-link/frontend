@@ -30,7 +30,7 @@ const Credits = ({ credits }: { credits: number }) => {
 		if (response.ok) {
 			showFlashMessage(
 				"success",
-				body.credits + " credits were added successfully"
+				body.added_credits + " credits were added successfully"
 			);
 		}
 	}

@@ -390,7 +390,7 @@ _Body:_
 
 #### 200
 
-The text was generated.
+The text was generated. `cost` gives the number of credits used in the API call.
 
 _Body:_
 
@@ -405,6 +405,7 @@ _Body:_
 			}
 		]
 	}
+	"cost": "float"
 }
 ```
 
@@ -444,7 +445,7 @@ There was no authenticated user to return credits for.
 
 ## `/credits` : `POST`
 
-Opens a Stripe payment window to be completed by the user. If successful, adds the given number of credits to the authenticated user's account.
+Opens a Stripe payment window to be completed by the user. If successful, adds the given number of credits to the authenticated user's account. One credit is 1¢ in USD.
 
 ### Request
 

@@ -390,7 +390,7 @@ _Body:_
 
 #### 200
 
-The text was generated.
+The text was generated. `cost` gives the number of credits used in the API call.
 
 _Body:_
 
@@ -405,6 +405,7 @@ _Body:_
 			}
 		]
 	}
+	"cost": "float"
 }
 ```
 
@@ -444,45 +445,82 @@ There was no authenticated user to return credits for.
 
 ## `/credits` : `POST`
 
-Opens a Stripe payment window to be completed by the user. If successful, adds the given number of credits to the authenticated user's account.
+Opens a Stripe payment window to be completed by the user. If successful, adds the given number of credits to the authenticated user's account. One credit is 1¢ in USD.
 
 ### Request
 
 A JWT cookie must be set as an `http-only` cookie called `jwt`, as per the [register](#authregisteruid--post) and [login](#authlogin--post) endpoints.
 
-The number of credits must be a positive integer or float.
-
 _Body:_
 
+An empty string, as required by Stripe:
+
 ```json
-{
-	"credits": "number"
-}
+{ "" }
 ```
 
 ### Response
 
-#### 200
+#### 302
 
-The number of credits was returned.
+The URL of the Stripe payment page. 
 
 _Body:_
 
 ```json
-{
-	"credits": "float"
-}
+{ 'redirect_url': "string" }
 ```
 
-#### 400
+When the payment has been completed or abandoned, the user is redirected to the following URL:
 
-The client did not provide the correct request, and no credits were added.
+```
+https://app.conduits.link/settings/credits?session_id={CHECKOUT_SESSION_ID}
+```
+
+where `CHECKOUT_SESSION_ID` is a unique identifier corresponding to the payment attempt.
 
 #### 401
 
 There was no authenticated user to add credits for.
 
-### 402
+### 500
 
 Stripe payment was unsuccessful.
 
+## `/credits/:uid` : `GET`
+
+Retrieves the number of API credits added in a given Stripe Checkout payment, or a failure message if the transaction was unsuccessful.
+
+### Request
+
+A JWT cookie must be set as an `http-only` cookie called `jwt`, as per the [register](#authregisteruid--post) and [login](#authlogin--post) endpoints.
+
+### Response
+
+#### 200
+
+The payment was successful, and the number of credits added in the Checkout payment session was returned.
+
+_Body:_
+
+```json
+{
+	"added_credits": "float"
+}
+```
+
+#### 402
+
+The payment was unsuccessful.
+
+#### 401
+
+There was no authenticated user to return credits for, or a user was attempting to access another user's Stripe Checkout session.
+
+#### 404
+
+The uid provided did not correspond to an existing Stripe Checkout session.
+
+> **Note**:
+>
+> The `uid` is given in an automatic redirect from the Stripe Checkout page, following a `POST` request to `/credits`.

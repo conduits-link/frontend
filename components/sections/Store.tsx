@@ -71,60 +71,58 @@ const StoreComponent = ({ initialFiles }: { initialFiles: any }) => {
 
 	return (
 		<NoSSR>
-			<div className={styles.container}>
-				<div className={styles.page}>
-					<div className={styles.heading}>
-						<h1>Files</h1>
-						<Input
-							name="search"
-							type="text"
-							placeholder="Search"
-							onChange={(e) => searchFiles(e.target.value)}
-						/>
-						<Button primary={true} onClick={createDoc}>
-							<FaPlus />
-						</Button>
-					</div>
-					<div className={styles.containerFiles}>
-						<div className={styles.files}>
-							{filteredFiles.map((doc: doc, i: number) => {
-								const words = countWordsInObject(doc.body);
+			<div className={styles.page}>
+				<div className={styles.heading}>
+					<h1>Files</h1>
+					<Input
+						name="search"
+						type="text"
+						placeholder="Search"
+						onChange={(e) => searchFiles(e.target.value)}
+					/>
+					<Button primary={true} onClick={createDoc}>
+						<FaPlus />
+					</Button>
+				</div>
+				<div className={styles.containerFiles}>
+					<div className={styles.files}>
+						{filteredFiles.map((doc: doc, i: number) => {
+							const words = countWordsInObject(doc.body);
 
-								return (
-									<div className={styles.file} key={i}>
-										<div className={styles.fileInfo}>
-											<h3>{doc.title}</h3>
-											<p>
-												<span className={styles.fileInfoType}>
-													Document •{" "}
-												</span>
-												<span className={styles.fileInfoWords}>
-													{words} {words === 1 ? "word" : "words"}
-												</span>
-											</p>
-										</div>
-										<div className={styles.fileButtons}>
-											<Link href={`/${doc.uid}`}>
-												<button className={styles.button}>
-													<FaPenFancy />
-												</button>
-											</Link>
-											<Link href={`/${doc.uid}?mode=preview`}>
-												<button className={styles.button}>
-													<FaEye />
-												</button>
-											</Link>
-											<button
-												onClick={() => deleteDoc(doc.uid)}
-												className={styles.button}
-											>
-												<FaTrash />
-											</button>
-										</div>
+							return (
+								<div className={styles.file} key={i}>
+									<div className={styles.fileInfo}>
+										<h3>{doc.title}</h3>
+										<p>
+											<span className={styles.fileInfoType}>
+												Document •{" "}
+											</span>
+											<span className={styles.fileInfoWords}>
+												{words} {words === 1 ? "word" : "words"}
+											</span>
+										</p>
 									</div>
-								);
-							})}
-						</div>
+									<div className={styles.fileButtons}>
+										<Link href={`/${doc.uid}`}>
+											<button className={styles.button}>
+												<FaPenFancy />
+											</button>
+										</Link>
+										<Link href={`/${doc.uid}?mode=preview`}>
+											<button className={styles.button}>
+												<FaEye />
+											</button>
+										</Link>
+										<button
+											onClick={() => deleteDoc(doc.uid)}
+											className={styles.button}
+										>
+											<FaTrash />
+										</button>
+									</div>
+								</div>
+							);
+						})}
 					</div>
 				</div>
 			</div>

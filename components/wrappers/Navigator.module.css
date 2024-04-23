@@ -1,0 +1,73 @@
+.containerMain {
+	--buffer-vertical: 2.5rem;
+	--buffer-horizontal: 1.5rem;
+	min-height: 100vh;
+	display: flex;
+	justify-content: center;
+	background-color: var(--color-primary-100);
+	background: linear-gradient(
+		90deg,
+		var(--color-primary-100) 0%,
+		var(--color-primary-100) 50%,
+		var(--color-primary-400) 50%,
+		var(--color-primary-400) 100%
+	);
+}
+
+.containerContent {
+	width: var(--container-width);
+	display: flex;
+	justify-content: center;
+	gap: 1.5rem;
+}
+
+.containerLinks {
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-large);
+}
+
+.account {
+	margin: var(--buffer-vertical) 0;
+	padding: var(--spacing-large);
+	box-sizing: border-box;
+	height: 3.15rem;
+	display: flex;
+	align-items: center;
+	display: flex;
+	gap: var(--spacing-small);
+}
+
+.account svg {
+	font-size: 1.15rem;
+}
+
+.link {
+	padding: var(--spacing-large);
+	font-size: 1.12rem;
+	color: var(--color-secondary-100);
+	text-decoration: none;
+	border-radius: var(--border-radius-small);
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-small);
+}
+
+.link svg {
+	font-size: 1.25rem;
+}
+
+.selected {
+	font-weight: 600;
+	background-color: var(--color-primary-400);
+}
+
+.content {
+	width: var(--editor-width) !important;
+	padding: var(--buffer-vertical) var(--buffer-horizontal);
+	box-sizing: border-box;
+	border-left: var(--border-container);
+	/* border-right: var(--border-container); */
+	background-color: var(--color-primary-400);
+}

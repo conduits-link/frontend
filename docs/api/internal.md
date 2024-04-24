@@ -362,6 +362,156 @@ There was no authenticated user to remove the doc for.
 
 The doc was not found.
 
+## `/prompts` : `GET`
+
+Returns a list of the logged-in user's custom prompts.
+
+### Request
+
+A JWT cookie must be set as an `http-only` cookie called `jwt`, as per the [register](#authregisteruid--post) and [login](#authlogin--post) endpoints.
+
+### Response
+
+#### 200
+
+The prompt list was successfully retrieved and returned.
+
+```json
+[
+	{
+		"uid": "string"
+		"name": "string",
+		"prompt": "string"
+	}
+]
+```
+
+#### 400
+
+The request was formatted incorrectly and no prompt list could be retrieved.
+
+#### 401
+
+There was no authenticated user to retrieve a prompt list for.
+
+## `/prompts` : `POST`
+
+Adds a prompt to the logged-in user's custom prompts.
+
+### Request
+
+A JWT cookie must be set as an `http-only` cookie called `jwt`, as per the [register](#authregisteruid--post) and [login](#authlogin--post) endpoints.
+
+Prompt names must be unique.
+
+```json
+{
+	"name": "string",
+	"prompt": "string"
+}
+```
+
+### Response
+
+#### 201
+
+The prompt was successfully added.
+
+#### 400
+
+The request was incorrect and the prompt was not added. This may have been due to missing fields, or a duplicate prompt name (which is forbidden).
+
+#### 401
+
+There was no authenticated user to add a prompt for.
+
+## `/prompts/:uid` : `GET`
+
+Returns details of a specific prompt belonging to the logged-in user.
+
+### Request
+
+A JWT cookie must be set as an `http-only` cookie called `jwt`, as per the [register](#authregisteruid--post) and [login](#authlogin--post) endpoints.
+
+### Response
+
+#### 200
+
+The prompt details were successfully retrieved and returned.
+
+```json
+{
+	"id": "string",
+	"name": "string",
+	"prompt": "string"
+}
+```
+
+#### 404
+
+The requested prompt does not exist or does not belong to the authenticated user.
+
+#### 401
+
+There was no authenticated user to retrieve the prompt details for.
+
+## `/prompts/:uid` : `PUT`
+
+Updates details of a specific prompt belonging to the logged-in user.
+
+### Request
+
+A JWT cookie must be set as an `http-only` cookie called `jwt`, as per the [register](#authregisteruid--post) and [login](#authlogin--post) endpoints.
+
+Prompt names must be unique.
+
+```json
+{
+	"name": "string",
+	"prompt": "string"
+}
+```
+
+### Response
+
+#### 200
+
+The prompt details were successfully updated.
+
+#### 404
+
+The requested prompt does not exist or does not belong to the authenticated user.
+
+#### 400
+
+The request was incorrect and the prompt details were not updated. This may have been due to missing fields or a duplicate prompt name (which is forbidden).
+
+#### 401
+
+There was no authenticated user to update the prompt for.
+
+## `/prompts/:uid` : `DELETE`
+
+Deletes a specific prompt belonging to the logged-in user.
+
+### Request
+
+A JWT cookie must be set as an `http-only` cookie called `jwt`, as per the [register](#authregisteruid--post) and [login](#authlogin--post) endpoints.
+
+### Response
+
+#### 204
+
+The prompt was successfully deleted.
+
+#### 404
+
+The requested prompt does not exist or does not belong to the authenticated user.
+
+#### 401
+
+There was no authenticated user to delete the prompt for.
+
 ## `/generate/text` : `POST`
 
 Inferences a generative model to generate text, given a prompt.

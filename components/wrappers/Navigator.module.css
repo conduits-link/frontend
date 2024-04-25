@@ -1,31 +1,31 @@
 .containerMain {
-	--buffer-vertical: 2.5rem;
-	--buffer-horizontal: 1.5rem;
 	min-height: 100vh;
 	display: flex;
 	justify-content: center;
-	background-color: var(--color-primary-100);
-	background: linear-gradient(
-		90deg,
-		var(--color-primary-100) 0%,
-		var(--color-primary-100) 50%,
-		var(--color-primary-400) 50%,
-		var(--color-primary-400) 100%
-	);
 }
 
 .containerContent {
 	width: var(--container-width);
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
-	gap: 1.5rem;
 }
 
-.containerLinks {
-	flex-grow: 1;
+.containerNav {
+	width: var(--container-width);
+	padding: var(--spacing-large);
 	display: flex;
-	flex-direction: column;
+	justify-content: space-between;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: row;
 	gap: var(--spacing-large);
+	position: fixed;
+	bottom: 0;
+	border-radius: var(--border-radius-large) var(--border-radius-large) 0 0;
+	border: var(--border-container);
+	border-bottom: none;
+	background-color: var(--color-primary-100);
 }
 
 .account {
@@ -41,6 +41,12 @@
 
 .account svg {
 	font-size: 1.15rem;
+}
+
+.containerLinks {
+	display: flex;
+	flex-direction: row;
+	gap: var(--spacing-large);
 }
 
 .link {
@@ -64,10 +70,6 @@
 }
 
 .content {
-	width: var(--editor-width) !important;
-	padding: var(--buffer-vertical) var(--buffer-horizontal);
-	box-sizing: border-box;
-	border-left: var(--border-container);
-	/* border-right: var(--border-container); */
+	width: var(--content-width);
 	background-color: var(--color-primary-400);
 }

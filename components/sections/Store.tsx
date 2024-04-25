@@ -1,10 +1,8 @@
 "use client";
-
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import Link from "next/link";
 
-import { FaEye, FaPenFancy, FaPlus, FaTrash } from "react-icons/fa6";
+import { FaPlus } from "react-icons/fa6";
 
 import { wrapFetch } from "@/utils/fetch";
 import { countWordsInObject } from "@/utils/parse";
@@ -15,6 +13,8 @@ import Input from "../form/Input";
 import NoSSR from "../wrappers/NoSSR";
 
 import styles from "./Store.module.css";
+import Link from "next/link";
+import Masonry from "react-masonry-css";
 
 const StoreComponent = ({ initialFiles }: { initialFiles: any }) => {
 	const router = useRouter();
@@ -69,6 +69,10 @@ const StoreComponent = ({ initialFiles }: { initialFiles: any }) => {
 		}
 	}
 
+	const breakpointColumnsObj = {
+		default: 4,
+	};
+
 	return (
 		<NoSSR>
 			<div className={styles.page}>
@@ -85,12 +89,19 @@ const StoreComponent = ({ initialFiles }: { initialFiles: any }) => {
 					</Button>
 				</div>
 				<div className={styles.containerFiles}>
-					<div className={styles.files}>
+					<Masonry
+						breakpointCols={breakpointColumnsObj}
+						className={styles.files}
+						columnClassName={styles.filesColumn}
+					>
 						{filteredFiles.map((doc: doc, i: number) => {
 							const words = countWordsInObject(doc.body);
-
 							return (
-								<div className={styles.file} key={i}>
+								<Link
+									href={`/${doc.uid}`}
+									className={styles.file}
+									key={i}
+								>
 									<div className={styles.fileInfo}>
 										<h3>{doc.title}</h3>
 										<p>
@@ -102,12 +113,7 @@ const StoreComponent = ({ initialFiles }: { initialFiles: any }) => {
 											</span>
 										</p>
 									</div>
-									<div className={styles.fileButtons}>
-										<Link href={`/${doc.uid}`}>
-											<button className={styles.button}>
-												<FaPenFancy />
-											</button>
-										</Link>
+									{/* <div className={styles.fileButtons}>
 										<Link href={`/${doc.uid}?mode=preview`}>
 											<button className={styles.button}>
 												<FaEye />
@@ -119,11 +125,11 @@ const StoreComponent = ({ initialFiles }: { initialFiles: any }) => {
 										>
 											<FaTrash />
 										</button>
-									</div>
-								</div>
+									</div> */}
+								</Link>
 							);
 						})}
-					</div>
+					</Masonry>
 				</div>
 			</div>
 		</NoSSR>

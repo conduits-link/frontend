@@ -13,7 +13,7 @@
 
 .containerNav {
 	width: var(--container-width);
-	padding: var(--spacing-large);
+	padding: var(--spacing-large) 0;
 	display: flex;
 	justify-content: space-between;
 	box-sizing: border-box;
@@ -22,16 +22,12 @@
 	gap: var(--spacing-large);
 	position: fixed;
 	bottom: 0;
-	border-radius: var(--border-radius-large) var(--border-radius-large) 0 0;
-	border: var(--border-container);
-	border-bottom: none;
-	background-color: var(--color-primary-100);
+	border-top: var(--border-container);
+	background-color: var(--color-primary-400);
 }
 
 .account {
 	margin: var(--buffer-vertical) 0;
-	padding: var(--spacing-large);
-	box-sizing: border-box;
 	height: 3.15rem;
 	display: flex;
 	align-items: center;
@@ -60,13 +56,18 @@
 	gap: var(--spacing-small);
 }
 
+.link:not(.selected):hover {
+	outline: var(--border-container);
+}
+
 .link svg {
 	font-size: 1.25rem;
 }
 
 .selected {
 	font-weight: 600;
-	background-color: var(--color-primary-400);
+	background-color: var(--color-primary-100);
+	border: var(--border-container);
 }
 
 .content {

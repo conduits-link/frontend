@@ -12,7 +12,7 @@
 .heading {
 	margin-bottom: 3.5em;
 	display: flex;
-	gap: 12.5em;
+	gap: 18.5em;
 	justify-content: space-between;
 }
 
@@ -26,15 +26,6 @@
 }
 
 .containerTypeSelect {
-}
-
-.search {
-	width: 35%;
-	padding: 0.65em 1.15em;
-	border: var(--border-container);
-	border-radius: var(--border-radius-large);
-	background-color: var(--color-primary-100);
-	color: var(--color-secondary-100);
 }
 
 .typeSelect {

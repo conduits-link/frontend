@@ -8,6 +8,8 @@ import { wrapFetch } from "@/utils/fetch";
 import Button from "@/components/buttons/Button";
 import { useEffect } from "react";
 
+import styles from "./Credits.module.css";
+
 const Credits = ({ credits }: { credits: number }) => {
 	const { showFlashMessage } = useFlashMessage();
 	const searchParams = useSearchParams();
@@ -54,9 +56,9 @@ const Credits = ({ credits }: { credits: number }) => {
 	}, []);
 
 	return (
-		<div>
+		<div className={styles.containerMain}>
 			<h1>Credits</h1>
-			<p>You have {credits} credits</p>
+			<p>You have {credits} credits.</p>
 			<Button onClick={() => onSubmit()} primary={true}>
 				Add credits
 			</Button>

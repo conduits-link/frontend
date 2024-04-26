@@ -5,6 +5,7 @@ import { sendFetch } from "@/utils/fetch";
 
 import Credits from "@/components/sections/Credits";
 import { ErrorMessage } from "@/utils/errors";
+import Navigator from "@/components/wrappers/Navigator";
 
 const Page = async () => {
 	const cookieStore = cookies();
@@ -24,7 +25,11 @@ const Page = async () => {
 		}
 	}
 
-	return <Credits credits={body.credits} />;
+	return (
+		<Navigator selected="credits">
+			<Credits credits={body.credits} />
+		</Navigator>
+	);
 };
 
 export default Page;

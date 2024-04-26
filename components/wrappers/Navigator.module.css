@@ -6,9 +6,6 @@
 
 .containerContent {
 	width: var(--container-width);
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
 }
 
 .containerNav {
@@ -71,6 +68,7 @@
 }
 
 .content {
+	margin-top: 3.5em;
 	width: var(--content-width);
 	background-color: var(--color-primary-400);
 }

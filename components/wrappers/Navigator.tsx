@@ -28,7 +28,7 @@ const Navigator = ({
 					</div>
 					<div className={styles.containerLinks}>
 						<Link
-							href="/home"
+							href="/"
 							className={
 								styles.link +
 								" " +

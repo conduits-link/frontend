@@ -6,11 +6,12 @@
 
 .containerContent {
 	width: var(--container-width);
+	padding: 0 1.5em;
 }
 
 .containerNav {
 	width: var(--container-width);
-	padding: var(--spacing-large) 0;
+	padding: var(--spacing-large);
 	display: flex;
 	justify-content: space-between;
 	box-sizing: border-box;
@@ -18,9 +19,12 @@
 	flex-direction: row;
 	gap: var(--spacing-large);
 	position: fixed;
-	bottom: 0;
-	border-top: var(--border-container);
-	background-color: var(--color-primary-400);
+	bottom: 1.5em;
+	border-radius: var(--border-radius-large);
+	border: var(--border-container);
+	background-color: var(--color-primary-100);
+	backdrop-filter: blur(6px);
+	box-sizing: border-box;
 }
 
 .account {
@@ -51,6 +55,8 @@
 	display: flex;
 	align-items: center;
 	gap: var(--spacing-small);
+	border: var(--border-container);
+	border-color: transparent;
 }
 
 .link:not(.selected):hover {
@@ -62,13 +68,12 @@
 }
 
 .selected {
-	font-weight: 600;
-	background-color: var(--color-primary-100);
-	border: var(--border-container);
+	background-color: var(--color-primary-400);
+	border-color: var(--color-secondary-400);
 }
 
 .content {
-	margin-top: 3.5em;
+	margin-top: 1.5em;
 	width: var(--content-width);
 	background-color: var(--color-primary-400);
 }

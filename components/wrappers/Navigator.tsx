@@ -2,10 +2,8 @@ import Link from "next/link";
 
 import {
 	BiSolidChat,
-	BiSolidCog,
 	BiSolidCoinStack,
 	BiSolidFileBlank,
-	BiUser,
 } from "react-icons/bi";
 
 import styles from "./Navigator.module.css";
@@ -22,10 +20,6 @@ const Navigator = ({
 			<div className={styles.containerContent}>
 				<div className={styles.content}>{children}</div>
 				<div className={styles.containerNav}>
-					<div className={styles.account}>
-						<BiUser />
-						User
-					</div>
 					<div className={styles.containerLinks}>
 						<Link
 							href="/"
@@ -60,18 +54,11 @@ const Navigator = ({
 							<BiSolidCoinStack />
 							Credits
 						</Link>
-						<Link
-							href="/settings"
-							className={
-								styles.link +
-								" " +
-								(selected === "settings" ? styles.selected : "")
-							}
-						>
-							<BiSolidCog />
-							Settings
-						</Link>
 					</div>
+					{/* <div className={styles.account}>
+						<BiUser />
+						User
+					</div> */}
 				</div>
 			</div>
 		</div>

@@ -1,18 +1,18 @@
 import React from "react";
-import { Editor } from "slate";
 
-import { EditorInterface, ParagraphElement } from "@/utils/editor/slate";
+import { EditorInterface, ListUnorderedElement } from "@/utils/editor/slate";
+import { Editor } from "slate";
 
 import RootNode from "./Root";
 
-const Paragraph = ({
+const ListOrdered = ({
 	editor,
 	node,
 	children,
 	mode,
 }: {
 	editor: Editor;
-	node: ParagraphElement;
+	node: ListUnorderedElement;
 	children: React.ReactNode;
 	mode: string;
 }) => {
@@ -21,9 +21,9 @@ const Paragraph = ({
 
 	return (
 		<RootNode ideas={ideas} editor={editor} node={node} mode={mode}>
-			<p>{elements}</p>
+			<ul>{elements}</ul>
 		</RootNode>
 	);
 };
 
-export default Paragraph;
+export default ListOrdered;

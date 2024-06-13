@@ -1,8 +1,5 @@
-.container {
-	margin: 2.35rem;
-}
-
 .page {
+	width: 100%;
 	height: calc(100vh - 2.35rem * 2);
 	display: flex;
 	flex-direction: column;
@@ -15,13 +12,8 @@
 .heading {
 	margin-bottom: 3.5em;
 	display: flex;
-	gap: 22vw;
+	gap: 18.5em;
 	justify-content: space-between;
-}
-
-.heading h1 {
-	font-size: 2.35rem;
-	font-weight: 900;
 }
 
 .containerFiles {
@@ -29,15 +21,6 @@
 }
 
 .containerTypeSelect {
-}
-
-.search {
-	width: 35%;
-	padding: 0.65em 1.15em;
-	border: var(--border-container);
-	border-radius: var(--border-radius-large);
-	background-color: var(--color-primary-100);
-	color: var(--color-secondary-100);
 }
 
 .typeSelect {
@@ -57,6 +40,11 @@
 
 .files {
 	display: flex;
+	gap: var(--spacing-large);
+}
+
+.filesColumn {
+	display: flex;
 	flex-direction: column;
 	gap: var(--spacing-large);
 }
@@ -67,14 +55,16 @@
 	flex-direction: row;
 	gap: 1.15em;
 	justify-content: space-between;
-	border: var(--border-container);
 	border-radius: var(--border-radius-large);
-	background-color: var(--color-primary-100);
+	/* background-color: var(--color-primary-100); */
+	border: var(--border-container);
 	color: var(--color-secondary-100);
+	text-decoration: none;
 }
 
 .file:hover {
-	background-color: var(--color-primary-400);
+	background-color: var(--color-primary-100);
+	/* outline: var(--border-container); */
 }
 
 .fileInfo {

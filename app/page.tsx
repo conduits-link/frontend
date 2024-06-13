@@ -5,6 +5,7 @@ import { ErrorMessage } from "@/utils/errors";
 import { sendFetch } from "@/utils/fetch";
 
 import StoreComponent from "@/components/sections/Store";
+import Navigator from "@/components/wrappers/Navigator";
 
 const StorePage = async () => {
 	const cookieStore = cookies();
@@ -24,7 +25,11 @@ const StorePage = async () => {
 		}
 	}
 
-	return <StoreComponent initialFiles={body.docs} />;
+	return (
+		<Navigator selected="files">
+			<StoreComponent initialFiles={body.docs} />
+		</Navigator>
+	);
 };
 
 export default StorePage;

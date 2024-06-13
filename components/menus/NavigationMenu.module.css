@@ -1,5 +1,5 @@
 .container {
-	width: calc(100% - 2 * (2.35em - var(--spacing-large)));
+	width: var(--container-width);
 	height: 5em;
 	padding: calc(2.35em - var(--spacing-large) - 2px);
 	display: flex;
@@ -64,7 +64,7 @@
 
 .returnInfoTitle input:focus {
 	outline: 2px solid var(--color-secondary-100);
-	outline-offset:  4px;
+	outline-offset: 4px;
 }
 
 .returnInfoTitle {

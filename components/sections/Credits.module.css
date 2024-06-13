@@ -1,0 +1,7 @@
+.containerMain p {
+	margin: var(--spacing-large) 0;
+}
+
+.containerMain button {
+	padding: var(--spacing-large) 1.5em;
+}

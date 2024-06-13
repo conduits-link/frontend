@@ -7,11 +7,9 @@ import Button from "@/components/buttons/Button";
 import Input from "@/components/form/Input";
 import Form from "@/components/form/Form";
 
-const RegisterPage = ({ params }: { params: any }) => {
-	const [username, setUsername] = useState("");
+const ForgotPage = ({ params }: { params: any }) => {
 	const [password, setPassword] = useState("");
 	const [validationErrors, setValidationErrors] = useState({
-		name: true,
 		password: true,
 		passwordConfirm: true,
 	});
@@ -33,26 +31,14 @@ const RegisterPage = ({ params }: { params: any }) => {
 	return (
 		<FillPageComponent>
 			<Form
-				url={`/auth/register/${params.uid}`}
-				data={{ username, password }}
-				redirectUrl={"/"}
+				url={`/auth/forgot/${params.uid}`}
+				data={{ password }}
+				redirectUrl="/"
 			>
-				<h1>Register</h1>
-				<Input
-					name="name"
-					label="Name"
-					type="text"
-					placeholder="Enter your name"
-					onChange={(e) => setUsername(e.target.value)}
-					validations={[
-						{ type: "required", errorMessage: "Please enter your name." },
-					]}
-					onValidationError={() => handleValidationError("name")}
-					onValidationSuccess={() => handleValidationSuccess("name")}
-				/>
+				<h1>Reset Password</h1>
 				<Input
 					name="password"
-					label="Password"
+					label="New Password"
 					type="password"
 					placeholder="Enter your password"
 					onChange={(e) => setPassword(e.target.value)}
@@ -73,7 +59,7 @@ const RegisterPage = ({ params }: { params: any }) => {
 				/>
 				<Input
 					name="passwordConfirm"
-					label="Confirm Password"
+					label="Confirm New Password"
 					type="password"
 					placeholder="Enter your password again"
 					validations={[
@@ -103,11 +89,11 @@ const RegisterPage = ({ params }: { params: any }) => {
 					primary={true}
 					disabled={Object.values(validationErrors).some((error) => error)}
 				>
-					Register
+					Reset password
 				</Button>
 			</Form>
 		</FillPageComponent>
 	);
 };
 
-export default RegisterPage;
+export default ForgotPage;

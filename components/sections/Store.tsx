@@ -6,58 +6,66 @@ import Link from "next/link";
 
 import { FaEye, FaPenFancy, FaPlus, FaTrash } from "react-icons/fa6";
 
+import { wrapFetch } from "@/utils/fetch";
 import { countWordsInObject } from "@/utils/parse";
-import sendFetch from "@/utils/fetch";
+import { useFlashMessage } from "@/utils/flash";
 
 import Button from "@/components/buttons/Button";
 import Input from "../form/Input";
-import NoSSR from "./NoSSR";
+import NoSSR from "../wrappers/NoSSR";
 
 import styles from "./Store.module.css";
 
 const StoreComponent = ({ initialFiles }: { initialFiles: any }) => {
 	const router = useRouter();
+	const { showFlashMessage } = useFlashMessage();
 
 	const [files, setFiles] = useState(initialFiles);
 	const [filteredFiles, setFilteredFiles] = useState(files);
 
 	function searchFiles(search: string) {
 		setFilteredFiles(
-			files.filter((file: doc) => file.title.toLowerCase().includes(search))
+			files.filter((doc: doc) => doc.title.toLowerCase().includes(search))
 		);
 	}
 
 	async function createDoc() {
-		const res = (await sendFetch(
-			`${process.env.NEXT_PUBLIC_API_URL}/store/docs`,
-			"POST",
-			"",
+		const { response, body } = (await wrapFetch(
 			{
-				file: {
-					title: "Untitled",
-					body: [
-						{
-							type: "paragraph",
-							children: [{ type: "text", children: [{ text: "" }] }],
-						},
-					],
+				route: `${process.env.NEXT_PUBLIC_INTERNAL_API_URL}/store/docs`,
+				method: "POST",
+				cookie: "",
+				data: {
+					doc: {
+						title: "Untitled",
+						body: [
+							{
+								type: "paragraph",
+								children: [{ type: "text", children: [{ text: "" }] }],
+							},
+						],
+					},
 				},
-			}
+			},
+			showFlashMessage
 		)) as apiResponse;
 
-		router.push(`/edit/${res.data.file._id}`);
+		router.push(`/${body.doc.uid}`);
 	}
 
 	async function deleteDoc(id: string) {
-		const res = (await sendFetch(
-			`${process.env.NEXT_PUBLIC_API_URL}/store/docs/${id}`,
-			"DELETE",
-			""
+		const { response, body } = (await wrapFetch(
+			{
+				route: `${process.env.NEXT_PUBLIC_INTERNAL_API_URL}/store/docs/${id}`,
+				method: "DELETE",
+				cookie: "",
+			},
+			showFlashMessage
 		)) as apiResponse;
 
-		if (res.status === 200) {
-			setFiles(files.filter((file: doc) => file._id !== id));
-			setFilteredFiles(filteredFiles.filter((file: doc) => file._id !== id));
+		if (response.ok) {
+			setFiles(files.filter((doc: doc) => doc.uid !== id));
+			setFilteredFiles(filteredFiles.filter((doc: doc) => doc.uid !== id));
 		}
 	}
 
@@ -79,13 +87,13 @@ const StoreComponent = ({ initialFiles }: { initialFiles: any }) => {
 					</div>
 					<div className={styles.containerFiles}>
 						<div className={styles.files}>
-							{filteredFiles.map((file: doc, i: number) => {
-								const words = countWordsInObject(file.body);
+							{filteredFiles.map((doc: doc, i: number) => {
+								const words = countWordsInObject(doc.body);
 
 								return (
 									<div className={styles.file} key={i}>
 										<div className={styles.fileInfo}>
-											<h3>{file.title}</h3>
+											<h3>{doc.title}</h3>
 											<p>
 												<span className={styles.fileInfoType}>
 													Document •{" "}
@@ -96,18 +104,18 @@ const StoreComponent = ({ initialFiles }: { initialFiles: any }) => {
 											</p>
 										</div>
 										<div className={styles.fileButtons}>
-											<Link href={`/edit/${file._id}`}>
+											<Link href={`/${doc.uid}`}>
 												<button className={styles.button}>
 													<FaPenFancy />
 												</button>
 											</Link>
-											<Link href={`/edit/${file._id}?mode=preview`}>
+											<Link href={`/${doc.uid}?mode=preview`}>
 												<button className={styles.button}>
 													<FaEye />
 												</button>
 											</Link>
 											<button
-												onClick={() => deleteDoc(file._id)}
+												onClick={() => deleteDoc(doc.uid)}
 												className={styles.button}
 											>
 												<FaTrash />

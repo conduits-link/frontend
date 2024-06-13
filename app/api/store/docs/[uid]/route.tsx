@@ -22,7 +22,7 @@ export async function GET(
 		const docStructure = convertMarkdownToNestedDoc(fileContent);
 
 		const doc = {
-			_id: params.uid,
+			uid: params.uid,
 			title: parseFileName(params.uid),
 			body: docStructure,
 			created: fileStats.birthtime,
@@ -31,85 +31,61 @@ export async function GET(
 
 		return new Response(
 			JSON.stringify({
-				status: 200,
-				message: "File retrieved.",
-				data: {
-					file: doc,
-				},
+				doc,
 			})
 		);
 	}
 
-	return new Response(
-		JSON.stringify({
-			status: 500,
-			message: "Something went wrong.",
-			data: {
-				file: null,
-			},
-		})
-	);
+	return new Response(null, {
+		status: 404,
+		statusText: "No doc was found.",
+	});
 }
 
 export async function PUT(
 	req: Request,
 	{ params }: { params: { uid: string } }
 ) {
-	const { file } = await req.json();
+	const { doc } = await req.json();
 
 	const filePath = decodeURI(
 		path.join(process.env.STORE_LOCATION as string, params.uid)
 	);
 
 	if (fs.existsSync(filePath)) {
-		const fileContent = convertNestedDocToMarkdown(file.body);
+		const fileContent = convertNestedDocToMarkdown(doc.body);
 
 		fs.writeFileSync(filePath, fileContent);
 
-		let _id = params.uid;
+		let uid = params.uid;
 		let { birthtime, mtime } = fs.statSync(filePath);
 
-		if (file.title !== parseFileName(params.uid)) {
+		if (doc.title !== parseFileName(params.uid)) {
 			const newFilePath = path.join(
 				process.env.STORE_LOCATION as string,
-				file.title + ".md"
+				doc.title + ".md"
 			);
 
 			fs.renameSync(filePath, newFilePath);
 
-			_id = file.title + ".md";
+			uid = doc.title + ".md";
 			birthtime = fs.statSync(newFilePath).birthtime;
 			mtime = fs.statSync(newFilePath).mtime;
 		}
 
-		const doc = {
-			_id,
-			title: file.title,
-			body: file.body,
-			created: birthtime,
-			modified: mtime,
-		};
-
 		return new Response(
 			JSON.stringify({
-				status: 200,
-				message: "File saved.",
-				data: {
-					file: doc,
+				doc: {
+					modified: mtime,
 				},
 			})
 		);
 	}
 
-	return new Response(
-		JSON.stringify({
-			status: 500,
-			message: "Something went wrong.",
-			data: {
-				file: null,
-			},
-		})
-	);
+	return new Response(null, {
+		status: 404,
+		statusText: "No doc was found.",
+	});
 }
 
 export async function DELETE(
@@ -123,24 +99,14 @@ export async function DELETE(
 	if (fs.existsSync(filePath)) {
 		fs.unlinkSync(filePath);
 
-		return new Response(
-			JSON.stringify({
-				status: 200,
-				message: "File deleted.",
-				data: {
-					file: null,
-				},
-			})
-		);
+		return new Response(null, {
+			status: 200,
+			statusText: "The doc was removed.",
+		});
 	}
 
-	return new Response(
-		JSON.stringify({
-			status: 500,
-			message: "Something went wrong.",
-			data: {
-				file: null,
-			},
-		})
-	);
+	return new Response(null, {
+		status: 404,
+		statusText: "No doc was found.",
+	});
 }

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import styles from "./Input.module.css";
 
@@ -27,10 +27,10 @@ export default function Input({
 	onValidationError?: () => void;
 	onValidationSuccess?: () => void;
 }) {
-	const [userInteracted, setUserInteracted] = useState(false);
+	const [inputValue, setInputValue] = useState("");
 
+	const [userInteracted, setUserInteracted] = useState(false);
 	const [error, setError] = useState("");
-	const inputRef = useRef<HTMLInputElement>(null);
 
 	useEffect(() => {
 		if (validations && userInteracted) {
@@ -39,24 +39,23 @@ export default function Input({
 				const validation = validations[i];
 				switch (validation.type) {
 					case "required":
-						if (!inputRef.current!.value)
-							newError = validation.errorMessage;
+						if (!inputValue) newError = validation.errorMessage;
 						break;
 					case "email":
 						const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-						if (!emailRegex.test(inputRef.current!.value!))
+						if (!emailRegex.test(inputValue!))
 							newError = validation.errorMessage;
 						break;
 					case "minLength":
-						if (inputRef.current!.value!.length < validation.value)
+						if (inputValue!.length < validation.value)
 							newError = validation.errorMessage;
 						break;
 					case "maxLength":
-						if (inputRef.current!.value!.length > validation.value)
+						if (inputValue!.length > validation.value)
 							newError = validation.errorMessage;
 						break;
 					case "match":
-						if (inputRef.current!.value !== validation.value)
+						if (inputValue !== validation.value)
 							newError = validation.errorMessage;
 						break;
 					default:
@@ -73,38 +72,31 @@ export default function Input({
 				onValidationSuccess && onValidationSuccess();
 			}
 		}
-	}, [
-		inputRef.current?.value,
-		validations,
-		userInteracted,
-		onValidationError,
-		onValidationSuccess,
-	]);
+	}, [inputValue]);
 
 	return (
 		<div className={styles.container}>
 			{label && (
-				<label
-					htmlFor={name}
-					className={styles.label}
-				>
+				<label htmlFor={name} className={styles.label}>
 					{label}
 				</label>
 			)}
 			<input
-				ref={inputRef}
 				id={name}
 				name={name}
 				type={type}
 				placeholder={placeholder}
 				className={styles.element}
 				onChange={(e) => {
+					setInputValue(e.target.value);
 					if (!userInteracted) setUserInteracted(true);
 					onChange && onChange(e);
 				}}
 				required={validations?.some((v) => v.type === "required")}
 			/>
-			{validations && <small className={styles.error}>{error && error}</small>}
+			{validations && (
+				<small className={styles.error}>{error && error}</small>
+			)}
 		</div>
 	);
 }

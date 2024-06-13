@@ -3,10 +3,10 @@
 import { ReactNode } from "react";
 import { useRouter } from "next/navigation";
 
-import sendFetch from "@/utils/fetch";
+import { useFlashMessage } from "@/utils/flash";
+import { wrapFetch } from "@/utils/fetch";
 
 import styles from "./Form.module.css";
-import { useFlashMessage } from "@/utils/flash";
 
 const Form = ({
 	url,
@@ -27,19 +27,22 @@ const Form = ({
 	async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 
-		const res = (await sendFetch(
-			`${process.env.NEXT_PUBLIC_API_URL}${url}`,
-			"POST",
-			"",
-			data
-		)) as apiResponse;
-
-		if (res.status === 200) {
-			if (redirectUrl) router.push(redirectUrl);
-			onRes && onRes(res);
-		} else {
-			showFlashMessage("error", res.message);
-		}
+		await wrapFetch(
+			{
+				route: `${process.env.NEXT_PUBLIC_INTERNAL_API_URL}${url}`,
+				method: "POST",
+				cookie: "",
+				data,
+			},
+			showFlashMessage,
+			redirectUrl
+				? {
+						url: redirectUrl,
+						router,
+				  }
+				: undefined,
+			onRes
+		);
 	}
 
 	return (

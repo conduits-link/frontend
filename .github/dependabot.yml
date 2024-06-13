@@ -1,0 +1,13 @@
+# Dependabot configuration for automatic PRs with dependency version updates.
+# Documentation: https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+
+version: 2
+updates:
+   - package-ecosystem: "npm"
+     directory: "/"
+     target-branch: "dev"
+     reviewers:
+        - "dan-smith-tech"
+     schedule:
+        interval: "monthly"
+     open-pull-requests-limit: 10

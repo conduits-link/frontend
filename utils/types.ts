@@ -1,9 +1,8 @@
 // API
 
 type apiResponse = {
-	status: number;
-	message: string;
-	data: any;
+	response: Response;
+	body: null | any; // TODO: change to OR types for every possible response
 };
 
 type apiPrompt = {
@@ -19,7 +18,7 @@ type apiPrompt = {
 // Files
 
 type doc = {
-	_id: string;
+	uid: string;
 	title: string;
 	body: any;
 	created: Date;

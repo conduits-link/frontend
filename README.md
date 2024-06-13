@@ -1,6 +1,6 @@
-# Noteworthy
+# Conduit
 
-Noteworthy is an LLM-based text editor, with an intuitive and powerful graphical user interface. Employ an AI assistant to help you write without typing any prompts!
+Conduit is an LLM-based text editor, with an intuitive and powerful graphical user interface. Employ an AI assistant to help you write without typing any prompts!
 
 ## Contents
 
@@ -9,7 +9,7 @@ Noteworthy is an LLM-based text editor, with an intuitive and powerful graphical
 -  [Documentation](#documentation)
 -  [(Planned) Features](#planned-features)
 
-_See [noteworthy-backend](https://github.com/jhels/noteworthy-backend) for backend deployment of this technology._
+_See [conduit-backend](https://github.com/jhels/conduit-backend) for backend deployment of this technology._
 
 ## Demo
 
@@ -43,20 +43,20 @@ Responses to prompts for are collected underneath the node they were applied to.
 
 ### Run with built-in API
 
-This is the easiest way to run Noteworthy, as it uses the local API built into the frontend. This means that all files are stored/read from the system of the machine that Noteworthy is running on. However, there is obviously no syncing between different machines or choices of generative AI usage (there is only currently support for OpenAI locally).
+This is the easiest way to run Conduit, as it uses the local API built into the frontend. This means that all files are stored/read from the system of the machine that Conduit is running on. However, there is obviously no syncing between different machines or choices of generative AI usage (there is only currently support for OpenAI locally).
 
 1. Add the following environment variables to a `.env.local` file in the root directory of this project:
 
-   | Variable              | Value                                                                                                                 |
-   | --------------------- | --------------------------------------------------------------------------------------------------------------------- |
-   | `NEXT_PUBLIC_API_URL` | `http://localhost:3000/api`                                                                                           |
-   | `STORE_LOCATION`      | The absolute location of the folder you want to read/write files to on your machine (e.g., `/home/<user>/Documents`). |
-   | `OPENAI_API_KEY`      | An OpenAI API key.                                                                                                    |
+   | Variable                       | Value                                                                                                                 |
+   | ------------------------------ | --------------------------------------------------------------------------------------------------------------------- |
+   | `NEXT_PUBLIC_INTERNAL_API_URL` | `http://localhost:3000/api`                                                                                           |
+   | `STORE_LOCATION`               | The absolute location of the folder you want to read/write files to on your machine (e.g., `/home/<user>/Documents`). |
+   | `OPENAI_API_KEY`               | An OpenAI API key.                                                                                                    |
 
 2. Install dependencies:
 
    ```bash
-   npm install
+   npm i
    ```
 
    -  If you are pulling after recent commits (and dependencies have changed/updated), reinstall dependencies:
@@ -67,13 +67,13 @@ This is the easiest way to run Noteworthy, as it uses the local API built into t
 
 3. Run in _either_:
 
-   -  Development mode:
+   -  Development mode (auto-reload without pre-rendering):
 
       ```bash
       npm run dev
       ```
 
-   -  Production mode:
+   -  Production mode (pre-rendering without auto-reload):
 
       ```bash
       npm run start
@@ -81,18 +81,18 @@ This is the easiest way to run Noteworthy, as it uses the local API built into t
 
 ### Run with external API
 
-This is how Noteworthy works in production: a separate backend handles authentication, file storage, and generative AI usage. Any backend can be used, so long as it hosts [these endpoints](/docs/api.md#backend).
+This is how Conduit works in production: a separate backend handles authentication, file storage, and generative AI usage. Any backend can be used, so long as it hosts [these endpoints](/docs/api.md#backend).
 
 1. Add the following environment variables to a `.env.local` file in the root directory of this project:
 
-   | Variable              | Value                                                                            |
-   | --------------------- | -------------------------------------------------------------------------------- |
-   | `NEXT_PUBLIC_API_URL` | The URL of the backend that hosts hosts [these endpoints](/docs/api.md#backend). |
+   | Variable                       | Value                                                                                                          |
+   | ------------------------------ | -------------------------------------------------------------------------------------------------------------- |
+   | `NEXT_PUBLIC_INTERNAL_API_URL` | The root URL of the backend that hosts [these endpoints](/docs/api.md#backend) (e.g.,`http://127.0.0.1:8000`). |
 
 2. Install dependencies:
 
    ```bash
-   npm install
+   npm i
    ```
 
    -  If you are pulling after recent commits (and dependencies have changed/updated), reinstall dependencies:
@@ -103,13 +103,13 @@ This is how Noteworthy works in production: a separate backend handles authentic
 
 3. Run in _either_:
 
-   -  Development mode:
+   -  Development mode (auto-reload without pre-rendering):
 
       ```bash
       npm run dev
       ```
 
-   -  Production mode:
+   -  Production mode (pre-rendering without auto-reload):
 
       ```bash
       npm run start

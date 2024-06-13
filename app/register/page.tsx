@@ -38,7 +38,7 @@ const PreRegisterPage = () => {
 					url="/auth/register"
 					data={{ email }}
 					onRes={(res: apiResponse) =>
-						res.status == 200 && setSubmitted(true)
+						res.response.status == 200 && setSubmitted(true)
 					}
 				>
 					<h1>Register</h1>

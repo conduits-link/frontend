@@ -22,14 +22,15 @@
 	--border-radius-small: 0.65em;
 	--border-container: 2px solid var(--color-secondary-400);
 
-	--editor-width: 65em;
+	--container-width: 85rem;
+	--editor-width: 65rem;
 }
 
 html,
 body {
 	margin: 0;
 	padding: 0;
-	min-height: 100%;
+	min-height: 100vh;
 	color: var(--color-secondary-100);
 	background-color: var(--color-primary-400);
 	font-family: "Lato", "Serif";
@@ -45,6 +46,11 @@ p,
 ul,
 ol {
 	margin: 0;
+}
+
+h1 {
+	font-size: 2.35rem;
+	font-weight: 900;
 }
 
 :focus:not(:focus-visible) {

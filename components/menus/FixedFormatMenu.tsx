@@ -1,9 +1,10 @@
-import { Editor, Node } from "slate";
+import { Editor } from "slate";
+
+import { LuHeading1, LuHeading2, LuHeading3 } from "react-icons/lu";
 
 import FormatButton from "../buttons/FormatButton";
 
 import styles from "./FixedFormatMenu.module.css";
-import { LuHeading1, LuHeading2, LuHeading3 } from "react-icons/lu";
 
 export default function FixedMenu({ editor }: { editor: Editor }) {
 	return (

@@ -1,0 +1,79 @@
+.containerMain {
+	min-height: 100vh;
+	display: flex;
+	justify-content: center;
+}
+
+.containerContent {
+	width: var(--container-width);
+	padding: 0 1.5em;
+}
+
+.containerNav {
+	width: var(--container-width);
+	padding: var(--spacing-large);
+	display: flex;
+	justify-content: space-between;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: row;
+	gap: var(--spacing-large);
+	position: fixed;
+	bottom: 1.5em;
+	border-radius: var(--border-radius-large);
+	border: var(--border-container);
+	background-color: var(--color-primary-100);
+	backdrop-filter: blur(6px);
+	box-sizing: border-box;
+}
+
+.account {
+	margin: var(--buffer-vertical) 0;
+	height: 3.15rem;
+	display: flex;
+	align-items: center;
+	display: flex;
+	gap: var(--spacing-small);
+}
+
+.account svg {
+	font-size: 1.15rem;
+}
+
+.containerLinks {
+	display: flex;
+	flex-direction: row;
+	gap: var(--spacing-large);
+}
+
+.link {
+	padding: var(--spacing-large);
+	font-size: 1.12rem;
+	color: var(--color-secondary-100);
+	text-decoration: none;
+	border-radius: var(--border-radius-small);
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-small);
+	border: var(--border-container);
+	border-color: transparent;
+}
+
+.link:not(.selected):hover {
+	outline: var(--border-container);
+}
+
+.link svg {
+	font-size: 1.25rem;
+}
+
+.selected {
+	background-color: var(--color-primary-400);
+	border-color: var(--color-secondary-400);
+}
+
+.content {
+	margin-top: 1.5em;
+	width: var(--content-width);
+	background-color: var(--color-primary-400);
+}

@@ -50,7 +50,6 @@ export async function wrapFetch(
 
 	if (response.ok) {
 		if (successRedirect && successRedirect.router) {
-			console.log("redirecting?");
 			successRedirect.router.push(successRedirect.url);
 		}
 	} else {
@@ -64,6 +63,11 @@ export async function wrapFetch(
 					showFlashMessage("error", ErrorMessage.STATUS_401);
 				if (successRedirect && successRedirect.router)
 					return successRedirect.router.push("/login");
+				break;
+			case 402:
+				if (showFlashMessage)
+					showFlashMessage("error", ErrorMessage.STATUS_402);
+				break;
 			case 403:
 				if (showFlashMessage)
 					showFlashMessage("error", ErrorMessage.STATUS_403);

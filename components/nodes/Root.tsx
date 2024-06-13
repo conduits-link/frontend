@@ -1,12 +1,18 @@
 import React, { useEffect } from "react";
 
-import { Editor, Node, Path, Range, Transforms } from "slate";
+import { Editor, Node } from "slate";
 import { ReactEditor } from "slate-react";
 
 import { LuAtom } from "react-icons/lu";
 
 import styles from "./Root.module.css";
 import PromptMenu from "../menus/PromptMenu";
+import {
+	EditorInterface,
+	ElementType,
+	IdeaElement,
+} from "@/utils/editor/slate";
+import IdeaContainer from "./IdeaContainer";
 
 const RootNode = ({
 	children,
@@ -16,11 +22,13 @@ const RootNode = ({
 	mode,
 }: {
 	children: React.ReactNode;
-	ideas?: any;
+	ideas?: React.ReactNode;
 	editor: Editor;
 	node: Node;
 	mode: string;
 }) => {
+	const ideasExist = React.Children.count(ideas) > 0;
+
 	const [showLeftToolbar, setShowLeftToolbar] = React.useState<boolean>(false);
 	const [showPromptMenu, setShowPromptMenu] = React.useState<boolean>(false);
 
@@ -35,30 +43,13 @@ const RootNode = ({
 	const getPath = () => ReactEditor.findPath(editor, node)[0];
 
 	const addIdea = (res: apiPrompt) => {
-		const idea = {
-			type: "idea",
-			children: [{ text: res.messages[0].content }],
+		const idea: IdeaElement = {
+			type: ElementType.Idea,
 			promptName: res.promptName,
+			children: [{ text: res.messages[0].content }],
 		};
 
-		const container = {
-			type: "idea-container",
-			children: [idea],
-		};
-
-		if (Node.has(node, [1])) {
-			// If there are already ideas, add the new idea to the end of the list
-			// TODO: make type more robust
-			Transforms.insertNodes(editor, idea as unknown as Node, {
-				at: [getPath(), 1, [...Node.children(node, [1])].length],
-			});
-		} else {
-			// If there are no ideas, create the container and add the idea
-			// TODO: make type more robust
-			Transforms.insertNodes(editor, container as unknown as Node, {
-				at: [getPath(), 1],
-			});
-		}
+		EditorInterface.addIdeasToNode(editor, [getPath()], [idea]);
 	};
 
 	const handleRequest = () => {
@@ -71,7 +62,7 @@ const RootNode = ({
 	};
 
 	const getContainerStyles = () => {
-		if (mode == "edit" && ideas)
+		if (mode == "edit" && ideasExist)
 			return styles.container + " " + styles.containerIdeas;
 		return styles.container;
 	};
@@ -111,7 +102,9 @@ const RootNode = ({
 					)}
 					{children}
 				</div>
-				{mode == "edit" && ideas}
+				{mode == "edit" && ideasExist && (
+					<IdeaContainer>{ideas}</IdeaContainer>
+				)}
 			</div>
 		</div>
 	);

@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { ErrorMessage } from "@/utils/errors";
 import { sendFetch } from "@/utils/fetch";
 
-import StoreComponent from "@/components/wrappers/Store";
+import StoreComponent from "@/components/sections/Store";
 
 const StorePage = async () => {
 	const cookieStore = cookies();
@@ -20,7 +20,7 @@ const StorePage = async () => {
 			case 401:
 				return redirect(`/login?flashMessage=${ErrorMessage.STATUS_401}`);
 			default:
-				return redirect(`/login?flashMessage=${ErrorMessage.STATUS_500}`);
+				return redirect(`/?flashMessage=${ErrorMessage.STATUS_500}`);
 		}
 	}
 

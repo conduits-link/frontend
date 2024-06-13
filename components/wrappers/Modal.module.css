@@ -1,25 +1,25 @@
 .container {
-	width: 100%;
-	padding: calc(2.35em - var(--spacing-large) - 2px) 0;
-	display: flex;
-	gap: var(--spacing-large);
-	justify-content: center;
 	position: fixed;
-	bottom: 0;
+	inset: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 999;
+}
+
+.container::before {
+	content: "";
+	position: absolute;
+	inset: 0;
 	background-color: var(--color-primary-400);
-	background: linear-gradient(
-		#0f0f0f00,
-		#0f0f0fa6 35%,
-		var(--color-primary-400)
-	);
-	z-index: 1;
+	opacity: 0.65;
 }
 
 .element {
 	padding: var(--spacing-small);
 	display: flex;
+	flex-direction: column;
 	gap: var(--spacing-small);
-	align-items: center;
 	border-radius: var(--border-radius-large);
 	border: var(--border-container);
 	background-color: var(--color-primary-100);

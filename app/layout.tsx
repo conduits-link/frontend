@@ -4,6 +4,7 @@ import { Lato } from "next/font/google";
 import FlashMessageContainer from "@/components/wrappers/FlashMessageContainer";
 
 import "./globals.css";
+import { ModalProvider } from "@/contexts/modal";
 
 export const metadata = {
 	title: "Conduit",
@@ -32,7 +33,9 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
 	return (
 		<html lang="en">
 			<body className={font.className}>
-				<FlashMessageContainer>{children}</FlashMessageContainer>
+				<FlashMessageContainer>
+					<ModalProvider>{children}</ModalProvider>
+				</FlashMessageContainer>
 			</body>
 		</html>
 	);

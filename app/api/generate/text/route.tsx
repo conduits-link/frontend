@@ -27,7 +27,7 @@ async function getAiResponse(messages: Object[]) {
 export async function POST(request: NextRequest) {
 	const { promptName, messages } = await request.json();
 
-	const answer = await getAiResponse(messages);
+	const answer = "wossup"; //await getAiResponse(messages);
 
 	return new Response(
 		JSON.stringify({

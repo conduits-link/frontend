@@ -19,6 +19,7 @@ function convertMarkdownToNestedDoc(fileContent: string): Object[] {
 						],
 					},
 				],
+				ideas: [],
 			});
 		} else {
 			nestedDoc.push({
@@ -33,6 +34,7 @@ function convertMarkdownToNestedDoc(fileContent: string): Object[] {
 						],
 					},
 				],
+				ideas: [],
 			});
 		}
 	});
@@ -43,6 +45,7 @@ function convertMarkdownToNestedDoc(fileContent: string): Object[] {
 				{
 					type: "paragraph",
 					children: [{ type: "text", children: [{ text: "" }] }],
+					ideas: [],
 				},
 		  ];
 }

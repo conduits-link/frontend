@@ -1,148 +1,132 @@
-import { Editor, Node, Transforms } from "slate";
-import { ReactEditor } from "slate-react";
+import React from "react";
 
-import {
-	TbColumnInsertLeft,
-	TbColumnInsertRight,
-	TbReload,
-	TbReplace,
-	TbRotateClockwise2,
-	TbRowInsertBottom,
-	TbRowInsertTop,
-	TbTrashX,
-} from "react-icons/tb";
-
-import { constructPrompt, prompts } from "@/utils/prompts";
-import { useFlashMessage } from "@/utils/flash";
-import { wrapFetch } from "@/utils/fetch";
+import { Editor } from "slate";
 
 import styles from "./Idea.module.css";
 
-const Idea = (props: any) => {
-	const { showFlashMessage } = useFlashMessage();
+const Idea = ({
+	editor,
+	// node,
+	key,
+	children,
+}: {
+	editor: Editor;
+	// node: Node;
+	key: string;
+	children: React.ReactNode;
+}) => {
+	// const getParentIndex = () => ReactEditor.findPath(editor, node)[0];
+	// const getPath = () => ReactEditor.findPath(editor, node);
 
-	const { editor, node } = props;
+	// const replaceParentNodeTextWithApiResponse = async (input: string) => {
+	// 	const path = getPath();
+	// 	path.push(0);
 
-	const getParentIndex = () => ReactEditor.findPath(editor, node)[0];
-	const getPath = () => ReactEditor.findPath(editor, node);
+	// 	Transforms.delete(editor, { at: path });
 
-	const replaceParentNodeTextWithApiResponse = async (input: string) => {
-		const path = getPath();
-		path.push(0);
+	// 	const promptName: string = (
+	// 		Editor.node(editor, getPath())[0] as { promptName?: string }
+	// 	)?.promptName!;
 
-		Transforms.delete(editor, { at: path });
+	// 	const content = constructPrompt(
+	// 		input,
+	// 		prompts.find((prompt) => prompt.name == promptName)!.prompt
+	// 	);
 
-		const promptName: string = (
-			Editor.node(editor, getPath())[0] as { promptName?: string }
-		)?.promptName!;
+	// 	const res = (await sendFetch(
+	// 		`${process.env.NEXT_PUBLIC_API_URL}/generate/text`,
+	// 		"POST",
+	// 		"",
+	// 		{
+	// 			promptName,
+	// 			messages: [
+	// 				{
+	// 					role: "user",
+	// 					content,
+	// 				},
+	// 			],
+	// 		}
+	// 	)) as apiResponse;
 
-		const content = constructPrompt(
-			input,
-			prompts.find((prompt) => prompt.name == promptName)!.prompt
-		);
+	// 	const body = (res.data as apiPrompt).messages[0].content;
+	// 	Transforms.insertText(editor, body, { at: path });
+	// };
 
-		const { response, body } = (await wrapFetch(
-			{
-				route: `${process.env.NEXT_PUBLIC_INTERNAL_API_URL}/generate/text`,
-				method: "POST",
-				cookie: "",
-				data: {
-					prompt: {
-						name: promptName,
-						messages: [
-							{
-								role: "user",
-								content,
-							},
-						],
-					},
-				},
-			},
-			showFlashMessage
-		)) as apiResponse;
+	// const setParentNodeText = (content: string) => {
+	// 	removeThisNode();
 
-		Transforms.insertText(
-			editor,
-			(body.prompt as apiPrompt).messages[0].content,
-			{ at: path }
-		);
-	};
+	// 	const path = [getParentIndex(), 0, 0];
 
-	const setParentNodeText = (content: string) => {
-		removeThisNode();
+	// 	Transforms.insertText(editor, content, { at: path });
+	// };
 
-		const path = [getParentIndex(), 0, 0];
+	// const insertNode = (path: number[]) => {
+	// 	removeThisNode();
 
-		Transforms.insertText(editor, content, { at: path });
-	};
+	// 	const newNode = {
+	// 		type: "paragraph",
+	// 		children: [
+	// 			{
+	// 				type: "text",
+	// 				children: [{ text: Node.string(node) }],
+	// 			},
+	// 		],
+	// 	};
 
-	const insertNode = (path: number[]) => {
-		removeThisNode();
+	// 	// TODO: make type more robust
+	// 	Transforms.insertNodes(editor, newNode as unknown as Node, { at: path });
+	// };
 
-		const newNode = {
-			type: "paragraph",
-			children: [
-				{
-					type: "text",
-					children: [{ text: Node.string(node) }],
-				},
-			],
-		};
+	// const removeThisNode = () => {
+	// 	const ideaContainer = Editor.node(editor, [getParentIndex(), 1])[0];
+	// 	const empty =
+	// 		(ideaContainer as { children?: any[] }).children?.length == 1;
 
-		// TODO: make type more robust
-		Transforms.insertNodes(editor, newNode as unknown as Node, { at: path });
-	};
+	// 	if (empty) Transforms.delete(editor, { at: [getParentIndex(), 1] });
+	// 	else Transforms.delete(editor, { at: getPath() });
+	// };
 
-	const removeThisNode = () => {
-		const ideaContainer = Editor.node(editor, [getParentIndex(), 1])[0];
-		const empty =
-			(ideaContainer as { children?: any[] }).children?.length == 1;
+	// const retryWithNodeContent = () => {
+	// 	const input = Node.string(Editor.node(editor, [getParentIndex(), 0])[0]);
+	// 	replaceParentNodeTextWithApiResponse(input);
+	// };
 
-		if (empty) Transforms.delete(editor, { at: [getParentIndex(), 1] });
-		else Transforms.delete(editor, { at: getPath() });
-	};
+	// const retryWithIdeaContent = () => {
+	// 	const input = Node.string(Editor.node(editor, getPath())[0]);
+	// 	replaceParentNodeTextWithApiResponse(input);
+	// };
 
-	const retryWithNodeContent = () => {
-		const input = Node.string(Editor.node(editor, [getParentIndex(), 0])[0]);
-		replaceParentNodeTextWithApiResponse(input);
-	};
+	// const prependNode = () => {
+	// 	insertNode([getParentIndex()]);
+	// };
 
-	const retryWithIdeaContent = () => {
-		const input = Node.string(Editor.node(editor, getPath())[0]);
-		replaceParentNodeTextWithApiResponse(input);
-	};
+	// const appendNode = () => {
+	// 	insertNode([getParentIndex() + 1]);
+	// };
 
-	const prependNode = () => {
-		insertNode([getParentIndex()]);
-	};
+	// const replace = () => {
+	// 	setParentNodeText(Node.string(node));
+	// };
 
-	const appendNode = () => {
-		insertNode([getParentIndex() + 1]);
-	};
+	// const prependText = () => {
+	// 	const parentNodeContent = Node.string(
+	// 		Editor.node(editor, [getParentIndex(), 0])[0]
+	// 	);
+	// 	const content = Node.string(node).concat(" ", parentNodeContent);
+	// 	setParentNodeText(content);
+	// };
 
-	const replace = () => {
-		setParentNodeText(Node.string(node));
-	};
-
-	const prependText = () => {
-		const parentNodeContent = Node.string(
-			Editor.node(editor, [getParentIndex(), 0])[0]
-		);
-		const content = Node.string(node).concat(" ", parentNodeContent);
-		setParentNodeText(content);
-	};
-
-	const appendText = () => {
-		const parentNodeContent = Node.string(
-			Editor.node(editor, [getParentIndex(), 0])[0]
-		);
-		const content = parentNodeContent.concat(" ", Node.string(node));
-		setParentNodeText(content);
-	};
+	// const appendText = () => {
+	// 	const parentNodeContent = Node.string(
+	// 		Editor.node(editor, [getParentIndex(), 0])[0]
+	// 	);
+	// 	const content = parentNodeContent.concat(" ", Node.string(node));
+	// 	setParentNodeText(content);
+	// };
 
 	return (
 		<div className={styles.container}>
-			<div className={styles.containerButtons} contentEditable={false}>
+			{/* <div className={styles.containerButtons} contentEditable={false}>
 				<button
 					className={styles.buttonAction}
 					onClick={retryWithNodeContent}
@@ -173,9 +157,9 @@ const Idea = (props: any) => {
 				<button className={styles.buttonAction} onClick={removeThisNode}>
 					<TbTrashX />
 				</button>
-			</div>
-			<div className={styles.element} key={props.key}>
-				{props.children}
+			</div> */}
+			<div className={styles.element} key={key}>
+				{children}
 			</div>
 		</div>
 	);

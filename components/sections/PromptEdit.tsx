@@ -8,16 +8,26 @@ import { apiResponse } from "@/utils/types";
 
 import Prompt from "../types/Prompt";
 
+import Input from "../form/Input";
+import Button from "../buttons/Button";
+
 import styles from "./PromptEdit.module.css";
 
-const PromptEdit = ({ prompt, isNew }: { prompt: Prompt; isNew?: boolean }) => {
+const PromptEdit = ({
+  prompt,
+  isNew,
+}: {
+  prompt: Prompt;
+  isNew?: (prompt: Prompt) => void;
+}) => {
   const { showFlashMessage } = useFlashMessage();
 
   const ref = useRef<HTMLDivElement | null>(null);
   const [open, setOpen] = useState(false);
-  const [editing, setEditing] = useState(isNew);
+  const [editing, setEditing] = useState(isNew ? true : false);
 
-  const [newPrompt, setNewPrompt] = useState(prompt);
+  const [newPromptName, setNewPromptName] = useState(prompt.name);
+  const [newPromptPrompt, setNewPromptPrompt] = useState(prompt.prompt);
 
   async function savePrompt() {
     if (isNew) {
@@ -27,14 +37,21 @@ const PromptEdit = ({ prompt, isNew }: { prompt: Prompt; isNew?: boolean }) => {
           method: "POST",
           cookie: "",
           data: {
-            name: newPrompt.name,
-            prompt: newPrompt.prompt,
+            name: newPromptName,
+            prompt: newPromptPrompt,
           },
         },
         showFlashMessage,
       )) as apiResponse;
 
       if (response.ok) {
+        // wait and then refresh the page
+        setTimeout(() => {
+          window.location.reload();
+        }, 100);
+
+        // TODO: implement return uid of the new prompt and remove the wait/reload
+        // isNew({ ...newPrompt, uid: body.uid });
         setEditing(false);
       }
     } else {
@@ -44,8 +61,8 @@ const PromptEdit = ({ prompt, isNew }: { prompt: Prompt; isNew?: boolean }) => {
           method: "PUT",
           cookie: "",
           data: {
-            name: newPrompt.name,
-            prompt: newPrompt.prompt,
+            name: newPromptName,
+            prompt: newPromptPrompt,
           },
         },
         showFlashMessage,
@@ -57,33 +74,22 @@ const PromptEdit = ({ prompt, isNew }: { prompt: Prompt; isNew?: boolean }) => {
     }
   }
 
-  const handleClickOutside = (e: any) => {
-    if (ref.current && !ref.current.contains(e.target)) {
-      // delay by a millisecond to allow the button click to register
-      // TODO: fix this hack
-      setTimeout(() => {
-        setOpen(false);
-      }, 100);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
   if (!editing) {
     return (
       <div key={prompt.uid} className={styles.containerMain} ref={ref}>
         <div onClick={() => setOpen(!open)} className={styles.buttonToggle}>
-          <h2 className={styles.buttonToggle}>{prompt.name}</h2>
+          <h2 className={styles.name}>{prompt.name}</h2>
         </div>
         {open && (
           <>
             <p className={styles.prompt}>{prompt.prompt}</p>
-            <button onClick={() => setEditing(true)}>Edit</button>
+            <Button
+              onClick={() => setEditing(true)}
+              primary={true}
+              className={styles.button}
+            >
+              Edit
+            </Button>
           </>
         )}
       </div>
@@ -91,18 +97,28 @@ const PromptEdit = ({ prompt, isNew }: { prompt: Prompt; isNew?: boolean }) => {
   } else {
     return (
       <div key={prompt.uid} className={styles.containerMain} ref={ref}>
-        <div className={styles.buttonToggle}>
-          <input
+        <h2 className={styles.title}>{isNew ? "New Prompt" : "Edit Prompt"}</h2>
+        <div className={styles.input}>
+          <Input
             type="text"
+            label={"Name"}
+            placeholder={"Enter prompt name..."}
             value={prompt.name}
-            onChange={(e) => setNewPrompt({ ...prompt, name: e.target.value })}
+            onChange={(e) => setNewPromptName(e.target.value)}
           />
         </div>
-        <textarea
-          value={prompt.prompt}
-          onChange={(e) => setNewPrompt({ ...prompt, prompt: e.target.value })}
-        />
-        <button onClick={savePrompt}>Save</button>
+        <div className={styles.input}>
+          <Input
+            type="textarea"
+            label={"Prompt"}
+            placeholder={"Enter prompt..."}
+            value={prompt.prompt}
+            onChange={(e) => setNewPromptPrompt(e.target.value)}
+          />
+        </div>
+        <Button onClick={savePrompt} primary={true} className={styles.button}>
+          Save
+        </Button>
       </div>
     );
   }

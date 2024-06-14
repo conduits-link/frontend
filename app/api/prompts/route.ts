@@ -7,7 +7,6 @@ export async function GET(req: Request) {
 		}),
 		{
 			status: 200,
-			statusText: "Authentication not available.",
 		}
 	);
 }

@@ -1,44 +1,25 @@
 .containerMain {
-	display: flex;
-	flex-direction: column;
-	gap: 1.5em;
-}
-
-.containerPrompts {
-	display: flex;
-	flex-direction: column;
-	gap: var(--spacing-large);
-}
-
-.heading {
-	margin-bottom: 3.5em;
-	display: flex;
-	gap: 18.5em;
-	justify-content: space-between;
-}
-
-.prompt {
 	border: var(--border-container);
 	border-radius: var(--border-radius-large);
 	background-color: var(--color-primary-400);
 	position: relative;
 }
 
-.prompt:hover {
+.containerMain:hover {
 	background-color: var(--color-primary-100);
 }
 
-.promptToggle {
+.buttonToggle {
 	padding: var(--spacing-large);
 	cursor: pointer;
 }
 
-.prompt h2 {
+.name {
 	font-size: 1.35rem;
 	user-select: none;
 }
 
-.prompt textarea {
+.prompt {
 	width: 100%;
 	padding: 0 var(--spacing-large) var(--spacing-large) var(--spacing-large);
 	box-sizing: border-box;

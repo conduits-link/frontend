@@ -1,12 +1,19 @@
 "use client";
+
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+
+import { FaPlus } from "react-icons/fa6";
 
 import { useFlashMessage } from "@/utils/flash";
 import { wrapFetch } from "@/utils/fetch";
 import { Prompt } from "@/utils/prompts";
 
+import Button from "@/components/buttons/Button";
+import PromptEdit from "@/components/sections/PromptEdit";
+import Input from "../form/Input";
+
 import styles from "./Prompts.module.css";
-import { useState } from "react";
 
 const Prompts = ({ prompts }: { prompts: Prompt[] }) => {
 	const { showFlashMessage } = useFlashMessage();
@@ -28,24 +35,17 @@ const Prompts = ({ prompts }: { prompts: Prompt[] }) => {
 
 	return (
 		<div className={styles.containerMain}>
-			<h1>Prompts</h1>
-			<div className={styles.containerPrompts}>
-				{prompts.map((prompt) => {
-					const [open, setOpen] = useState(false);
-
-					return (
-						<div key={prompt.uid} className={styles.prompt}>
-							<div
-								onClick={() => setOpen(!open)}
-								className={styles.promptToggle}
-							>
-								<h2>{prompt.name}</h2>
-							</div>
-							{open && <textarea>{prompt.prompt}</textarea>}
-						</div>
-					);
-				})}
+	      <div className={styles.heading}>
+					<h1>Prompts</h1>
+					<Button primary={true}>
+						<FaPlus />
+					</Button>
 			</div>
+			<div className={styles.containerPrompts}>
+            {prompts.map((prompt) => (
+               <PromptEdit key={prompt.id} prompt={prompt} />
+            ))}
+         </div>
 		</div>
 	);
 };

@@ -10,3 +10,13 @@ export async function GET(req: Request) {
 		}
 	);
 }
+
+export async function POST(req: Request) {
+   const data = await req.json();
+   const prompt = {
+      uid: data.name,
+      ...data,
+   };
+   console.log("new prompt: ", prompt);
+   return new Response(null, { status: 201, });
+}

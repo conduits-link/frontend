@@ -1,4 +1,12 @@
+import { useEffect, useState } from "react";
+
 import { prompts } from "@/utils/prompts";
+
+import { wrapFetch } from "@/utils/fetch";
+import { apiPrompt, apiResponse } from "@/utils/types";
+import { useFlashMessage } from "@/utils/flash";
+
+import Prompt from "@/types/Prompt";
 
 import PromptButton from "../buttons/PromptButton";
 
@@ -13,10 +21,48 @@ const PromptMenu = ({
 	handleRequest: () => string;
 	handleResponse: (res: apiPrompt) => void;
 }) => {
+    const { showFlashMessage } = useFlashMessage();
+
+   const [customPrompts, setCustomPrompts] = useState<Prompt[]>([]);
+  
+   async function getPrompts() {
+      const { response, body } = (await wrapFetch(
+        {
+          route: `${process.env.NEXT_PUBLIC_INTERNAL_API_URL}/prompts`,
+          method: "GET",
+          cookie: "",
+        },
+        showFlashMessage,
+      )) as apiResponse;
+
+      if (response.ok) {
+         setCustomPrompts(body);
+      }
+   }
+
+   useEffect(() => {
+      getPrompts();
+   }, []);
+
+
 	return (
 		<div className={className + " " + styles.container}>
-			{prompts &&
-				prompts.map((prompt, index) => {
+         {prompts &&
+            prompts.map((prompt, index) => {
+               return (
+                  <PromptButton
+                     promptName={prompt.name}
+                     prompt={prompt.prompt}
+                     handleRequest={handleRequest}
+                     handleResponse={handleResponse}
+                     key={index}
+                  >
+                     {prompt.name}
+                  </PromptButton>
+               );
+            })}
+			{customPrompts &&
+				customPrompts.map((prompt, index) => {
 					return (
 						<PromptButton
 							promptName={prompt.name}

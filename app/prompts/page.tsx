@@ -1,6 +1,8 @@
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 
+import { apiResponse } from "@/utils/types";
+
 import { ErrorMessage } from "@/utils/errors";
 import { sendFetch } from "@/utils/fetch";
 
@@ -27,7 +29,7 @@ const Page = async () => {
 
 	return (
 		<Navigator selected="prompts">
-			<Prompts prompts={body.prompts} />
+			<Prompts prompts={body} />
 		</Navigator>
 	);
 };

@@ -85,6 +85,7 @@ export default function Input({
 				id={name}
 				name={name}
 				type={type}
+            defaultValue={value}
 				placeholder={placeholder}
 				className={styles.element}
 				onChange={(e) => {

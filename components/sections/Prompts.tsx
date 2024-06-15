@@ -1,51 +1,49 @@
 "use client";
+
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+
+import { FaPlus } from "react-icons/fa6";
 
 import { useFlashMessage } from "@/utils/flash";
 import { wrapFetch } from "@/utils/fetch";
 import { Prompt } from "@/utils/prompts";
 
+import Button from "@/components/buttons/Button";
+import PromptEdit from "@/components/sections/PromptEdit";
+import Input from "../form/Input";
+
 import styles from "./Prompts.module.css";
-import { useState } from "react";
 
 const Prompts = ({ prompts }: { prompts: Prompt[] }) => {
 	const { showFlashMessage } = useFlashMessage();
 	const router = useRouter();
 
-	async function onSubmit() {
-		const { response, body } = await wrapFetch(
-			{
-				route: `${process.env.NEXT_PUBLIC_INTERNAL_API_URL}/prompts`,
-				method: "POST",
-				cookie: "",
-				data: {},
-			},
-			showFlashMessage
-		);
-
-		if (body.redirect_url) router.push(body.redirect_url);
-	}
+   const [currentPrompts, setCurrentPrompts] = useState(prompts);
+   const [creatingNewPrompt, setCreatingNewPrompt] = useState(false);
 
 	return (
 		<div className={styles.containerMain}>
-			<h1>Prompts</h1>
-			<div className={styles.containerPrompts}>
-				{prompts.map((prompt) => {
-					const [open, setOpen] = useState(false);
-
-					return (
-						<div key={prompt.uid} className={styles.prompt}>
-							<div
-								onClick={() => setOpen(!open)}
-								className={styles.promptToggle}
-							>
-								<h2>{prompt.name}</h2>
-							</div>
-							{open && <textarea>{prompt.prompt}</textarea>}
-						</div>
-					);
-				})}
+	      <div className={styles.heading}>
+					<h1>Prompts</h1>
+					<Button primary={true} onClick={() => setCreatingNewPrompt(true)}>
+						<FaPlus />
+					</Button>
 			</div>
+			<div className={styles.containerPrompts}>
+            {creatingNewPrompt && (
+               <PromptEdit
+                  prompt={{ uid: "", name: "", prompt: "" }}
+                  isNew={(prompt) => {
+                     setCurrentPrompts([...currentPrompts, prompt]);
+                     setCreatingNewPrompt(false);
+                  }}
+               />
+            )}
+            {prompts.map((prompt) => (
+               <PromptEdit key={prompt.uid} prompt={prompt} />
+            ))}
+         </div>
 		</div>
 	);
 };

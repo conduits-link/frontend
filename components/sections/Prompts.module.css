@@ -1,4 +1,5 @@
 .containerMain {
+   padding-bottom: 12.5em;
 	display: flex;
 	flex-direction: column;
 	gap: 1.5em;
@@ -8,6 +9,13 @@
 	display: flex;
 	flex-direction: column;
 	gap: var(--spacing-large);
+}
+
+.heading {
+	margin-bottom: 3.5em;
+	display: flex;
+	gap: 18.5em;
+	justify-content: space-between;
 }
 
 .prompt {

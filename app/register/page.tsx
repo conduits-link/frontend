@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+import { apiResponse } from "@/utils/types";
+
 import FillPageComponent from "@/components/wrappers/FillPage";
 import Button from "@/components/buttons/Button";
 import Input from "@/components/form/Input";

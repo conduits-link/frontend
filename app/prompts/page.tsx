@@ -27,7 +27,7 @@ const Page = async () => {
 
 	return (
 		<Navigator selected="prompts">
-			<Prompts prompts={body.prompts} />
+			<Prompts prompts={body} />
 		</Navigator>
 	);
 };

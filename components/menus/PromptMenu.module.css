@@ -11,4 +11,5 @@
 	overflow: hidden;
 	box-sizing: border-box;
 	cursor: pointer;
+   z-index: 999;
 }

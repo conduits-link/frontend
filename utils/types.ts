@@ -1,11 +1,11 @@
 // API
 
-type apiResponse = {
+export type apiResponse = {
 	response: Response;
 	body: null | any; // TODO: change to OR types for every possible response
 };
 
-type apiPrompt = {
+export type apiPrompt = {
 	promptName: string;
 	messages: [
 		{
@@ -17,7 +17,7 @@ type apiPrompt = {
 
 // Files
 
-type doc = {
+export type doc = {
 	uid: string;
 	title: string;
 	body: any;

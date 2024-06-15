@@ -1,0 +1,48 @@
+.containerMain {
+   border: var(--border-container);
+   border-radius: var(--border-radius-large);
+   background-color: var(--color-primary-400);
+   position: relative;
+}
+
+.containerMain:hover {
+   background-color: var(--color-primary-100);
+}
+
+.buttonToggle {
+   padding: var(--spacing-large);
+   user-select: none;
+   cursor: pointer;
+}
+
+.name {
+   font-size: 1.35rem;
+   user-select: none;
+}
+
+.prompt {
+   width: 100%;
+   padding: 0 var(--spacing-large) var(--spacing-large) var(--spacing-large);
+   box-sizing: border-box;
+   font-size: 1.1rem;
+   line-height: 1.5rem;
+   color: var(--color-secondary-100);
+   background-color: transparent;
+   border: none;
+   outline: none;
+   display: flex;
+   flex-wrap: wrap;
+}
+
+.button {
+   margin: 0 0 var(--spacing-large) var(--spacing-large);
+}
+
+.title {
+   font-size: 1.5rem;
+   margin: var(--spacing-large);
+}
+
+.input {
+   margin: var(--spacing-large);
+}

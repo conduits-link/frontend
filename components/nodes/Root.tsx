@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 
+import { apiPrompt } from "@/utils/types";
+
 import { Editor, Node } from "slate";
 import { ReactEditor } from "slate-react";
 

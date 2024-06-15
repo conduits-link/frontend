@@ -1,5 +1,7 @@
 import { ReactNode } from "react";
 
+import { apiPrompt, apiResponse } from "@/utils/types";
+
 import { constructPrompt } from "@/utils/prompts";
 import { useFlashMessage } from "@/utils/flash";
 import { wrapFetch } from "@/utils/fetch";

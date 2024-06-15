@@ -1,5 +1,7 @@
 import { ErrorMessage } from "./errors";
 
+import { apiResponse } from "./types";
+
 export async function sendFetch(
 	route: string,
 	method: string,

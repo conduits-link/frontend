@@ -1,6 +1,8 @@
 import fs from "fs";
 import path from "path";
 
+import { doc } from "@/utils/types";
+
 import {
 	convertMarkdownToNestedDoc,
 	convertNestedDocToMarkdown,

@@ -2,11 +2,11 @@
 
 import { useEffect, useRef, useState } from "react";
 
+import { Prompt } from "@/utils/prompts";
+
 import { wrapFetch } from "@/utils/fetch";
 import { useFlashMessage } from "@/utils/flash";
 import { apiResponse } from "@/utils/types";
-
-import Prompt from "../types/Prompt";
 
 import Input from "../form/Input";
 import Button from "../buttons/Button";
@@ -101,6 +101,7 @@ const PromptEdit = ({
         <div className={styles.input}>
           <Input
             type="text"
+            name="name"
             label={"Name"}
             placeholder={"Enter prompt name..."}
             value={prompt.name}
@@ -110,6 +111,7 @@ const PromptEdit = ({
         <div className={styles.input}>
           <Input
             type="textarea"
+            name="prompt"
             label={"Prompt"}
             placeholder={"Enter prompt..."}
             value={prompt.prompt}

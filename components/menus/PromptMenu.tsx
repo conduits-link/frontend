@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 
-import { prompts } from "@/utils/prompts";
+import { Prompt, prompts } from "@/utils/prompts";
 
 import { wrapFetch } from "@/utils/fetch";
 import { apiPrompt, apiResponse } from "@/utils/types";
 import { useFlashMessage } from "@/utils/flash";
-
-import Prompt from "@/types/Prompt";
 
 import PromptButton from "../buttons/PromptButton";
 

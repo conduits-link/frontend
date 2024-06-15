@@ -33,7 +33,7 @@ const Prompts = ({ prompts }: { prompts: Prompt[] }) => {
 			<div className={styles.containerPrompts}>
             {creatingNewPrompt && (
                <PromptEdit
-                  prompt={{ name: "", prompt: "" }}
+                  prompt={{ uid: "", name: "", prompt: "" }}
                   isNew={(prompt) => {
                      setCurrentPrompts([...currentPrompts, prompt]);
                      setCreatingNewPrompt(false);
@@ -41,7 +41,7 @@ const Prompts = ({ prompts }: { prompts: Prompt[] }) => {
                />
             )}
             {prompts.map((prompt) => (
-               <PromptEdit key={prompt.id} prompt={prompt} />
+               <PromptEdit key={prompt.uid} prompt={prompt} />
             ))}
          </div>
 		</div>

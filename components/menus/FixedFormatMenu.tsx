@@ -61,7 +61,7 @@ export default function FixedMenu({ editor }: { editor: Editor }) {
 				>
 					<LuList />
 				</FormatButton>
-				<FormatButton
+            {/* <FormatButton
 					editor={editor}
 					isNode={true}
 					type={ElementType.Image}
@@ -70,7 +70,7 @@ export default function FixedMenu({ editor }: { editor: Editor }) {
 					appendNode={true}
 				>
 					<LuImage />
-				</FormatButton>
+				</FormatButton>*/}
 				<FormatButton
 					editor={editor}
 					isNode={true}

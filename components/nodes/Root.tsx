@@ -35,7 +35,7 @@ const RootNode = ({
 	const [showPromptMenu, setShowPromptMenu] = React.useState<boolean>(false);
 
 	const mouseEnter = () => {
-		if (mode == "edit") setShowLeftToolbar(true);
+		if (mode == "edit" && EditorInterface.getNodeType(node) !== ElementType.ListUnordered && EditorInterface.getNodeType(node) !== ElementType.ListOrdered) setShowLeftToolbar(true);
 	};
 
 	const mouseLeave = () => {

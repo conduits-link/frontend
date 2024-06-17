@@ -13,6 +13,7 @@ import {
 	EditorInterface,
 	ElementType,
 	IdeaElement,
+   CustomElement,
 } from "@/utils/editor/slate";
 import IdeaContainer from "./IdeaContainer";
 
@@ -26,7 +27,7 @@ const RootNode = ({
 	children: React.ReactNode;
 	ideas?: React.ReactNode;
 	editor: Editor;
-	node: Node;
+	node: CustomElement;
 	mode: string;
 }) => {
 	const ideasExist = React.Children.count(ideas) > 0;
@@ -35,7 +36,10 @@ const RootNode = ({
 	const [showPromptMenu, setShowPromptMenu] = React.useState<boolean>(false);
 
 	const mouseEnter = () => {
-		if (mode == "edit" && EditorInterface.getNodeType(node) !== ElementType.ListUnordered && EditorInterface.getNodeType(node) !== ElementType.ListOrdered) setShowLeftToolbar(true);
+		if (mode == "edit" &&
+         EditorInterface.getNodeType(node) !== ElementType.ListUnordered &&
+         EditorInterface.getNodeType(node) !== ElementType.ListOrdered)
+      setShowLeftToolbar(true);
 	};
 
 	const mouseLeave = () => {

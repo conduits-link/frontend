@@ -9,7 +9,7 @@
 		"lint": "next lint"
 	},
 	"dependencies": {
-		"@types/react": "18.3.1",
+		"@types/react": "18.3.3",
 		"eslint": "7.23.0",
 		"eslint-config-next": "14.2.3",
 		"next": "14.2.3",
